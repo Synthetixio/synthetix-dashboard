@@ -1,0 +1,40 @@
+{
+  "presets": [
+    "@babel/preset-flow",
+    "@babel/preset-stage-2",
+    ["@babel/preset-env", {
+      "modules": false,
+      "useBuiltIns": "entry",
+      "targets": {
+        "browsers": [
+          "last 2 versions",
+          "ie >= 11",
+          "safari >= 10"
+        ]
+      }
+    }],
+    "@babel/react"
+  ],
+  "plugins": [
+    "emotion",
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-class-properties",{"loose":true}],
+    "@babel/plugin-proposal-export-default-from",
+    "@babel/plugin-transform-async-to-generator",
+    "@babel/plugin-proposal-optional-chaining"
+  ],
+  "env": {
+    "development": {
+      "plugins": [
+        ["emotion", { "sourceMap": true, "autoLabel": true }],
+        "react-hot-loader/babel"
+      ]
+    },
+    "production": {
+      "plugins": [
+        ["emotion", { "hoist": true }],
+        "transform-react-remove-prop-types"
+      ]
+    }
+  }
+}

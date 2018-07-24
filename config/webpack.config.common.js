@@ -81,6 +81,10 @@ module.exports = {
         options: {
           name: "static/media/[name].[hash:8].[ext]"
         }
+      },
+      {
+        test: /(\.css$)/,
+        loaders: ["style-loader", "css-loader"]
       }
     ]
   },

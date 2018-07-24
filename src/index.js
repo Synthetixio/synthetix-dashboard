@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "@babel/polyfill";
 import { AppContainer } from "react-hot-loader";
-import { HashRouter } from "react-router-dom";
 import App from "./App";
 import { Provider } from "mobx-react";
 import RootStore from "./stores/RootStore";
@@ -14,9 +13,7 @@ const render = Component => {
   ReactDOM.render(
     <AppContainer>
       <Provider {...rootStore}>
-        <HashRouter>
-          <Component />
-        </HashRouter>
+        <Component />
       </Provider>
     </AppContainer>,
     document.getElementById("root")

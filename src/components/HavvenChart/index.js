@@ -20,6 +20,7 @@ export default class HavvenChart extends React.Component {
         <div>
           <button onClick={() => dashboard.loadData()}>Reload</button>
         </div>
+        {dashboard.isLoading && <div>Loading...</div>}
         <Container>
           <Row>
             {dashboard.havvenPrice.map((el: DataItem, idx) => (

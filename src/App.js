@@ -17,10 +17,10 @@ export default class App extends React.Component {
       <div>
         <Container>
           <Row>
-            <Col>Havven Market Cap: {dashboard.havvenMarketCap}</Col>
-            <Col>Havven Price: {dashboard.havvenPrice}</Col>
-            <Col>nUSD Market Cap: {dashboard.nUsdMarketCap}</Col>
-            <Col>nUSD Price: {dashboard.nUsdPrice}</Col>
+            <Col>Havven Market Cap</Col>
+            <Col>Havven Price</Col>
+            <Col>nUSD Market Cap</Col>
+            <Col>nUSD Price</Col>
           </Row>
           <Row>
             <Col>

@@ -41,7 +41,6 @@ export default class API {
     return {
       method: method,
       headers: {
-        "Content-Type": "application/json",
         Accept: "application/json"
       }
     };

@@ -3,6 +3,7 @@ import { observer, inject } from "mobx-react";
 import { Col, Container, Row } from "react-grid-system";
 import Dashboard from "./stores/Dashboard";
 import HavvenChart from "components/HavvenChart";
+import styles from "./styles";
 
 @inject("dashboard")
 @observer
@@ -14,7 +15,7 @@ export default class App extends React.Component {
   render() {
     const dashboard: Dashboard = this.props.dashboard;
     return (
-      <div>
+      <div className={styles.root}>
         <Container>
           <Row>
             <Col>Havven Market Cap</Col>

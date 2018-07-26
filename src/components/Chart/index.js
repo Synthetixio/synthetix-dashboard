@@ -31,12 +31,63 @@ export default class HavvenChart extends React.Component {
 
   setScatterToLast = () => {};
 
+  findIndexByDate(dateArray, date) {
+    for (let i = 0; i < dateArray.length - 1; i++) {
+      if (date >= dateArray[i] && date <= dateArray[i + 1]) {
+        return i;
+      }
+    }
+  }
+
   componentDidMount() {
+
     this.parseProps(this.props);
+
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+
+    let initialData = this.props.info && !prevProps.info;
+
+    let differentChartData =
+      this.props.info &&
+      prevProps.info &&
+      (this.props.info.displayName !== prevProps.info.displayName ||
+        this.props.currencyIndex !== prevProps.currencyIndex);
+
+    if (initialData || differentChartData) {
+      this.parseProps(this.props);
+    }
+
   }
 
   parseProps = (props) => {
 
+    const {info} = props;
+    if (!info || !info.displayName) return;
+
+    let { currencyIndex = 0 } = this.props;
+    const currency = CURRENCY_MAP[currencyIndex];
+    const data = info;
+    const minValue = data && data['minValue' + currency];
+    const maxValue = data && data['maxValue' + currency];
+    const fromDate = data && new Date(data.fromDate);
+    const toDate = data && new Date(data.toDate);
+
+    const timeSeries = data && data['timeSeries' + currency].map(val => ({x: new Date(val.x), y: val.y}));
+    const timeSeriesX = data && data.timeSeriesX.map(val => new Date(val));
+    //const tickerLabelPadding = props.tickerLabelPaddings ? props.tickerLabelPaddings[currencyIndex] : tickerLabelPaddings[currencyIndex];
+
+    this.setState({
+      minValue,
+      maxValue,
+      fromDate,
+      toDate,
+      timeSeries,
+      timeSeriesX,
+      currencyIndex,
+      //tickerLabelPadding: tickerLabelPadding,
+    }, ()=>{this.setScatterToLast()});
 
   }
 
@@ -46,10 +97,6 @@ export default class HavvenChart extends React.Component {
     return (
       <div className={styles.container}>
         <h1>Havven Chart</h1>
-        <div>
-          {/*<button onClick={() => dashboard.loadData()}>Reload</button>*/}
-        </div>
-        {/*{dashboard.isLoading && <div>Loading...</div>}*/}
         <Container>
           <Row>
             <div>
@@ -83,8 +130,6 @@ export default class HavvenChart extends React.Component {
                 <VictoryLine data={timeSeries} />
 
               </VictoryChart>
-
-
 
             </div>
 

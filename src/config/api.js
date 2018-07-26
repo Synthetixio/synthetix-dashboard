@@ -2,8 +2,8 @@ export function* doFetch (path, method, reqBody, headers){
   method = method || 'GET';
   headers = headers || {
     Accept: 'application/json',
-    'Content-Type': 'application/json',
   };
+
   const res = yield fetch(path, { method, headers, body: JSON.stringify(reqBody) });
   if (res.status === 404) {
     throw({response: res, body: 'Requested api method is not found'});

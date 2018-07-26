@@ -1,14 +1,27 @@
 import React from "react";
 import { Col, Container, Row } from "react-grid-system";
-import HavvenChart from "components/HavvenChart";
+import Chart from "components/Chart";
+import { connect } from "react-redux";
+import {fetchCharts} from "./actions/charts"
+import PropTypes from "prop-types";
 
-export default class App extends React.Component {
-  // propTypes: {
-  //   dashboard: Dashboard
-  // };
+class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount(){
+    this.props.dispatch(fetchCharts());
+  }
+
+  onCursorChange = () => {
+
+  };
 
   render() {
-    //const dashboard: Dashboard = this.props.dashboard;
+    const {charts} = this.props;
+
     return (
       <div>
         <Container>
@@ -20,7 +33,18 @@ export default class App extends React.Component {
           </Row>
           <Row>
             <Col>
-             <div>Hey Jude</div>
+             <div>
+               <Chart
+                 info={charts.HavvenPrice}
+                 //info={this.state.havNomSwitchLeftActive ? charts.HavvenPrice : charts.NominPrice}
+                 //currencyIndex={this.state.currencyIndex}
+                 //height={ isX ? viewportHeight - 421 : viewportHeight-385 }
+                 //tickerLabelPaddings={activeChartConfig[activeChart].tickerLabelPaddings}
+                 //tickerFormat={activeChartConfig[activeChart].tickerFormat[currencies[this.state.currencyIndex]]}
+                 //tickCount={activeChartConfig[activeChart].tickCount[currencies[this.state.currencyIndex]]}
+                 onCursorChange={this.onCursorChange}//to set main price label to value from cursor position
+               />
+             </div>
             </Col>
           </Row>
           <Row>
@@ -39,3 +63,14 @@ export default class App extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  const { charts } = state;
+
+  return {
+    charts,
+  };
+};
+
+const ConnectedApp = connect(mapStateToProps)(App);
+export default ConnectedApp;

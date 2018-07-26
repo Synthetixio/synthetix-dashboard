@@ -5,31 +5,72 @@ import { Col, Container, Row } from "react-grid-system";
 import { VictoryChart, VictoryCursorContainer, VictoryAxis, Line, VictoryScatter, VictoryLine } from 'victory';
 import moment from 'moment';
 const CURRENCY_MAP = ['Usd', 'Btc', 'Eth'];
-
+const width = 600
 
 export default class HavvenChart extends React.Component {
 
   constructor(props){
 
     super(props);
+
+    const currencyIndex = props.currencyIndex || 0;
+
     this.state={
+      overlayWidth: 0,
+      background: "rgb(22, 29, 61)",
+      selectorX: 0,
       timeSeries: [],
       timeSeriesX: [],
       showScatter: false,
+      currencyIndex: currencyIndex,
       showChart:false,
+      tickerLabelPadding: 48,
     };
 
   }
 
-  onCursorChange = (value, props) => {}
+  onCursorChange = (value, props) => {
+    if (value) {
+      const {timeSeries, timeSeriesX} = this.state;
+      const index = this.findIndexByDate(timeSeriesX, value);
+      if (index > -1) {
+        const scatterY = timeSeries[index].y;
 
-  onTouchEnd = () => {}
+        this.setState({
+          scatterX: value,
+          scatterY,
+          overlayWidth: width / timeSeriesX.length * (index + 1)
+        });
+        this.props.onCursorChange && this.props.onCursorChange(scatterY, timeSeries[index].x);
+      }
+    }
+  };
+
+  onTouchEnd = () => {
+    this.setScatterToLast();
+  }
 
   onTouchStart= (d) => {
     this.onCursorChange(d);
   }
 
-  setScatterToLast = () => {};
+  setScatterToLast = () => {
+
+    const {timeSeriesX, timeSeries} = this.state;
+    const length = timeSeriesX.length;
+    const index = length > 0 ? length-1 : length;
+
+    if (index !== -1 && index !== undefined) {
+      this.setState({
+        scatterX: timeSeries[index].x,
+        scatterY: timeSeries[index].y,
+        overlayWidth: width / timeSeriesX.length * (index + 1),
+        showScatter: true,
+        showChart: true,
+      });
+      this.props.onCursorChange && this.props.onCursorChange(timeSeries[index].y, timeSeries[index].x);
+    }
+  };
 
   findIndexByDate(dateArray, date) {
     for (let i = 0; i < dateArray.length - 1; i++) {
@@ -128,7 +169,16 @@ export default class HavvenChart extends React.Component {
                 />
 
                 <VictoryLine data={timeSeries} />
-
+                {this.state.showScatter && <VictoryScatter
+                  data={[
+                    {
+                      x: this.state.scatterX,
+                      y: this.state.scatterY,
+                      symbol: "circle",
+                      size: 7
+                    }
+                  ]}
+                />}
               </VictoryChart>
 
             </div>

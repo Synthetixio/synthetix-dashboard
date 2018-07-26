@@ -1,18 +1,14 @@
 import React from "react";
-import { observer, inject } from "mobx-react";
 import { Col, Container, Row } from "react-grid-system";
-import Dashboard from "./stores/Dashboard";
 import HavvenChart from "components/HavvenChart";
 
-@inject("dashboard")
-@observer
 export default class App extends React.Component {
-  propTypes: {
-    dashboard: Dashboard
-  };
+  // propTypes: {
+  //   dashboard: Dashboard
+  // };
 
   render() {
-    const dashboard: Dashboard = this.props.dashboard;
+    //const dashboard: Dashboard = this.props.dashboard;
     return (
       <div>
         <Container>
@@ -24,7 +20,7 @@ export default class App extends React.Component {
           </Row>
           <Row>
             <Col>
-              <HavvenChart />
+             <div>Hey Jude</div>
             </Col>
           </Row>
           <Row>

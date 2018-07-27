@@ -17,28 +17,11 @@ class App extends React.Component {
     activeSection: "stats"
   };
 
-  visibleSections = [];
-
   componentDidMount() {
     this.props.dispatch(fetchCharts());
   }
 
   onCursorChange = () => {};
-
-  onVisibilityChange = (section, isVisible) => {
-    // console.log(section, isVisible);
-    // if (isVisible) {
-    //   this.visibleSections.push(section);
-    // } else {
-    //   if (this.visibleSections.length > 1) {
-    //     this.visibleSections = this.visibleSections.filter(
-    //       el => el !== section
-    //     );
-    //   }
-    // }
-    // this.setState({ activeSection: this.visibleSections?.[0] });
-    // console.log(this.visibleSections);
-  };
 
   render() {
     const { charts } = this.props;

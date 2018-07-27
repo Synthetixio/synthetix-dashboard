@@ -4,6 +4,7 @@ import Chart from "components/Chart";
 import { connect } from "react-redux";
 import { fetchCharts } from "./actions/charts";
 import PropTypes from "prop-types";
+import styles from "./styles";
 
 class App extends React.Component {
   constructor(props) {
@@ -20,7 +21,7 @@ class App extends React.Component {
     const { charts } = this.props;
 
     return (
-      <div>
+      <div className={styles.root}>
         <Container>
           <Row>
             <Col>Havven Market Cap</Col>

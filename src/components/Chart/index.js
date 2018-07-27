@@ -12,8 +12,10 @@ import {
   VictoryArea,
 } from "victory";
 import moment from "moment";
+import havvenTheme from "../../config/theme";
 const CURRENCY_MAP = ["Usd", "Btc", "Eth"];
 const width = 600;
+
 
 export default class HavvenChart extends React.Component {
   constructor(props) {
@@ -158,6 +160,7 @@ export default class HavvenChart extends React.Component {
                 </defs>
               </svg>
               <VictoryChart
+                theme={havvenTheme}
                 scale={{ x: "time" }}
                 containerComponent={
                   <VictoryCursorContainer
@@ -189,8 +192,14 @@ export default class HavvenChart extends React.Component {
                   style={{
                     data: {fill: "url(#linearGradient-1)"}
                   }}
-
                 />
+                <VictoryLine
+                  data={timeSeries}
+                  style={{
+                    data: { stroke: "#53B167", strokeWidth: 1 },
+                  }}
+                />
+
                 {this.state.showScatter && (
                   <VictoryScatter
                     data={[
@@ -198,7 +207,7 @@ export default class HavvenChart extends React.Component {
                         x: this.state.scatterX,
                         y: this.state.scatterY,
                         symbol: "circle",
-                        size: 7
+                        size: 4,
                       }
                     ]}
                   />

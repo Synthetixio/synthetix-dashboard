@@ -145,79 +145,79 @@ export default class HavvenChart extends React.Component {
 
     return (
       <div>
-              <svg style={{ height: 0 }}>
-                <defs>
-                  <linearGradient
-                    x1="55.1525017%"
-                    y1="-5.72462792%"
-                    x2="55.1524997%"
-                    y2="100%"
-                    id="linearGradient-1"
-                  >
-                    <stop
-                      stop-color="#53B167"
-                      stop-opacity="0.309669384"
-                      offset="0%"
-                    />
-                    <stop stop-color="#53B167" stop-opacity="0" offset="100%" />
-                  </linearGradient>
-                </defs>
-              </svg>
-              <VictoryChart
-                theme={havvenTheme}
-                scale={{ x: "time" }}
-                containerComponent={
-                  <VictoryCursorContainer
-                    cursorDimension={"x"}
-                    cursorComponent={<Line style={{ stroke: "transparent" }} />}
-                    onCursorChange={this.onCursorChange}
-                    onTouchStart={d => this.onTouchStart(d)}
-                    onTouchEnd={() => this.onTouchEnd()}
-                  />
+        <svg style={{ height: 0 }}>
+          <defs>
+            <linearGradient
+              x1="55.1525017%"
+              y1="-5.72462792%"
+              x2="55.1524997%"
+              y2="100%"
+              id="linearGradient-1"
+            >
+              <stop
+                stop-color="#53B167"
+                stop-opacity="0.309669384"
+                offset="0%"
+              />
+              <stop stop-color="#53B167" stop-opacity="0" offset="100%" />
+            </linearGradient>
+          </defs>
+        </svg>
+        <VictoryChart
+          theme={havvenTheme}
+          scale={{ x: "time" }}
+          containerComponent={
+            <VictoryCursorContainer
+              cursorDimension={"x"}
+              cursorComponent={<Line style={{ stroke: "transparent" }} />}
+              onCursorChange={this.onCursorChange}
+              onTouchStart={d => this.onTouchStart(d)}
+              onTouchEnd={() => this.onTouchEnd()}
+            />
+          }
+        >
+          <VictoryAxis
+            style={{
+              grid: { stroke: "transparent" },
+              axis: { stroke: "transparent" }
+            }}
+            tickCount={2}
+            tickFormat={t => `${moment(t).format("DD/MM")}`}
+          />
+          <VictoryAxis
+            dependentAxis
+            style={{
+              axis: { stroke: "transparent" }
+            }}
+          />
+
+          <VictoryArea
+            data={timeSeries}
+            style={{
+              data: { fill: "url(#linearGradient-1)" }
+            }}
+          />
+          <VictoryLine
+            data={timeSeries}
+            style={{
+              data: { stroke: "#53B167", strokeWidth: 1 }
+            }}
+          />
+
+          {this.state.showScatter && (
+            <VictoryScatter
+              data={[
+                {
+                  x: this.state.scatterX,
+                  y: this.state.scatterY,
+                  symbol: "circle",
+                  size: 3
                 }
-              >
-                <VictoryAxis
-                  style={{
-                    grid: { stroke: "transparent" },
-                    axis: { stroke: "transparent" }
-                  }}
-                  tickCount={2}
-                  tickFormat={t => `${moment(t).format("DD/MM")}`}
-                />
-                <VictoryAxis
-                  dependentAxis
-                  style={{
-                    axis: { stroke: "transparent" }
-                  }}
-                />
-
-                <VictoryArea
-                  data={timeSeries}
-                  style={{
-                    data: { fill: "url(#linearGradient-1)" }
-                  }}
-                />
-                <VictoryLine
-                  data={timeSeries}
-                  style={{
-                    data: { stroke: "#53B167", strokeWidth: 1 }
-                  }}
-                />
-
-                {this.state.showScatter && (
-                  <VictoryScatter
-                    data={[
-                      {
-                        x: this.state.scatterX,
-                        y: this.state.scatterY,
-                        symbol: "circle",
-                        size: 3
-                      }
-                    ]}
-                  />
-                )}
-              </VictoryChart>
-            </div>
+              ]}
+            />
+          )}
+        </VictoryChart>
+      </div>
     );
   }
 }

@@ -106,7 +106,7 @@ export default {
         },
         tickLabels: _assign({}, baseLabelStyles, {
           fill: "#808080",
-          fontSize: '7px',
+          fontSize: "7px"
         })
       }
     },

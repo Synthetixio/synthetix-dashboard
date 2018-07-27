@@ -5,6 +5,8 @@ import { AppContainer } from "react-hot-loader";
 import App from "./App";
 import { Provider } from "react-redux";
 import { store } from "./config/store";
+import "styling/bulma/bulma.sass";
+import "styling/global";
 
 const render = Component => {
   ReactDOM.render(

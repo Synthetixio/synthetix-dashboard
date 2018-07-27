@@ -2,7 +2,6 @@ import { css } from "emotion";
 
 export default {
   container: css`
-    
     color: #fff;
     font-size: 30px;
     text-align: center;

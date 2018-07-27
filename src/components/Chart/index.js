@@ -9,13 +9,12 @@ import {
   Line,
   VictoryScatter,
   VictoryLine,
-  VictoryArea,
+  VictoryArea
 } from "victory";
 import moment from "moment";
 import havvenTheme from "../../config/theme";
 const CURRENCY_MAP = ["Usd", "Btc", "Eth"];
 const width = 600;
-
 
 export default class HavvenChart extends React.Component {
   constructor(props) {
@@ -153,9 +152,19 @@ export default class HavvenChart extends React.Component {
             <div>
               <svg style={{ height: 0 }}>
                 <defs>
-                  <linearGradient x1="55.1525017%" y1="-5.72462792%" x2="55.1524997%" y2="100%" id="linearGradient-1">
-                    <stop stop-color="#53B167" stop-opacity="0.309669384" offset="0%"></stop>
-                    <stop stop-color="#53B167" stop-opacity="0" offset="100%"></stop>
+                  <linearGradient
+                    x1="55.1525017%"
+                    y1="-5.72462792%"
+                    x2="55.1524997%"
+                    y2="100%"
+                    id="linearGradient-1"
+                  >
+                    <stop
+                      stop-color="#53B167"
+                      stop-opacity="0.309669384"
+                      offset="0%"
+                    />
+                    <stop stop-color="#53B167" stop-opacity="0" offset="100%" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -190,13 +199,13 @@ export default class HavvenChart extends React.Component {
                 <VictoryArea
                   data={timeSeries}
                   style={{
-                    data: {fill: "url(#linearGradient-1)"}
+                    data: { fill: "url(#linearGradient-1)" }
                   }}
                 />
                 <VictoryLine
                   data={timeSeries}
                   style={{
-                    data: { stroke: "#53B167", strokeWidth: 1 },
+                    data: { stroke: "#53B167", strokeWidth: 1 }
                   }}
                 />
 
@@ -207,7 +216,7 @@ export default class HavvenChart extends React.Component {
                         x: this.state.scatterX,
                         y: this.state.scatterY,
                         symbol: "circle",
-                        size: 4,
+                        size: 4
                       }
                     ]}
                   />

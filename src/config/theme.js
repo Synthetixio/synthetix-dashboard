@@ -106,7 +106,7 @@ export default {
         },
         tickLabels: _assign({}, baseLabelStyles, {
           fill: "#808080",
-          fontSize: "7px"
+          //fontSize: "7px"
         })
       }
     },
@@ -228,7 +228,7 @@ export default {
           fill: white,
           opacity: 1,
           stroke: "rgba(255,255,255,0.40)", //"rgba(48,161,214,0.40)",
-          strokeWidth: 4
+          strokeWidth: 11
         },
         labels: centeredLabelStyles
       }

@@ -71,12 +71,27 @@ class App extends React.Component {
               <Chart
                 info={charts.HavvenPrice}
                 onCursorChange={this.onCursorChange}
+                fullSize={true}
               />
             </div>
           </div>
           <div className="columns">
-            <div className="column">Locked Havven Value</div>
-            <div className="column">Locked Havven Ratio</div>
+            {/*<div className="column">Locked Havven Value</div> */}
+            <div className="column">
+              <Chart
+                info={charts.LockedUpHavven}
+                onCursorChange={this.onCursorChange}
+                colorGradient="yellow"
+              />
+            </div>
+            {/*<div className="column">Locked Havven Ratio</div>*/}
+            <div className="column">
+              <Chart
+                info={charts.HavvenPrice}
+                onCursorChange={this.onCursorChange}
+                colorGradient="red"
+              />
+            </div>
           </div>
           <div className="columns">
             <div className="column">nUSD Chart</div>

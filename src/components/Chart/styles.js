@@ -2,14 +2,9 @@ import { css } from "emotion";
 
 export default {
   container: css`
-    color: #fff;
-    font-size: 30px;
-    text-align: center;
+    padding-top: 20px;
+    border: 1px solid #25244b;
+    border-radius: 4px;
+    background-color: #100C28;
   `,
-  box: css`
-    border: 1px solid #eee;
-    margin: 5px;
-    border: 5px;
-    font-size: 14px;
-  `
 };

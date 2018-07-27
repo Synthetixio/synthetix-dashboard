@@ -8,7 +8,8 @@ import {
   Line,
   VictoryScatter,
   VictoryLine,
-  VictoryArea
+  VictoryArea,
+  VictoryLabel
 } from "victory";
 import moment from "moment";
 import havvenTheme from "../../config/theme";
@@ -20,6 +21,7 @@ export default class HavvenChart extends React.Component {
     super(props);
 
     const currencyIndex = props.currencyIndex || 0;
+    const colorGradient = props.colorGradient || "green";
 
     this.state = {
       overlayWidth: 0,
@@ -28,7 +30,9 @@ export default class HavvenChart extends React.Component {
       showScatter: false,
       currencyIndex: currencyIndex,
       showChart: false,
-      tickerLabelPadding: 48
+      tickerLabelPadding: 48,
+      windowWidth: window.innerWidth || 800,
+      gradientUrl: `url(#gradient-${colorGradient})`
     };
   }
 
@@ -84,8 +88,26 @@ export default class HavvenChart extends React.Component {
     }
   }
 
+  updateDimensions = () => {
+    const n = this.props.fullSize ? 1 : 0.5;
+    let chartWidth;
+    if (window.innerWidth > 1468) {
+      chartWidth = 1368 * n;
+    }else if(window.innerWidth > 1000){
+      chartWidth = 1200 * n;
+    }else{
+      chartWidth = 1000 * n;
+    }
+    console.log("updating dimensions innerWidth", window.innerWidth);
+    console.log("setting dimensions ", chartWidth);
+
+    this.setState({ windowWidth: chartWidth });
+  };
+
   componentDidMount() {
     this.parseProps(this.props);
+    this.updateDimensions();
+    window.addEventListener("resize", this.updateDimensions);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -144,7 +166,7 @@ export default class HavvenChart extends React.Component {
     const { timeSeries } = this.state;
 
     return (
-      <div>
+      <div className={styles.container}>
         <svg style={{ height: 0 }}>
           <defs>
             <linearGradient
@@ -152,7 +174,7 @@ export default class HavvenChart extends React.Component {
               y1="-5.72462792%"
               x2="55.1524997%"
               y2="100%"
-              id="linearGradient-1"
+              id="gradient-green"
             >
               <stop
                 stop-color="#53B167"
@@ -161,11 +183,42 @@ export default class HavvenChart extends React.Component {
               />
               <stop stop-color="#53B167" stop-opacity="0" offset="100%" />
             </linearGradient>
+            <linearGradient
+              x1="55.1525017%"
+              y1="-5.72462792%"
+              x2="55.1524997%"
+              y2="100%"
+              id="gradient-yellow"
+            >
+              <stop
+                stop-color="#D9AB44"
+                stop-opacity="0.499971694"
+                offset="0%"
+              />
+              <stop stop-color="#D9AB44" stop-opacity="0" offset="100%" />
+            </linearGradient>
+            <linearGradient
+              x1="50%"
+              y1="0.952854046%"
+              x2="50%"
+              y2="97.9791366%"
+              id="gradient-red"
+            >
+              <stop
+                stop-color="#E02254"
+                stop-opacity="0.601364357"
+                offset="0%"
+              />
+              <stop stop-color="#E5255D" stop-opacity="0" offset="100%" />
+            </linearGradient>
           </defs>
         </svg>
         <VictoryChart
-          theme={havvenTheme}
           scale={{ x: "time" }}
+          padding={{ bottom: 40 }}
+          theme={havvenTheme}
+          domainPadding={{ y: [0, 40] }}
+          width={this.state.windowWidth}
           containerComponent={
             <VictoryCursorContainer
               cursorDimension={"x"}
@@ -181,26 +234,20 @@ export default class HavvenChart extends React.Component {
               grid: { stroke: "transparent" },
               axis: { stroke: "transparent" }
             }}
-            tickCount={2}
+            tickCount={5}
             tickFormat={t => `${moment(t).format("DD/MM")}`}
-          />
-          <VictoryAxis
-            dependentAxis
-            style={{
-              axis: { stroke: "transparent" }
-            }}
           />
 
           <VictoryArea
             data={timeSeries}
             style={{
-              data: { fill: "url(#linearGradient-1)" }
+              data: { fill: this.state.gradientUrl }
             }}
           />
           <VictoryLine
             data={timeSeries}
             style={{
-              data: { stroke: "#53B167", strokeWidth: 1 }
+              data: { stroke: "#53B167", strokeWidth: 2 }
             }}
           />
 
@@ -211,7 +258,7 @@ export default class HavvenChart extends React.Component {
                   x: this.state.scatterX,
                   y: this.state.scatterY,
                   symbol: "circle",
-                  size: 3
+                  size: 5
                 }
               ]}
             />

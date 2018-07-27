@@ -8,7 +8,8 @@ import {
   VictoryAxis,
   Line,
   VictoryScatter,
-  VictoryLine
+  VictoryLine,
+  VictoryArea,
 } from "victory";
 import moment from "moment";
 const CURRENCY_MAP = ["Usd", "Btc", "Eth"];
@@ -148,6 +149,14 @@ export default class HavvenChart extends React.Component {
         <Container>
           <Row>
             <div>
+              <svg style={{ height: 0 }}>
+                <defs>
+                  <linearGradient x1="55.1525017%" y1="-5.72462792%" x2="55.1524997%" y2="100%" id="linearGradient-1">
+                    <stop stop-color="#53B167" stop-opacity="0.309669384" offset="0%"></stop>
+                    <stop stop-color="#53B167" stop-opacity="0" offset="100%"></stop>
+                  </linearGradient>
+                </defs>
+              </svg>
               <VictoryChart
                 scale={{ x: "time" }}
                 containerComponent={
@@ -175,7 +184,13 @@ export default class HavvenChart extends React.Component {
                   }}
                 />
 
-                <VictoryLine data={timeSeries} />
+                <VictoryArea
+                  data={timeSeries}
+                  style={{
+                    data: {fill: "url(#linearGradient-1)"}
+                  }}
+
+                />
                 {this.state.showScatter && (
                   <VictoryScatter
                     data={[

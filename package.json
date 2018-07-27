@@ -15,9 +15,9 @@
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-grid-system": "^4.1.4",
     "react-hot-loader": "^4.3.3",
     "react-redux": "^5.0.7",
+    "react-visibility-sensor": "^3.11.1",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
@@ -64,5 +64,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "build:analyze": "cross-env ANALYZE=true node scripts/build.js"
+  },
+  "engines": {
+    "yarn": "^1.5.0"
   }
 }

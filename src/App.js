@@ -1,18 +1,21 @@
-import React from "react";
-import { Col, Container, Row } from "react-grid-system";
+import React, { Fragment } from "react";
 import Chart from "components/Chart";
 import { connect } from "react-redux";
 import { fetchCharts } from "./actions/charts";
-import PropTypes from "prop-types";
 import styles from "./styles";
 import SingleStat from "components/SingleStat";
 import TopNavBar from "components/TopNavBar";
 import { cx } from "emotion";
+import VisibilitySensor from "react-visibility-sensor";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
   }
+
+  state = {
+    activeSection: "stats"
+  };
 
   componentDidMount() {
     this.props.dispatch(fetchCharts());
@@ -20,13 +23,20 @@ class App extends React.Component {
 
   onCursorChange = () => {};
 
+  onVisibilityChange = (section, isVisible) => {
+    if (isVisible) {
+      this.setState({ activeSection: section });
+      console.log(section);
+    }
+  };
+
   render() {
     const { charts } = this.props;
 
     return (
       <div className={styles.root}>
-        <div className="container is-fluid">
-          <div className={cx("is-hidden-mobile", styles.lastUpdatedBox)}>
+        <div className="container">
+          <div className={cx("is-hidden-touch", styles.lastUpdatedBox)}>
             <label>LAST UPDATED</label> <span>52 MINS AGO</span>{" "}
           </div>
           <TopNavBar />
@@ -35,24 +45,24 @@ class App extends React.Component {
             <SingleStat
               value={13549045}
               trend={2.4}
-              label="Havven Market Cap"
+              label="HAVVEN MARKET CAP"
               desc="Price of Havven multipled by it’s curiculating supply."
             />
             <SingleStat
               value={0.262}
               trend={2.8}
-              label="Havven Price"
+              label="HAVVEN PRICE"
               desc="Price of Havven multipled by it’s curiculating supply."
             />
             <SingleStat
               value={12026089}
               trend={-6.4}
-              label="nUSD Market Cap"
+              label="nUSD MARKET CAP"
               desc="Price of Havven multipled by it’s curiculating supply."
             />
             <SingleStat
               value={1}
-              label="nUSD Price"
+              label="nUSD PRICE"
               desc="Price of Havven multipled by it’s curiculating supply."
             />
           </div>
@@ -60,7 +70,7 @@ class App extends React.Component {
             <div className="column">
               <Chart
                 info={charts.HavvenPrice}
-                onCursorChange={this.onCursorChange} //to set main price label to value from cursor position
+                onCursorChange={this.onCursorChange}
               />
             </div>
           </div>

@@ -7,5 +7,10 @@ export default {
   `,
   navBarMenu: css`
     background-color: transparent !important;
+  `,
+  mobileNavSections: css`
+    a.is-active {
+      color: #fff;
+    }
   `
 };

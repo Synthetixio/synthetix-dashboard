@@ -38,7 +38,6 @@ export default {
   statBottom: css`
     h3 {
       font-size: 14px;
-      text-transform: uppercase;
       color: #ffffff;
       padding-bottom: 0.5em;
     }

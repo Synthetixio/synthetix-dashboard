@@ -17,7 +17,7 @@ export default class TopNavBar extends React.Component {
         aria-label="main navigation"
       >
         <div className="navbar-brand">
-          <a className="navbar-item" href="https://bulma.io">
+          <a className="navbar-item" href="https://havven.io">
             <img src={logo} alt="Havven" width="73" height="29" />
           </a>
 
@@ -32,6 +32,15 @@ export default class TopNavBar extends React.Component {
             <span aria-hidden="true" />
             <span aria-hidden="true" />
           </a>
+        </div>
+        <div className={cx("level is-mobile", styles.mobileNavSections)}>
+          <div className="level-left">
+            <a href="#stats">STATS</a>
+          </div>
+          <a href="#hav">HAV</a>
+          <div className="level-left">
+            <a href="#nusd">nUSD</a>
+          </div>
         </div>
         <div
           className={cx("navbar-menu", styles.navBarMenu, {

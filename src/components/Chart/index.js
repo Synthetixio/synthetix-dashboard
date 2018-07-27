@@ -1,7 +1,6 @@
 import React, { View, Text } from "react";
 import PropTypes from "prop-types";
 import styles from "./styles";
-import { Col, Container, Row } from "react-grid-system";
 import {
   VictoryChart,
   VictoryCursorContainer,
@@ -147,8 +146,8 @@ export default class HavvenChart extends React.Component {
     return (
       <div className={styles.container}>
         <h1>Havven Chart</h1>
-        <Container>
-          <Row>
+        <div className="columns">
+          <div className="column">
             <div>
               <svg style={{ height: 0 }}>
                 <defs>
@@ -232,8 +231,8 @@ export default class HavvenChart extends React.Component {
             {/*<div>Date: {el.created}</div>*/}
             {/*</Col>*/}
             {/*))}*/}
-          </Row>
-        </Container>
+          </div>
+        </div>
       </div>
     );
   }

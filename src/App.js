@@ -5,6 +5,9 @@ import { connect } from "react-redux";
 import { fetchCharts } from "./actions/charts";
 import PropTypes from "prop-types";
 import styles from "./styles";
+import SingleStat from "components/SingleStat";
+import TopNavBar from "components/TopNavBar";
+import { cx } from "emotion";
 
 class App extends React.Component {
   constructor(props) {

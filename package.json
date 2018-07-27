@@ -4,11 +4,14 @@
   "description": "Havven Dashboard",
   "license": "MIT",
   "dependencies": {
+    "bulma": "^0.7.1",
     "emotion": "^9.2.6",
     "lodash": "^4.17.10",
     "mobx": "^5.0.3",
     "mobx-react": "^5.2.3",
     "moment": "^2.22.2",
+    "node-sass": "^4.9.2",
+    "numeral": "^2.0.6",
     "prop-types": "^15.6.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
@@ -20,6 +23,8 @@
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
+    "resolve-url-loader": "^2.3.0",
+    "sass-loader": "^7.0.3",
     "victory": "^30.0.0"
   },
   "devDependencies": {

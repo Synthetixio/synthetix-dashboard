@@ -5,6 +5,8 @@ import { AppContainer } from "react-hot-loader";
 import App from "./App";
 import { Provider } from "mobx-react";
 import RootStore from "./stores/RootStore";
+import "styling/bulma/bulma.sass";
+import "styling/global";
 
 let rootStore = new RootStore();
 rootStore.dashboard.loadData();

@@ -21,18 +21,17 @@ export default class HavvenChart extends React.Component {
           <button onClick={() => dashboard.loadData()}>Reload</button>
         </div>
         {dashboard.isLoading && <div>Loading...</div>}
-        <Container>
-          <Row>
-            {dashboard.havvenPrice.map((el: DataItem, idx) => (
-              <Col sm={2} key={idx} className={styles.box}>
-                <div>USD Value: {el.usdValue}</div>
-                <div>ETH Value: {el.ethValue}</div>
-                <div>BTC Value: {el.btcValue}</div>
-                <div>Date: {el.created}</div>
-              </Col>
-            ))}
-          </Row>
-        </Container>
+        <div className="columns is-multiline">
+          <div className="column">Test</div>
+          {/*{dashboard.havvenPrice.map((el: DataItem, idx) => (*/}
+          {/*<div key={idx} className="column">*/}
+          {/*<div>USD Value: {el.usdValue}</div>*/}
+          {/*<div>ETH Value: {el.ethValue}</div>*/}
+          {/*<div>BTC Value: {el.btcValue}</div>*/}
+          {/*<div>Date: {el.created}</div>*/}
+          {/*</div>*/}
+          {/*))}*/}
+        </div>
       </div>
     );
   }

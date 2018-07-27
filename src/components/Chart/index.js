@@ -144,11 +144,7 @@ export default class HavvenChart extends React.Component {
     const { timeSeries } = this.state;
 
     return (
-      <div className={styles.container}>
-        <h1>Havven Chart</h1>
-        <div className="columns">
-          <div className="column">
-            <div>
+      <div>
               <svg style={{ height: 0 }}>
                 <defs>
                   <linearGradient
@@ -185,7 +181,7 @@ export default class HavvenChart extends React.Component {
                     grid: { stroke: "transparent" },
                     axis: { stroke: "transparent" }
                   }}
-                  tickCount={3}
+                  tickCount={2}
                   tickFormat={t => `${moment(t).format("DD/MM")}`}
                 />
                 <VictoryAxis
@@ -215,25 +211,13 @@ export default class HavvenChart extends React.Component {
                         x: this.state.scatterX,
                         y: this.state.scatterY,
                         symbol: "circle",
-                        size: 4
+                        size: 3
                       }
                     ]}
                   />
                 )}
               </VictoryChart>
             </div>
-
-            {/*{dashboard.havvenPrice.map((el: DataItem, idx) => (*/}
-            {/*<Col sm={2} key={idx} className={styles.box}>*/}
-            {/*<div>USD Value: {el.usdValue}</div>*/}
-            {/*<div>ETH Value: {el.ethValue}</div>*/}
-            {/*<div>BTC Value: {el.btcValue}</div>*/}
-            {/*<div>Date: {el.created}</div>*/}
-            {/*</Col>*/}
-            {/*))}*/}
-          </div>
-        </div>
-      </div>
     );
   }
 }

@@ -75,21 +75,19 @@ class App extends React.Component {
                 </div>
               </div>
               <div className="columns">
-                <div className="column">Locked Havven Value</div>
                 <div className="column">
-                  Locked Havven Ratio Locked Havven Ratio Locked Havven Ratio
-                  Locked Havven Ratio Locked Havven Ratio Locked Havven Ratio
-                  Locked Havven Ratio Locked Havven Ratio Locked Havven Ratio
-                  Locked Havven Ratio Locked Havven Ratio Locked Havven Ratio
-                  Locked Havven Ratio Locked Havven Ratio Locked Havven Ratio
-                  Locked Havven Ratio Locked Havven Ratio Locked Havven Ratio
-                  Locked Havven Ratio Locked Havven Ratio Locked Havven Ratio
-                  Locked Havven Ratio Locked Havven Ratio Locked Havven Ratio
-                  Locked Havven Ratio Locked Havven Ratio Locked Havven Ratio
-                  Locked Havven Ratio Locked Havven Ratio Locked Havven Ratio
-                  Locked Havven Ratio Locked Havven Ratio Locked Havven Ratio
-                  Locked Havven Ratio Locked Havven Ratio Locked Havven Ratio
-                  Locked Havven Ratio Locked Havven Ratio{" "}
+                  <Chart
+                    info={charts.LockedUpHavven}
+                    onCursorChange={this.onCursorChange}
+                    colorGradient="yellow"
+                  />
+                </div>
+                <div className="column">
+                  <Chart
+                    info={charts.HavvenPrice}
+                    onCursorChange={this.onCursorChange}
+                    colorGradient="red"
+                  />
                 </div>
               </div>
             </Fragment>
@@ -97,59 +95,26 @@ class App extends React.Component {
           <Element name="nusd">
             <Fragment>
               <div className="columns">
-                <div className="column">nUSD Chart</div>
+                <div className="column">
+                  <Chart
+                  info={charts.NominPrice}
+                  onCursorChange={this.onCursorChange}
+                  fullSize={true}
+                /></div>
               </div>
               <div className="columns">
-                <div className="column">Total Fees</div>
                 <div className="column">
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization Ratio
-                  Collateralization Ratio Collateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization
-                  RatioCollateralization RatioCollateralization Ratio
+                  <Chart
+                  info={charts.NominFeesCollected}
+                  onCursorChange={this.onCursorChange}
+                  colorGradient="green"
+                /></div>
+                <div className="column">
+                  <Chart
+                    info={charts.CollateralizationRatio}
+                    onCursorChange={this.onCursorChange}
+                    colorGradient="red"
+                  />
                 </div>
               </div>
             </Fragment>

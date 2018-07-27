@@ -105,7 +105,8 @@ export default {
           strokeLinejoin: strokeLinejoin
         },
         tickLabels: _assign({}, baseLabelStyles, {
-          fill: "#808080"
+          fill: "#808080",
+          fontSize: '7px',
         })
       }
     },
@@ -199,7 +200,7 @@ export default {
           fill: "transparent",
           opacity: 1,
           stroke: lightBlue,
-          strokeWidth: 2
+          strokeWidth: 1
         },
         labels: centeredLabelStyles
       }
@@ -227,7 +228,7 @@ export default {
           fill: white,
           opacity: 1,
           stroke: "rgba(255,255,255,0.40)", //"rgba(48,161,214,0.40)",
-          strokeWidth: 9
+          strokeWidth: 4
         },
         labels: centeredLabelStyles
       }

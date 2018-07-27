@@ -3,10 +3,8 @@ import ReactDOM from "react-dom";
 import "@babel/polyfill";
 import { AppContainer } from "react-hot-loader";
 import App from "./App";
-import { Provider } from 'react-redux'
+import { Provider } from "react-redux";
 import { store } from "./config/store";
-
-
 
 const render = Component => {
   ReactDOM.render(

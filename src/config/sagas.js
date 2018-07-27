@@ -1,42 +1,36 @@
 import { takeEvery, call, put, all } from "redux-saga/effects";
 
-import {
-  FETCH_CHARTS, FETCH_CHARTS_SUCCESS,
-} from "../actions/charts"
+import { FETCH_CHARTS, FETCH_CHARTS_SUCCESS } from "../actions/charts";
 
-import {doFetch} from "./api";
+import { doFetch } from "./api";
 
 const API_URI = "https://api.havven.io/api/";
 const STAGING_API_URI = "https://staging-api.havven.io/api/";
 
-let useStagingApi = true;//false;
-let apiUri = (useStagingApi) ? STAGING_API_URI : API_URI;
-
+let useStagingApi = true; //false;
+let apiUri = useStagingApi ? STAGING_API_URI : API_URI;
 
 let headers = new Headers();
 headers.append("Accept", "application/json");
 let init = {
-  method: 'GET',
+  method: "GET",
   headers
 };
 
-function* fetchCharts(){
-  const fetchUri = apiUri + 'dataPoint/chartData';
+function* fetchCharts() {
+  const fetchUri = apiUri + "dataPoint/chartData";
   const data = yield call(doFetch, fetchUri);
-  console.log('fetched');
-  console.log('payload data: ', data);
+  console.log("fetched");
+  console.log("payload data: ", data);
   yield put({ type: FETCH_CHARTS_SUCCESS, payload: { data } });
 }
 
-function* fetchChartsCall(){
+function* fetchChartsCall() {
   yield takeEvery(FETCH_CHARTS, fetchCharts);
 }
 
 const rootSaga = function*() {
-  yield all([
-    fetchChartsCall(),
-  ])
+  yield all([fetchChartsCall()]);
 };
-
 
 export default rootSaga;

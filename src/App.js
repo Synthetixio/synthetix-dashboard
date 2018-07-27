@@ -2,25 +2,22 @@ import React from "react";
 import { Col, Container, Row } from "react-grid-system";
 import Chart from "components/Chart";
 import { connect } from "react-redux";
-import {fetchCharts} from "./actions/charts"
+import { fetchCharts } from "./actions/charts";
 import PropTypes from "prop-types";
 
 class App extends React.Component {
-
   constructor(props) {
     super(props);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     this.props.dispatch(fetchCharts());
   }
 
-  onCursorChange = () => {
-
-  };
+  onCursorChange = () => {};
 
   render() {
-    const {charts} = this.props;
+    const { charts } = this.props;
 
     return (
       <div>
@@ -33,18 +30,12 @@ class App extends React.Component {
           </Row>
           <Row>
             <Col>
-             <div>
-               <Chart
-                 info={charts.HavvenPrice}
-                 //info={this.state.havNomSwitchLeftActive ? charts.HavvenPrice : charts.NominPrice}
-                 //currencyIndex={this.state.currencyIndex}
-                 //height={ isX ? viewportHeight - 421 : viewportHeight-385 }
-                 //tickerLabelPaddings={activeChartConfig[activeChart].tickerLabelPaddings}
-                 //tickerFormat={activeChartConfig[activeChart].tickerFormat[currencies[this.state.currencyIndex]]}
-                 //tickCount={activeChartConfig[activeChart].tickCount[currencies[this.state.currencyIndex]]}
-                 onCursorChange={this.onCursorChange}//to set main price label to value from cursor position
-               />
-             </div>
+              <div>
+                <Chart
+                  info={charts.HavvenPrice}
+                  onCursorChange={this.onCursorChange} //to set main price label to value from cursor position
+                />
+              </div>
             </Col>
           </Row>
           <Row>
@@ -68,7 +59,7 @@ const mapStateToProps = state => {
   const { charts } = state;
 
   return {
-    charts,
+    charts
   };
 };
 

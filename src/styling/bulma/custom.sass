@@ -1,5 +1,5 @@
 .single-stat-box
-  min-height: 330px
+  min-height: 300px
 
 +mobile
   .navbar
@@ -9,7 +9,7 @@
     background-color: rgba(14, 11, 35, .9) !important
 
   body
-    padding-top: 125px
+    padding-top: 127px
 
   .single-stat-box
     min-height: auto
@@ -22,3 +22,59 @@
 +touch
   .main-content
     padding: 0 1.8rem
+
+
+.navbar
+  padding-top: 0.75rem
+
+
+.rounded-box
+  font-size: 12px
+  position: absolute
+  left: 12px
+  top: 45%
+  transform: translateY(-50%)
+  padding: 5px 15px
+  border: 1px solid #25244b
+  border-radius: 100px
+  label
+    color: #6f6e98
+  span
+    color: #fff
+
+.footer-info
+  & > .column
+    position: relative
+    height: 60px
+
+.theme-switcher
+  @extend .rounded-box
+  cursor: pointer
+  right: 12px
+  left: unset !important
+  padding-right: 30px
+  & > *
+    cursor: pointer
+  &:after
+    content: " "
+    display: block
+    position: absolute
+    width: 16px
+    height: 16px
+    background-color: #6F6E98
+    border-radius: 100%
+    right: 7px
+    top: 50%
+    transform: translateY(-50%)
+
+.last-updated
+  @extend .rounded-box
+
++tablet
+  .footer-info .last-updated
+    left: 50%
+    transform: translateX(-50%) translateY(-50%)
+
+  .navbar
+    padding-left: 2.1rem
+    padding-right: 2.1rem

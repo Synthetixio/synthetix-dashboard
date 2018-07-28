@@ -3,7 +3,7 @@ import { css } from "emotion";
 export default {
   navBar: css`
     background-color: transparent !important;
-    padding: 0.5em 1em;
+    padding: 0.5rem 1rem 1rem 1rem;
   `,
   navBarMenu: css`
     background-color: transparent !important;
@@ -14,7 +14,7 @@ export default {
 
     a {
       padding-bottom: 0.6rem;
-      &.active {
+      &.is-active {
         color: #fff;
 
         border-bottom: 2px solid #fff;

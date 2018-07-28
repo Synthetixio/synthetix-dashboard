@@ -9,7 +9,7 @@ export default {
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: 20px;
+    top: 25px;
     padding: 5px 15px;
     border: 1px solid #25244b;
     border-radius: 100px;

@@ -93,9 +93,9 @@ export default class HavvenChart extends React.Component {
     let chartWidth;
     if (window.innerWidth > 1468) {
       chartWidth = 1368 * n;
-    }else if(window.innerWidth > 1000){
+    } else if (window.innerWidth > 1000) {
       chartWidth = 1200 * n;
-    }else{
+    } else {
       chartWidth = 1000 * n;
     }
     console.log("updating dimensions innerWidth", window.innerWidth);

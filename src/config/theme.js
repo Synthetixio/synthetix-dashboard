@@ -105,7 +105,7 @@ export default {
           strokeLinejoin: strokeLinejoin
         },
         tickLabels: _assign({}, baseLabelStyles, {
-          fill: "#808080",
+          fill: "#808080"
           //fontSize: "7px"
         })
       }

@@ -49,7 +49,7 @@ $navbar-bottom-box-shadow-size: 0 -2px 0 0 !default
   z-index: $navbar-fixed-z
 
 .navbar
-  background-color: $navbar-background-color
+  //background-color: $navbar-background-color
   min-height: $navbar-height
   position: relative
   z-index: $navbar-z
@@ -72,7 +72,7 @@ $navbar-bottom-box-shadow-size: 0 -2px 0 0 !default
         .navbar-link
           &::after
             border-color: $color-invert
-      +desktop
+      +tablet
         .navbar-start,
         .navbar-end
           & > .navbar-item,
@@ -217,7 +217,7 @@ a.navbar-item,
   height: $navbar-divider-height
   margin: 0.5rem 0
 
-+touch
++mobile
   .navbar > .container
     display: block
   .navbar-brand,
@@ -258,7 +258,7 @@ a.navbar-item,
     &.has-navbar-fixed-bottom-touch
       padding-bottom: $navbar-height
 
-+desktop
++tablet
   .navbar,
   .navbar-menu,
   .navbar-start,

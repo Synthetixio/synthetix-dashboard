@@ -5,7 +5,6 @@ export default {
   box: css`
     border: 1px solid #25244b;
     border-radius: 4px;
-    min-height: 340px;
     padding: 2em;
     display: flex;
     flex-direction: column;

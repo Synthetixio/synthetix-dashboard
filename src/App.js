@@ -29,42 +29,38 @@ class App extends React.Component {
 
     return (
       <div className={styles.root}>
-        <div className="container">
-          <div className={cx("is-hidden-touch", styles.lastUpdatedBox)}>
-            <label>LAST UPDATED</label> <span>52 MINS AGO</span>{" "}
-          </div>
-          <TopNavBar selectedSection={activeSection} />
+        <div className={cx("is-hidden-mobile", styles.lastUpdatedBox)}>
+          <label>LAST UPDATED</label> <span>52 MINS AGO</span>{" "}
         </div>
+        <TopNavBar selectedSection={activeSection} />
         <div className="container main-content">
-          <Element name="stats">
-            <div className="columns is-multiline">
-              <SingleStat
-                value={13549045}
-                trend={2.4}
-                label="HAVVEN MARKET CAP"
-                desc="Price of Havven multipled by it’s curiculating supply."
-              />
-              <SingleStat
-                value={0.262}
-                trend={2.8}
-                label="HAVVEN PRICE"
-                desc="Price of Havven multipled by it’s curiculating supply."
-              />
-              <SingleStat
-                value={12026089}
-                trend={-6.4}
-                label="nUSD MARKET CAP"
-                desc="Price of Havven multipled by it’s curiculating supply."
-              />
-              <SingleStat
-                value={1}
-                label="nUSD PRICE"
-                desc="Price of Havven multipled by it’s curiculating supply."
-              />
-            </div>
-          </Element>
-          <Element name="hav">
-            <Fragment>
+          <div className="columns is-multiline" id="stats">
+            <SingleStat
+              value={13549045}
+              trend={2.4}
+              label="HAVVEN MARKET CAP"
+              desc="Price of Havven multipled by it’s curiculating supply."
+            />
+            <SingleStat
+              value={0.262}
+              trend={2.8}
+              label="HAVVEN PRICE"
+              desc="Price of Havven multipled by it’s curiculating supply."
+            />
+            <SingleStat
+              value={12026089}
+              trend={-6.4}
+              label="nUSD MARKET CAP"
+              desc="Price of Havven multipled by it’s curiculating supply."
+            />
+            <SingleStat
+              value={1}
+              label="nUSD PRICE"
+              desc="Price of Havven multipled by it’s curiculating supply."
+            />
+          </div>
+          <div className="columns" id="hav">
+            <div className="column">
               <div className="columns">
                 <div className="column">
                   <Chart
@@ -90,25 +86,27 @@ class App extends React.Component {
                   />
                 </div>
               </div>
-            </Fragment>
-          </Element>
-          <Element name="nusd">
-            <Fragment>
+            </div>
+          </div>
+          <div className="columns" id="nusd">
+            <div className="column">
               <div className="columns">
                 <div className="column">
                   <Chart
-                  info={charts.NominPrice}
-                  onCursorChange={this.onCursorChange}
-                  fullSize={true}
-                /></div>
+                    info={charts.NominPrice}
+                    onCursorChange={this.onCursorChange}
+                    fullSize={true}
+                  />
+                </div>
               </div>
               <div className="columns">
                 <div className="column">
                   <Chart
-                  info={charts.NominFeesCollected}
-                  onCursorChange={this.onCursorChange}
-                  colorGradient="green"
-                /></div>
+                    info={charts.NominFeesCollected}
+                    onCursorChange={this.onCursorChange}
+                    colorGradient="green"
+                  />
+                </div>
                 <div className="column">
                   <Chart
                     info={charts.CollateralizationRatio}
@@ -117,8 +115,18 @@ class App extends React.Component {
                   />
                 </div>
               </div>
-            </Fragment>
-          </Element>
+              <div className="columns footer-info">
+                <div className="column">
+                  <div className="last-updated">
+                    <label>LAST UPDATED</label> <span>52 MINS AGO</span>
+                  </div>
+                  <div className="theme-switcher">
+                    <label>Dark</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

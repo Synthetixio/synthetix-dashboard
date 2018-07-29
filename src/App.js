@@ -1,12 +1,11 @@
-import React, { Fragment } from "react";
+import React from "react";
 import Chart from "components/Chart";
 import { connect } from "react-redux";
 import { fetchCharts } from "./actions/charts";
-import styles from "./styles";
 import SingleStat from "components/SingleStat";
 import TopNavBar from "components/TopNavBar";
+import { switchTheme } from "actions/theme";
 import { cx } from "emotion";
-import { Element } from "react-scroll";
 
 class App extends React.Component {
   constructor(props) {
@@ -18,18 +17,29 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    this.props.dispatch(fetchCharts());
+    this.props.fetchCharts();
+    if (this.props.theme === "dark") {
+      import(`styling/dark.sass`);
+    } else {
+      import(`styling/light.sass`);
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.theme !== this.props.theme) {
+      window.location.reload();
+    }
   }
 
   onCursorChange = () => {};
 
   render() {
-    const { charts } = this.props;
+    const { charts, theme } = this.props;
     const { activeSection } = this.state;
 
     return (
-      <div className={styles.root}>
-        <div className={cx("is-hidden-mobile", styles.lastUpdatedBox)}>
+      <div className="dashboard-root">
+        <div className="is-hidden-mobile last-updated-top">
           <label>LAST UPDATED</label> <span>52 MINS AGO</span>{" "}
         </div>
         <TopNavBar selectedSection={activeSection} />
@@ -59,36 +69,51 @@ class App extends React.Component {
               desc="Price of Havven multipled by it’s curiculating supply."
             />
           </div>
-          <div className="columns" id="hav">
-            <div className="column">
-              <div className="columns">
-                <div className="column">
-                  <Chart
-                    info={charts.HavvenPrice}
-                    onCursorChange={this.onCursorChange}
-                    fullSize={true}
-                  />
+        </div>
+        <div className="container" id="hav">
+          <div>
+            <div className="level">
+              <div className="level-left">
+                <div className="level-item title">
+                  <h2>HAV</h2>
+                  <span>(HAVVEN)</span>
                 </div>
               </div>
-              <div className="columns">
-                <div className="column">
-                  <Chart
-                    info={charts.LockedUpHavven}
-                    onCursorChange={this.onCursorChange}
-                    colorGradient="yellow"
-                  />
-                </div>
-                <div className="column">
-                  <Chart
-                    info={charts.HavvenPrice}
-                    onCursorChange={this.onCursorChange}
-                    colorGradient="red"
-                  />
-                </div>
+              <div className="level-right">
+                <div className="level-item">Market Cap</div>
+                <div className="level-item">Price</div>
+                <div className="level-item">Volume</div>
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
+                <Chart
+                  info={charts.HavvenPrice}
+                  onCursorChange={this.onCursorChange}
+                  fullSize={true}
+                />
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
+                <Chart
+                  info={charts.LockedUpHavven}
+                  onCursorChange={this.onCursorChange}
+                  colorGradient="yellow"
+                />
+              </div>
+              <div className="column">
+                <Chart
+                  info={charts.HavvenPrice}
+                  onCursorChange={this.onCursorChange}
+                  colorGradient="red"
+                />
               </div>
             </div>
           </div>
-          <div className="columns" id="nusd">
+        </div>
+        <div className="container" id="nusd">
+          <div className="columns">
             <div className="column">
               <div className="columns">
                 <div className="column">
@@ -115,13 +140,22 @@ class App extends React.Component {
                   />
                 </div>
               </div>
-              <div className="columns footer-info">
+              <div className="columns">
                 <div className="column">
-                  <div className="last-updated">
-                    <label>LAST UPDATED</label> <span>52 MINS AGO</span>
-                  </div>
-                  <div className="theme-switcher">
-                    <label>Dark</label>
+                  <div className="footer-info">
+                    <div className="last-updated-bottom">
+                      <label>LAST UPDATED</label> <span>52 MINS AGO</span>
+                    </div>
+                    <div
+                      className={cx("theme-switcher", theme)}
+                      onClick={() =>
+                        this.props.switchTheme(
+                          theme === "dark" ? "light" : "dark"
+                        )
+                      }
+                    >
+                      <label>{theme}</label>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -134,12 +168,15 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { charts } = state;
+  const { charts, theme } = state;
 
   return {
-    charts
+    charts,
+    theme: theme.theme
   };
 };
 
-const ConnectedApp = connect(mapStateToProps)(App);
+const ConnectedApp = connect(mapStateToProps, { switchTheme, fetchCharts })(
+  App
+);
 export default ConnectedApp;

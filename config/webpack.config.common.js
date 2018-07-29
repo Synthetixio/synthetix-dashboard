@@ -106,7 +106,8 @@ module.exports = {
       components: path.resolve(paths.appSrc, "components"),
       routes: path.resolve(paths.appSrc, "routes"),
       stores: path.resolve(paths.appSrc, "stores"),
-      resources: path.resolve(paths.appSrc, "resources")
+      resources: path.resolve(paths.appSrc, "resources"),
+      actions: path.resolve(paths.appSrc, "actions")
     },
     // This allows you to set a fallback for where Webpack should look for modules.
     // We placed these paths second because we want `node_modules` to "win"

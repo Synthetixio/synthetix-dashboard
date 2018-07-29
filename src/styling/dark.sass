@@ -1,0 +1,80 @@
+@import "bulma/sass/utilities/_all"
+
+$bg-color: #0E0B23
+$color-primary: #fff
+$color-secondary: #6f6e98
+$color-accent-1: #25244b
+$color-accent-2: #11112f
+$color-accent-3: #fff // selected menu
+
+html
+  background-color: $bg-color
+
+body
+  color: $color-secondary
+
+a
+  color: $color-secondary
+  &:hover
+    color: $color-accent-3
+
+#logo
+  fill: $color-primary
+
++mobile
+  .navbar
+    background-color: rgba($bg-color, .95) !important
+
+.rounded-box
+  border: 1px solid $color-accent-1
+  label
+    color: $color-secondary
+  span
+    color: $color-primary
+
+
+.theme-switcher
+  @extend .rounded-box
+  &:after
+    background-color: #6F6E98
+    content: " "
+    display: block
+    position: absolute
+    width: 16px
+    height: 16px
+    border-radius: 100%
+    right: 7px
+    top: 50%
+    transform: translateY(-50%)
+
+.last-updated-top
+  @extend .rounded-box
+
+.last-updated-bottom
+  @extend .rounded-box
+
+.single-stat-box
+  border: 1px solid $color-accent-1
+  &:hover
+    background-color: $color-accent-2
+
+.single-stat-box__bottom
+  h3
+    color: $color-primary
+  p
+    color: $color-secondary
+
+.mobile-nav-section
+  a
+    &.is-active
+      color: $color-accent-3
+      border-bottom: 2px solid $color-primary
+  &:after
+    background-color: $color-accent-1
+
+a.navbar-item
+  color: $color-secondary
+  &.is-active
+    color: $color-accent-3
+  &:hover
+    color: $color-accent-3

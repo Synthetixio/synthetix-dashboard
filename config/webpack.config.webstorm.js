@@ -9,7 +9,8 @@ module.exports = {
       routes: path.resolve(paths.appSrc, "routes"),
       stores: path.resolve(paths.appSrc, "stores"),
       resources: path.resolve(paths.appSrc, "resources"),
-      api: path.resolve(paths.appSrc, "api")
+      api: path.resolve(paths.appSrc, "api"),
+      actions: path.resolve(paths.appSrc, "actions")
     }
   }
 };

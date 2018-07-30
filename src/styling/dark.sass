@@ -6,6 +6,8 @@ $color-secondary: #6f6e98
 $color-accent-1: #25244b
 $color-accent-2: #11112f
 $color-accent-3: #fff // selected menu
+$color-accent-4: #5460FF
+$color-accent-5: #100c28
 
 html
   background-color: $bg-color
@@ -78,3 +80,20 @@ a.navbar-item
     color: $color-accent-3
   &:hover
     color: $color-accent-3
+
+.button.is-link
+  color: $color-secondary
+  &.is-active
+    background: $color-accent-4
+  &:hover.is-active
+    background: $color-accent-4
+
+#hav, #nusd
+  > div
+    border: 1px solid $color-accent-1
+    background-color: $color-accent-5
+  .title
+    h2
+      color: $color-primary
+    span
+      color: $color-secondary

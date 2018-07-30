@@ -84,11 +84,13 @@ module.exports = {
       },
       {
         test: /(\.css$)/,
-        loaders: ["style-loader", "css-loader"]
+        //loaders: ["style-loader", "css-loader"]
+        loaders: ["css-loader"]
       },
       {
         test: [/\.scss$/, /\.sass$/],
         use: ["style-loader", "css-loader", "resolve-url-loader", "sass-loader"]
+        //use: ["css-loader", "resolve-url-loader", "sass-loader"]
       }
     ]
   },

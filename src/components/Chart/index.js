@@ -111,6 +111,7 @@ export default class HavvenChart extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+
     let initialData = this.props.info && !prevProps.info;
 
     let differentChartData =
@@ -119,7 +120,10 @@ export default class HavvenChart extends React.Component {
       (this.props.info.displayName !== prevProps.info.displayName ||
         this.props.currencyIndex !== prevProps.currencyIndex);
 
-    if (initialData || differentChartData) {
+    let freshChartData =
+      prevProps.lastUpdated !== this.props.lastUpdated;
+
+    if (initialData || differentChartData || freshChartData) {
       this.parseProps(this.props);
     }
   }

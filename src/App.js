@@ -19,8 +19,18 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    this.props.fetchCharts();
     this.switchTheme();
+  }
+
+  componentWillMount() {
+    this.fetchCharts();
+    this.setState({
+      intervalId: setInterval(this.fetchCharts, 60000)
+    });
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.state.intervalId);
   }
 
   componentDidUpdate(prevProps) {
@@ -28,6 +38,10 @@ class App extends React.Component {
       this.switchTheme();
     }
   }
+
+  fetchCharts = () => {
+    this.props.fetchCharts();
+  };
 
   switchTheme() {
     if (this.props.theme === "dark") {
@@ -127,7 +141,7 @@ class App extends React.Component {
               </div>
               <div className="column">
                 <Chart
-                  info={charts.HavvenPrice}
+                  info={charts.HavvenVolume24h}
                   onCursorChange={this.onCursorChange}
                   colorGradient="red"
                 />

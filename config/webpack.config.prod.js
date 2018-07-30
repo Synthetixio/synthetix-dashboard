@@ -87,16 +87,16 @@ module.exports = configMerge(commonConfig, {
     // Minify the code.
     new UglifyJsPlugin({
       cache: true,
-      sourceMap: shouldUseSourceMap,
+      sourceMap: false,
       uglifyOptions: {
-        compress: {
-          warnings: false,
-          // Disabled because of an issue with Uglify breaking seemingly valid code:
-          // https://github.com/facebookincubator/create-react-app/issues/2376
-          // Pending further investigation:
-          // https://github.com/mishoo/UglifyJS2/issues/2011
-          comparisons: false
-        },
+        // compress: {
+        //   warnings: false,
+        //   // Disabled because of an issue with Uglify breaking seemingly valid code:
+        //   // https://github.com/facebookincubator/create-react-app/issues/2376
+        //   // Pending further investigation:
+        //   // https://github.com/mishoo/UglifyJS2/issues/2011
+        //   comparisons: false
+        // },
         mangle: {
           safari10: true
         },

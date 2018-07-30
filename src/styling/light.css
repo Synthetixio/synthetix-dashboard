@@ -54,7 +54,7 @@ a.navbar-item {
   color: #6F6E98; }
   .button.is-link.is-active {
     background: #5460FF; }
-  .button.is-link:hover.is-active {
+  .button.is-link:hover.is-active, .button.is-link:focus.is-active {
     background: #5460FF; }
 
 #hav > div, #nusd > div {

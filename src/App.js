@@ -70,6 +70,7 @@ class App extends React.Component {
               trend={stats.havvenPriceCapUsd24hDelta * 100}
               label="HAVVEN PRICE"
               desc="Price of Havven multipled by it’s curiculating supply."
+              decimals={3}
             />
             <SingleStat
               value={stats.nominMarketCapUsd}
@@ -82,6 +83,7 @@ class App extends React.Component {
               trend={stats.nominPriceCapUsd24hDelta * 100}
               label="nUSD PRICE"
               desc="Price of Havven multipled by it’s curiculating supply."
+              decimals={3}
             />
           </div>
         </div>

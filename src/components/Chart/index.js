@@ -237,6 +237,7 @@ export default class HavvenChart extends React.Component {
               />
               <stop stop-color="#53B167" stop-opacity="0" offset="100%" />
             </linearGradient>
+
             <linearGradient
               x1="55.1525017%"
               y1="-5.72462792%"
@@ -251,6 +252,7 @@ export default class HavvenChart extends React.Component {
               />
               <stop stop-color="#D9AB44" stop-opacity="0" offset="100%" />
             </linearGradient>
+
             <linearGradient
               x1="50%"
               y1="0.952854046%"
@@ -266,15 +268,15 @@ export default class HavvenChart extends React.Component {
               <stop stop-color="#E5255D" stop-opacity="0" offset="100%" />
             </linearGradient>
             <linearGradient
-              x1="50%"
-              y1="0.952854046%"
-              x2="50%"
-              y2="97.9791366%"
+              x1="55.1525017%"
+              y1="-5.72462792%"
+              x2="55.1524997%"
+              y2="100%"
               id="gradient-purple"
             >
               <stop
                 stop-color="#42217E"
-                stop-opacity="0.601364357"
+                stop-opacity="0.309669384"
                 offset="0%"
               />
               <stop stop-color="#42217E" stop-opacity="0" offset="100%" />
@@ -286,7 +288,7 @@ export default class HavvenChart extends React.Component {
             this.props.currencySwitch["Btc"] && (
               <div style={{ position: "absolute", top: 0 }}>
                 <VictoryChart
-                  domain={{ y: [minValueBtc, maxValueBtc] }}
+                  domain={{ y: [minValueBtc*0.9, maxValueBtc*1.1] }}
                   scale={{ x: "time" }}
                   padding={{ bottom: 40 }}
                   theme={havvenTheme}
@@ -320,7 +322,7 @@ export default class HavvenChart extends React.Component {
                         x: this.state.scatterX,
                         y: this.state.scatterYBtc,
                         symbol: "circle",
-                        size: 5
+                        size: 3
                       }
                     ]}
                   />
@@ -331,7 +333,7 @@ export default class HavvenChart extends React.Component {
             this.props.currencySwitch["Eth"] && (
               <div style={{ position: "absolute", top: 0 }}>
                 <VictoryChart
-                  domain={{ y: [minValueEth, maxValueEth] }}
+                  domain={{ y: [minValueEth*0.9, maxValueEth*1.1] }}
                   scale={{ x: "time" }}
                   padding={{ bottom: 40 }}
                   theme={havvenTheme}
@@ -350,13 +352,13 @@ export default class HavvenChart extends React.Component {
                   <VictoryArea
                     data={timeSeriesEth}
                     style={{
-                      data: { fill: "url(#gradient-yellow" }
+                      data: { fill: "url(#gradient-purple" }
                     }}
                   />
                   <VictoryLine
                     data={timeSeriesEth}
                     style={{
-                      data: { stroke: "#0000ff", strokeWidth: 2 }
+                      data: { stroke: "#42217E", strokeWidth: 2 }
                     }}
                   />
                   <VictoryScatter
@@ -375,7 +377,7 @@ export default class HavvenChart extends React.Component {
 
           <div>
             <VictoryChart
-              domain={{ y: [minValue, maxValue] }}
+              domain={{ y: [minValue*0.9, maxValue*1.1] }}
               scale={{ x: "time" }}
               padding={{ bottom: 40 }}
               theme={havvenTheme}
@@ -419,8 +421,8 @@ export default class HavvenChart extends React.Component {
                   data: { stroke: "rgba(255,255,255,0.15)" },
                 }}
                 data={[
-                  { x: this.state.scatterX, y: minValue },
-                  { x: this.state.scatterX, y: maxValue },
+                  { x: this.state.scatterX, y: minValue*0.9 },
+                  { x: this.state.scatterX, y: maxValue*1.1 },
                 ]}
               />}
               {this.state.showScatter &&

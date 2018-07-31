@@ -16,7 +16,7 @@ class App extends React.Component {
   state = {
     activeSection: "stats",
     themeCss: "",
-    havButtons: {Usd: true, Btc: false, Eth: false }
+    havButtons: {Usd: true, Btc: true, Eth: false }
   };
 
   componentDidMount() {

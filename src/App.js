@@ -16,7 +16,8 @@ class App extends React.Component {
 
   state = {
     activeSection: "stats",
-    themeCss: ""
+    themeCss: "",
+    havButtons: {Usd: true, Btc: false, Eth: false }
   };
 
   componentDidMount() {
@@ -27,6 +28,14 @@ class App extends React.Component {
     this.fetchCharts();
     this.setState({
       intervalId: setInterval(this.fetchCharts, 60000)
+    });
+  }
+
+  onCurrencyClick = (val) => {
+    let havButtons = {...this.state.havButtons};
+    havButtons[val] = !havButtons[val];
+    this.setState({
+      havButtons
     });
   }
 
@@ -129,9 +138,25 @@ class App extends React.Component {
                   info={charts.HavvenPrice}
                   onCursorChange={this.onCursorChange}
                   fullSize={true}
+                  colorGradient="green"
                   lastUpdated={lastUpdated}
-                  currencySwitch={["Usd", "Btc", "Eth"]}
+                  currencySwitch={this.state.havButtons}
                 />
+              </div>
+            </div>
+            <div className="level">
+              <div className="level-left">
+              </div>
+              <div className="level-right">
+                <div className="level-item">
+                  <button className="button is-link is-active" onClick={()=>this.onCurrencyClick("Usd")}>USD</button>
+                </div>
+                <div className="level-item">
+                  <button className="button is-link" onClick={()=>this.onCurrencyClick("Btc")}>BTC</button>
+                </div>
+                <div className="level-item">
+                  <button className="button is-link" onClick={()=>this.onCurrencyClick("Eth")}>ETH</button>
+                </div>
               </div>
             </div>
             <div className="columns">

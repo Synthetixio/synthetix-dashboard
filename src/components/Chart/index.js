@@ -15,7 +15,9 @@ import moment from "moment";
 import havvenTheme from "../../config/theme";
 const CURRENCY_MAP = ["Usd", "Btc", "Eth"];
 const width = 600;
-const debug = true;
+const debugBtc = true;
+const debugEth = false;
+
 
 export default class HavvenChart extends React.Component {
   constructor(props) {
@@ -27,7 +29,6 @@ export default class HavvenChart extends React.Component {
     const periodSwitch = props.periodSwitch || "ALL";
 
     this.state = {
-      overlayWidth: 0,
       timeSeries: [],
       timeSeriesX: [],
       showScatter: false,
@@ -43,17 +44,18 @@ export default class HavvenChart extends React.Component {
 
   onCursorChange = (value, props) => {
     if (value) {
-      const { timeSeries, timeSeriesX, timeSeriesBtc } = this.state;
+      const { timeSeries, timeSeriesX, timeSeriesBtc, timeSeriesEth } = this.state;
       const index = this.findIndexByDate(timeSeriesX, value);
       if (index > -1) {
         const scatterY = timeSeries[index].y;
         const scatterYBtc = timeSeriesBtc[index].y;
+        const scatterYEth = timeSeriesEth[index].y;
 
         this.setState({
           scatterX: value,
           scatterY,
           scatterYBtc,
-          //overlayWidth: width / timeSeriesX.length * (index + 1)
+          scatterYEth,
         });
         this.props.onCursorChange &&
         this.props.onCursorChange(scatterY, timeSeries[index].x);
@@ -78,7 +80,6 @@ export default class HavvenChart extends React.Component {
       this.setState({
         scatterX: timeSeries[index].x,
         scatterY: timeSeries[index].y,
-        overlayWidth: width / timeSeriesX.length * (index + 1),
         showScatter: true,
         showChart: true
       });
@@ -138,7 +139,7 @@ export default class HavvenChart extends React.Component {
   parseProps = props => {
     const { info, currencySwitch } = props;
     if (!info || !info.displayName) return;
-    let timeSeriesBtc, timeSeriesEth, minValueBtc, maxValueBtc;
+    let timeSeriesBtc, timeSeriesEth, minValueBtc, maxValueBtc, minValueEth, maxValueEth;
 
     let { currencyIndex = 0 } = this.props;
     const currency = CURRENCY_MAP[currencyIndex];
@@ -148,7 +149,7 @@ export default class HavvenChart extends React.Component {
     const fromDate = data && new Date(data.fromDate);
     const toDate = data && new Date(data.toDate);
 
-    //todo refactor
+
     const timeSeries =
       data &&
       data["timeSeries" + currency].map(val => ({
@@ -156,7 +157,7 @@ export default class HavvenChart extends React.Component {
         y: val.y
       }));
     const timeSeriesX = data && data.timeSeriesX.map(val => new Date(val));
-// debugger;
+
     if(currencySwitch){
       timeSeriesBtc =
         data &&
@@ -172,10 +173,10 @@ export default class HavvenChart extends React.Component {
           x: new Date(val.x),
           y: val.y
         }));
+      minValueEth = data && data["minValueEth"];
+      maxValueEth = data && data["maxValueEth"];
+
     }
-    //const tickerLabelPadding = props.tickerLabelPaddings ? props.tickerLabelPaddings[currencyIndex] : tickerLabelPaddings[currencyIndex];
-    console.log("timeSeriesBtc", timeSeriesBtc);
-    console.log("timeSeriesEth", timeSeriesEth);
 
     this.setState(
       {
@@ -183,6 +184,8 @@ export default class HavvenChart extends React.Component {
         maxValue,
         minValueBtc,
         maxValueBtc,
+        minValueEth,
+        maxValueEth,
         fromDate,
         toDate,
         timeSeries,
@@ -190,7 +193,6 @@ export default class HavvenChart extends React.Component {
         timeSeriesBtc,
         timeSeriesX,
         currencyIndex
-        //tickerLabelPadding: tickerLabelPadding,
       },
       () => {
         this.setScatterToLast();
@@ -199,7 +201,13 @@ export default class HavvenChart extends React.Component {
   };
 
   render() {
-    const { timeSeries, timeSeriesBtc, timeSeriesEth } = this.state;
+    const { timeSeries, timeSeriesBtc, timeSeriesEth,
+      minValue,
+      maxValue,
+      minValueBtc,
+      maxValueBtc,
+      minValueEth,
+      maxValueEth } = this.state;
     const { currencySwitch } = this.props;
 
     if(currencySwitch){
@@ -252,27 +260,33 @@ export default class HavvenChart extends React.Component {
               />
               <stop stop-color="#E5255D" stop-opacity="0" offset="100%" />
             </linearGradient>
+            <linearGradient
+              x1="50%"
+              y1="0.952854046%"
+              x2="50%"
+              y2="97.9791366%"
+              id="gradient-purple"
+            >
+              <stop
+                stop-color="#42217E"
+                stop-opacity="0.601364357"
+                offset="0%"
+              />
+              <stop stop-color="#42217E" stop-opacity="0" offset="100%" />
+            </linearGradient>
           </defs>
         </svg>
         <div style={{position: "relative"}}>
 
-          {debug &&
+          {this.props.currencySwitch && this.props.currencySwitch['Btc'] &&
           <div style={{position: "absolute", top: 0}}>
             <VictoryChart
+              domain={{y: [minValueBtc, maxValueBtc]}}
               scale={{ x: "time" }}
               padding={{ bottom: 40 }}
               theme={havvenTheme}
-              domainPadding={{ y: [0, 40] }}
+              domainPadding={{ y: [0, 20] }}
               width={this.state.windowWidth}
-              // containerComponent={
-              //   <VictoryCursorContainer
-              //     cursorDimension={"x"}
-              //     cursorComponent={<Line style={{ stroke: "transparent" }} />}
-              //     //onCursorChange={this.onCursorChange}
-              //     // onTouchStart={d => this.onTouchStart(d)}
-              //     // onTouchEnd={() => this.onTouchEnd()}
-              //   />
-              // }
             >
               <VictoryAxis
                 style={{
@@ -286,13 +300,13 @@ export default class HavvenChart extends React.Component {
               <VictoryArea
                 data={timeSeriesBtc}
                 style={{
-                  data: { fill: "url(#gradient-red" }
+                  data: { fill: "url(#gradient-yellow" }
                 }}
               />
               <VictoryLine
                 data={timeSeriesBtc}
                 style={{
-                  data: { stroke: "#53B167", strokeWidth: 2 }
+                  data: { stroke: "#D9AB44", strokeWidth: 2 }
                 }}
               />
               <VictoryScatter
@@ -309,21 +323,66 @@ export default class HavvenChart extends React.Component {
             </VictoryChart>
           </div>
           }
+          {
+            this.props.currencySwitch && this.props.currencySwitch['Eth'] &&
+            <div style={{position: "absolute", top: 0}}>
+              <VictoryChart
+                domain={{y: [minValueEth, maxValueEth]}}
+                scale={{ x: "time" }}
+                padding={{ bottom: 40 }}
+                theme={havvenTheme}
+                domainPadding={{ y: [0, 20] }}
+                width={this.state.windowWidth}
+              >
+                <VictoryAxis
+                  style={{
+                    grid: { stroke: "transparent" },
+                    axis: { stroke: "transparent" }
+                  }}
+                  tickCount={5}
+                  tickFormat={t => `${moment(t).format("DD/MM")}`}
+                />
+
+                <VictoryArea
+                  data={timeSeriesEth}
+                  style={{
+                    data: { fill: "url(#gradient-yellow" }
+                  }}
+                />
+                <VictoryLine
+                  data={timeSeriesEth}
+                  style={{
+                    data: { stroke: "#0000ff", strokeWidth: 2 }
+                  }}
+                />
+                <VictoryScatter
+                  data={[
+                    {
+                      x: this.state.scatterX,
+                      y: this.state.scatterYEth,
+                      symbol: "circle",
+                      size: 3
+                    }
+                  ]}
+                />
+
+              </VictoryChart>
+            </div>
+          }
 
           <div>
             <VictoryChart
+              domain={{y: [minValue, maxValue]}}
               scale={{ x: "time" }}
               padding={{ bottom: 40 }}
               theme={havvenTheme}
-              domainPadding={{ y: [0, 40] }}
+              domainPadding={{ y: [0, 20] }}
               width={this.state.windowWidth}
               containerComponent={
                 <VictoryCursorContainer
                   cursorDimension={"x"}
                   cursorComponent={<Line style={{ stroke: "transparent" }} />}
                   onCursorChange={this.onCursorChange}
-                  // onTouchStart={d => this.onTouchStart(d)}
-                  // onTouchEnd={() => this.onTouchEnd()}
                 />
               }
             >

@@ -13,6 +13,12 @@ import {
 import moment from "moment";
 import havvenTheme from "../../config/theme";
 const CURRENCY_MAP = ["Usd", "Btc", "Eth"];
+const LINE_COLOR = {
+  yellow: "#D9AB44",
+  red: "#F02D2D",
+  green: "#53B167",
+  purple: "#42217E"
+};
 
 export default class HavvenChart extends React.Component {
   constructor(props) {
@@ -31,7 +37,8 @@ export default class HavvenChart extends React.Component {
       showChart: false,
       tickerLabelPadding: 48,
       windowWidth: window.innerWidth || 800,
-      gradientUrl: `url(#gradient-${colorGradient})`
+      gradientUrl: `url(#gradient-${colorGradient})`,
+      colorGradient,
     };
   }
 
@@ -409,10 +416,9 @@ export default class HavvenChart extends React.Component {
               <VictoryLine
                 data={timeSeries}
                 style={{
-                  data: { stroke: "#53B167", strokeWidth: 2 }
+                  data: { stroke: (this.props.colorGradient && LINE_COLOR[this.props.colorGradient]) || LINE_COLOR["red"], strokeWidth: 2 }
                 }}
               />
-
 
 
               {this.state.showScatter &&

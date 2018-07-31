@@ -7,6 +7,8 @@ import TopNavBar from "components/TopNavBar";
 import { switchTheme } from "actions/theme";
 import { cx } from "emotion";
 import moment from "moment";
+const HAV_CHART = { HavvenPrice: "HavvenPrice", HavvenMarketCap: "HavvenMarketCap", HavvenVolume24h: "HavvenVolume24h"};
+const nUSD_CHART = { NominPrice: "NominPrice",  NominMarketCap: "NominMarketCap", NominVolume24h: "NominVolume24h"};
 
 class App extends React.Component {
   constructor(props) {
@@ -16,7 +18,9 @@ class App extends React.Component {
   state = {
     activeSection: "stats",
     themeCss: "",
-    havButtons: {Usd: true, Btc: true, Eth: false }
+    havButtons: {Usd: true, Btc: true, Eth: false },
+    havChartName: HAV_CHART.HavvenPrice,
+    nUSDChartName: nUSD_CHART.NominPrice,
   };
 
   componentDidMount() {
@@ -36,7 +40,15 @@ class App extends React.Component {
     this.setState({
       havButtons
     });
-  }
+  };
+
+  setHavChart = (chartName) => {
+    this.setState({havChartName:chartName});
+  };
+
+  setnUSDChart = (chartName) => {
+    this.setState({nUSDChartName:chartName});
+  };
 
   componentWillUnmount() {
     clearInterval(this.state.intervalId);
@@ -68,12 +80,10 @@ class App extends React.Component {
 
   render() {
     const { charts, theme } = this.props;
-    const { activeSection, themeCss, havButtons } = this.state;
+    const { activeSection, themeCss, havButtons, havChartName, nUSDChartName } = this.state;
     const { stats, lastUpdated } = charts;
-    const btn = "button is-link";
-    const btnActive = "button is-link is-active";
-    const classHavBtc = havButtons.Btc ? btnActive : btn;
-    const classHavEth = havButtons.Eth ? btnActive : btn;
+    const { HavvenMarketCap, HavvenVolume24h, HavvenPrice } = HAV_CHART;
+    const { NominMarketCap, NominVolume24h, NominPrice } = nUSD_CHART;
 
     const minsAgo = moment(Date.now()).diff(lastUpdated, "minutes");
 
@@ -125,20 +135,20 @@ class App extends React.Component {
               </div>
               <div className="level-right">
                 <div className="level-item">
-                  <button className="button is-link">Market Cap</button>
+                  <button className={"button is-link" + (havChartName === HavvenMarketCap ? " is-active" : "")} onClick={()=>{this.setHavChart(HavvenMarketCap)}}>Market Cap</button>
                 </div>
                 <div className="level-item">
-                  <button className="button is-link is-active">Price</button>
+                  <button className={"button is-link" + (havChartName === HavvenPrice ? " is-active" : "")} onClick={()=>{this.setHavChart(HavvenPrice)}}>Price</button>
                 </div>
                 <div className="level-item">
-                  <button className="button is-link">Volume</button>
+                  <button className={"button is-link" + (havChartName === HavvenVolume24h ? " is-active" : "")} onClick={()=>{this.setHavChart(HavvenVolume24h)}}>Volume</button>
                 </div>
               </div>
             </div>
             <div className="columns">
               <div className="column">
                 <Chart
-                  info={charts.HavvenPrice}
+                  info={charts[this.state.havChartName]}
                   onCursorChange={this.onCursorChange}
                   fullSize={true}
                   colorGradient="green"
@@ -155,10 +165,10 @@ class App extends React.Component {
                   <button className="button is-link is-active" onClick={()=>this.onCurrencyClick("Usd")}>USD</button>
                 </div>
                 <div className="level-item">
-                  <button className={classHavBtc} onClick={()=>this.onCurrencyClick("Btc")}>BTC</button>
+                  <button className={"button is-link" + (havButtons.Btc ? " is-active" : "")} onClick={()=>this.onCurrencyClick("Btc")}>BTC</button>
                 </div>
                 <div className="level-item">
-                  <button className={classHavEth} onClick={()=>this.onCurrencyClick("Eth")}>ETH</button>
+                  <button className={"button is-link" + (havButtons.Eth ? " is-active" : "")} onClick={()=>this.onCurrencyClick("Eth")}>ETH</button>
                 </div>
               </div>
             </div>
@@ -193,13 +203,13 @@ class App extends React.Component {
               </div>
               <div className="level-right">
                 <div className="level-item">
-                  <button className="button is-link">Market Cap</button>
+                  <button className={"button is-link" + (nUSDChartName === NominMarketCap ? " is-active" : "")} onClick={()=>{this.setnUSDChart(NominMarketCap)}}>Market Cap</button>
                 </div>
                 <div className="level-item">
-                  <button className="button is-link is-active">Price</button>
+                  <button className={"button is-link" + (nUSDChartName === NominPrice ? " is-active" : "")} onClick={()=>{this.setnUSDChart(NominPrice)}}>Price</button>
                 </div>
                 <div className="level-item">
-                  <button className="button is-link">Volume</button>
+                  <button className={"button is-link" + (nUSDChartName === NominVolume24h ? " is-active" : "")} onClick={()=>{this.setnUSDChart(NominVolume24h)}}>Volume</button>
                 </div>
               </div>
             </div>
@@ -207,9 +217,10 @@ class App extends React.Component {
             <div className="columns">
               <div className="column">
                 <Chart
-                  info={charts.NominPrice}
+                  info={charts[nUSDChartName]}
                   onCursorChange={this.onCursorChange}
                   fullSize={true}
+                  colorGradient="green"
                   lastUpdated={lastUpdated}
                 />
               </div>

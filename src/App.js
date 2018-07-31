@@ -1,6 +1,5 @@
 import React from "react";
 import Chart from "components/Chart";
-import ChartMulti from "components/Chart/testMulti";
 import { connect } from "react-redux";
 import { fetchCharts } from "./actions/charts";
 import SingleStat from "components/SingleStat";
@@ -69,8 +68,12 @@ class App extends React.Component {
 
   render() {
     const { charts, theme } = this.props;
-    const { activeSection, themeCss } = this.state;
+    const { activeSection, themeCss, havButtons } = this.state;
     const { stats, lastUpdated } = charts;
+    const btn = "button is-link";
+    const btnActive = "button is-link is-active";
+    const classHavBtc = havButtons.Btc ? btnActive : btn;
+    const classHavEth = havButtons.Eth ? btnActive : btn;
 
     const minsAgo = moment(Date.now()).diff(lastUpdated, "minutes");
 
@@ -152,10 +155,10 @@ class App extends React.Component {
                   <button className="button is-link is-active" onClick={()=>this.onCurrencyClick("Usd")}>USD</button>
                 </div>
                 <div className="level-item">
-                  <button className="button is-link" onClick={()=>this.onCurrencyClick("Btc")}>BTC</button>
+                  <button className={classHavBtc} onClick={()=>this.onCurrencyClick("Btc")}>BTC</button>
                 </div>
                 <div className="level-item">
-                  <button className="button is-link" onClick={()=>this.onCurrencyClick("Eth")}>ETH</button>
+                  <button className={classHavEth} onClick={()=>this.onCurrencyClick("Eth")}>ETH</button>
                 </div>
               </div>
             </div>

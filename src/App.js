@@ -1,5 +1,6 @@
 import React from "react";
 import Chart from "components/Chart";
+import ChartMulti from "components/Chart/testMulti";
 import { connect } from "react-redux";
 import { fetchCharts } from "./actions/charts";
 import SingleStat from "components/SingleStat";
@@ -128,6 +129,8 @@ class App extends React.Component {
                   info={charts.HavvenPrice}
                   onCursorChange={this.onCursorChange}
                   fullSize={true}
+                  lastUpdated={lastUpdated}
+                  currencySwitch={["Usd", "Btc", "Eth"]}
                 />
               </div>
             </div>
@@ -137,6 +140,7 @@ class App extends React.Component {
                   info={charts.LockedUpHavven}
                   onCursorChange={this.onCursorChange}
                   colorGradient="yellow"
+                  lastUpdated={lastUpdated}
                 />
               </div>
               <div className="column">
@@ -144,6 +148,7 @@ class App extends React.Component {
                   info={charts.HavvenVolume24h}
                   onCursorChange={this.onCursorChange}
                   colorGradient="red"
+                  lastUpdated={lastUpdated}
                 />
               </div>
             </div>
@@ -177,6 +182,7 @@ class App extends React.Component {
                   info={charts.NominPrice}
                   onCursorChange={this.onCursorChange}
                   fullSize={true}
+                  lastUpdated={lastUpdated}
                 />
               </div>
             </div>
@@ -186,6 +192,7 @@ class App extends React.Component {
                   info={charts.NominFeesCollected}
                   onCursorChange={this.onCursorChange}
                   colorGradient="green"
+                  lastUpdated={lastUpdated}
                 />
               </div>
               <div className="column">
@@ -193,6 +200,7 @@ class App extends React.Component {
                   info={charts.CollateralizationRatio}
                   onCursorChange={this.onCursorChange}
                   colorGradient="red"
+                  lastUpdated={lastUpdated}
                 />
               </div>
             </div>

@@ -411,18 +411,31 @@ export default class HavvenChart extends React.Component {
                 }}
               />
 
-              {this.state.showScatter && (
-                <VictoryScatter
-                  data={[
-                    {
-                      x: this.state.scatterX,
-                      y: this.state.scatterY,
-                      symbol: "circle",
-                      size: 5
-                    }
-                  ]}
-                />
-              )}
+
+
+              {this.state.showScatter &&
+              <VictoryLine
+                style={{
+                  data: { stroke: "rgba(255,255,255,0.15)" },
+                }}
+                data={[
+                  { x: this.state.scatterX, y: minValue },
+                  { x: this.state.scatterX, y: maxValue },
+                ]}
+              />}
+              {this.state.showScatter &&
+              <VictoryScatter
+                data={[
+                  {
+                    x: this.state.scatterX,
+                    y: this.state.scatterY,
+                    symbol: "circle",
+                    size: 5
+                  }
+                ]}
+              />
+              }
+
             </VictoryChart>
           </div>
         </div>

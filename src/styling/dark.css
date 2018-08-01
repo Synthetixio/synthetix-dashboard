@@ -40,14 +40,14 @@ a {
   transform: translateY(-50%); }
 
 .single-stat-box {
-  border: 1px solid #25244b;
-  background-color: #100c28; }
+  border: 1px solid #25244b; }
   .single-stat-box:hover {
     background-color: #11112f; }
-  .single-stat-box .single-stat-box__bottom h3 {
-    color: #fff; }
-  .single-stat-box .single-stat-box__bottom p {
-    color: #6f6e98; }
+
+.single-stat-box__bottom h3 {
+  color: #fff; }
+.single-stat-box__bottom p {
+  color: #6f6e98; }
 
 .mobile-nav-section a.is-active {
   color: #fff;
@@ -66,54 +66,15 @@ a.navbar-item {
   color: #6f6e98; }
   .button.is-link.is-active {
     background: #5460FF; }
+  .button.is-link:hover.is-active, .button.is-link:focus.is-active {
+    background: #5460FF; }
 
-.chart-section > div {
-  border-top: 1px solid #25244b;
-  border-bottom: 1px solid #25244b;
-  background-color: #100c28; }
-.chart-section .title h2 {
-  color: #fff; }
-.chart-section .title span {
-  color: #6f6e98; }
-
-.chart-box {
-  border: 1px solid #25244b; }
-
-.currency-toggles button.is-link {
+#hav > div, #nusd > div {
   border: 1px solid #25244b;
-  color: #6f6e98 !important; }
-  .currency-toggles button.is-link.is-active {
-    color: #fff !important; }
-  .currency-toggles button.is-link:before {
-    background-color: #fff; }
-  .currency-toggles button.is-link.usd:before {
-    background-color: #53B167; }
-  .currency-toggles button.is-link.usd.is-active {
-    background-color: #53B167; }
-    .currency-toggles button.is-link.usd.is-active:before {
-      background-color: #fff !important; }
-  .currency-toggles button.is-link.btc:before {
-    background-color: #D9AB44; }
-  .currency-toggles button.is-link.btc.is-active {
-    background-color: #D9AB44; }
-    .currency-toggles button.is-link.btc.is-active:before {
-      background-color: #fff !important; }
-  .currency-toggles button.is-link.eth:before {
-    background-color: #42217E; }
-  .currency-toggles button.is-link.eth.is-active {
-    background-color: #42217E; }
-    .currency-toggles button.is-link.eth.is-active:before {
-      background-color: #fff !important; }
-
-.chart-box__stat h2 {
+  background-color: #100c28; }
+#hav .title h2, #nusd .title h2 {
   color: #fff; }
-
-.chart-box__info h3 {
-  color: #fff; }
-.chart-box__info div {
+#hav .title span, #nusd .title span {
   color: #6f6e98; }
-
-.chart-box__number {
-  color: #fff; }
 
 /*# sourceMappingURL=dark.css.map */

@@ -1,57 +1,38 @@
 @import "bulma/sass/utilities/_all"
 
 $bg-color: #F4F7FA
-$color-1: #25244B
-$color-2: #6F6E98
-$color-3: #EBE9F6
-$color-4: trasparent
-$color-5: #11112F // selected menu
-$color-6: #5460FF
-$color-7: #fff
-$color-8: #53B167
-$color-9: #D9AB44
-$color-10: #42217E
-$color-toggle-btn-active: #FFF
+$color-primary: #25244B
+$color-secondary: #6F6E98
+$color-accent-1: #EBE9F6
+$color-accent-2: trasparent
+$color-accent-3: #11112F // selected menu
+$color-accent-4: #5460FF
+$color-accent-5: #fff
 
 html
   background-color: $bg-color
 
 body
-  color: $color-2
+  color: $color-secondary
 
 a
-  color: $color-2
+  color: $color-secondary
   &:hover
-    color: $color-5
+    color: $color-accent-3
 
 #logo
-  fill: $color-1
+  fill: $color-primary
 
 +mobile
   .navbar
     background-color: rgba($bg-color, .95) !important
 
 .rounded-box
-  border: 1px solid $color-3
+  border: 1px solid $color-accent-1
   label
-    color: $color-2
+    color: $color-secondary
   span
-    color: $color-1
-
-
-.theme-switcher
-  @extend .rounded-box
-  &:after
-    background-color: #6F6E98
-    content: " "
-    display: block
-    position: absolute
-    width: 16px
-    height: 16px
-    border-radius: 100%
-    right: 7px
-    top: 50%
-    transform: translateY(-50%)
+    color: $color-primary
 
 .last-updated-top
   @extend .rounded-box
@@ -60,88 +41,44 @@ a
   @extend .rounded-box
 
 .single-stat-box
-  border: 1px solid $color-3
-  background-color: $color-7
+  border: 1px solid $color-accent-1
   &:hover
-    background-color: $color-4
-  .single-stat-box__bottom
-    h3
-      color: $color-1
-    p
-      color: $color-2
+    background-color: $color-accent-2
+
+.single-stat-box__bottom
+  h3
+    color: $color-primary
+  p
+    color: $color-secondary
 
 .mobile-nav-section
   a
     &.is-active
-      color: $color-5
-      border-bottom: 2px solid $color-1
+      color: $color-accent-3
+      border-bottom: 2px solid $color-primary
   &:after
-    background-color: $color-3
+    background-color: $color-accent-1
 
 a.navbar-item
-  color: $color-2
+  color: $color-secondary
   &.is-active
-    color: $color-5
+    color: $color-accent-3
   &:hover
-    color: $color-5
+    color: $color-accent-3
 
 .button.is-link
-  color: $color-2
+  color: $color-secondary
   &.is-active
-    background: $color-6
+    background: $color-accent-4
+  &:hover.is-active, &:focus.is-active
+    background: $color-accent-4
 
-.chart-section
+#hav, #nusd
   > div
-    border-top: 1px solid $color-3
-    border-bottom: 1px solid $color-3
-    background-color: $color-7
+    border: 1px solid $color-accent-1
+    background-color: $color-accent-5
   .title
     h2
-      color: $color-1
+      color: $color-primary
     span
-      color: $color-2
-
-.chart-box
-  border: 1px solid $color-3
-
-.currency-toggles
-  button.is-link
-    border: 1px solid $color-3
-    color: $color-2 !important
-    &.is-active
-      color: $color-toggle-btn-active !important
-    &:before
-      background-color: $color-1
-    &.usd
-      &:before
-        background-color: $color-8
-      &.is-active
-        background-color: $color-8
-        &:before
-          background-color: $color-toggle-btn-active !important
-    &.btc
-      &:before
-        background-color: $color-9
-      &.is-active
-        background-color: $color-9
-        &:before
-          background-color: $color-toggle-btn-active !important
-    &.eth
-      &:before
-        background-color: $color-10
-      &.is-active
-        background-color: $color-10
-        &:before
-          background-color: $color-toggle-btn-active !important
-
-.chart-box__stat h2
-  color: $color-1
-
-.chart-box__info
-  h3
-    color: $color-1
-  div
-    color: $color-2
-
-.chart-box__number
-  color: $color-1
+      color: $color-secondary

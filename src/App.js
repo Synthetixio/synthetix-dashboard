@@ -8,16 +8,19 @@ import { switchTheme } from "actions/theme";
 import cx from "classnames";
 import moment from "moment";
 import SingleStat from "components/SingleStat";
-import numeral from "numeral";
-const HAV_CHART = {
-  HavvenPrice: "HavvenPrice",
-  HavvenMarketCap: "HavvenMarketCap",
-  HavvenVolume24h: "HavvenVolume24h"
-};
-const nUSD_CHART = {
-  NominPrice: "NominPrice",
-  NominMarketCap: "NominMarketCap",
-  NominVolume24h: "NominVolume24h"
+const HAV_CHART = { HavvenPrice: "HavvenPrice", HavvenMarketCap: "HavvenMarketCap", HavvenVolume24h: "HavvenVolume24h", LockedUpHavven: "LockedUpHavven" };
+const nUSD_CHART = { NominPrice: "NominPrice",  NominMarketCap: "NominMarketCap", NominVolume24h: "NominVolume24h", NominFeesCollected: "NominFeesCollected", CollateralizationRatio: "CollateralizationRatio"};
+const DECIMALS = {
+  HavvenMarketCap : { Val: 0, Btc: 0 },
+  HavvenPrice : { Val: 3, Btc: 4 },
+  HavvenVolume24h : { Val: 0, Btc: 0 },
+  LockedUpHavven:{ Val: 2 },
+  HavvenVolume24h:{ Val: 0 },
+  NominMarketCap:{ Val: 2 },
+  NominPrice:{ Val: 4 },
+  NominVolume24h:{ Val: 2 },
+  NominFeesCollected: { Val: 2 },
+  CollateralizationRatio: { Val: 2 },//%
 };
 
 class App extends React.Component {
@@ -28,9 +31,9 @@ class App extends React.Component {
   state = {
     activeSection: "stats",
     themeCss: "",
-    havButtons: { Usd: true, Btc: true, Eth: false },
+    havButtons: {Usd: true, Btc: true, Eth: false },
     havChartName: HAV_CHART.HavvenPrice,
-    nUSDChartName: nUSD_CHART.NominPrice
+    nUSDChartName: nUSD_CHART.NominPrice,
   };
 
   componentDidMount() {
@@ -44,20 +47,20 @@ class App extends React.Component {
     });
   }
 
-  onCurrencyClick = val => {
-    let havButtons = { ...this.state.havButtons };
+  onCurrencyClick = (val) => {
+    let havButtons = {...this.state.havButtons};
     havButtons[val] = !havButtons[val];
     this.setState({
       havButtons
     });
   };
 
-  setHavChart = chartName => {
-    this.setState({ havChartName: chartName });
+  setHavChart = (chartName) => {
+    this.setState({havChartName:chartName});
   };
 
-  setnUSDChart = chartName => {
-    this.setState({ nUSDChartName: chartName });
+  setnUSDChart = (chartName) => {
+    this.setState({nUSDChartName:chartName});
   };
 
   componentWillUnmount() {
@@ -90,16 +93,10 @@ class App extends React.Component {
 
   render() {
     const { charts, theme } = this.props;
-    const {
-      activeSection,
-      themeCss,
-      havButtons,
-      havChartName,
-      nUSDChartName
-    } = this.state;
+    const { activeSection, themeCss, havButtons, havChartName, nUSDChartName } = this.state;
     const { stats, lastUpdated } = charts;
-    const { HavvenMarketCap, HavvenVolume24h, HavvenPrice } = HAV_CHART;
-    const { NominMarketCap, NominVolume24h, NominPrice } = nUSD_CHART;
+    const { HavvenMarketCap, HavvenVolume24h, HavvenPrice, LockedUpHavven } = HAV_CHART;
+    const { NominMarketCap, NominVolume24h, NominPrice, CollateralizationRatio, NominFeesCollected } = nUSD_CHART;
 
     const minsAgo = moment(Date.now()).diff(lastUpdated, "minutes");
 
@@ -229,13 +226,15 @@ class App extends React.Component {
                   />
                   <div>
                     <Chart
-                      info={charts[this.state.havChartName]}
+                      info={charts[havChartName]}
+                      decimals={DECIMALS[havChartName]}
                       onCursorChange={this.onCursorChange}
                       fullSize={true}
                       colorGradient="green"
                       lastUpdated={lastUpdated}
                       currencySwitch={this.state.havButtons}
-                    />
+                      tooltipDecimal={{}}
+                  />
                   </div>
                 </div>
               </div>
@@ -287,6 +286,7 @@ class App extends React.Component {
                   </div>
                   <Chart
                     info={charts.LockedUpHavven}
+                    decimals={DECIMALS[LockedUpHavven]}
                     onCursorChange={this.onCursorChange}
                     colorGradient="yellow"
                     lastUpdated={lastUpdated}
@@ -306,6 +306,7 @@ class App extends React.Component {
                   </div>
                   <Chart
                     info={charts.HavvenVolume24h}
+                    decimals={DECIMALS[HavvenVolume24h]}
                     onCursorChange={this.onCursorChange}
                     colorGradient="red"
                     lastUpdated={lastUpdated}
@@ -373,6 +374,7 @@ class App extends React.Component {
                   />
                   <Chart
                     info={charts[nUSDChartName]}
+                    decimals={DECIMALS[nUSDChartName]}
                     onCursorChange={this.onCursorChange}
                     fullSize={true}
                     colorGradient="green"
@@ -386,6 +388,7 @@ class App extends React.Component {
                 <div className="chart-box">
                   <Chart
                     info={charts.NominFeesCollected}
+                    decimals={DECIMALS[NominFeesCollected]}
                     onCursorChange={this.onCursorChange}
                     colorGradient="green"
                     lastUpdated={lastUpdated}
@@ -396,9 +399,11 @@ class App extends React.Component {
                 <div className="chart-box">
                   <Chart
                     info={charts.CollateralizationRatio}
+                    decimals={DECIMALS[CollateralizationRatio]}
                     onCursorChange={this.onCursorChange}
                     colorGradient="red"
                     lastUpdated={lastUpdated}
+                    sign="%"
                   />
                 </div>
               </div>

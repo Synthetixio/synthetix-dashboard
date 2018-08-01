@@ -1,0 +1,86 @@
+@import "bulma/sass/utilities/_all"
+@import "variables"
+@import "nav"
+@import "footer"
+@import "chart-section"
+@import "single-stat"
+
++mobile
+  body
+    padding-top: 127px
+
+.dashboard-root
+  position: relative
+
++touch
+  .main-content
+    padding: 0 1.8rem
+
+.rounded-box
+  font-size: 12px
+  position: absolute
+  left: 0
+  top: 45%
+  transform: translateY(-50%)
+  padding: 5px 15px
+  border-radius: 100px
+
+
+
+.theme-switcher
+  @extend .rounded-box
+  cursor: pointer
+  right: 0
+  left: unset !important
+  padding-right: 30px
+  & > *
+    cursor: pointer
+  label
+    text-transform: capitalize
+
+.last-updated-top
+  font-size: 12px
+  position: absolute
+  left: 50%
+  transform: translateX(-50%)
+  top: 25px
+  padding: 5px 15px
+  border-radius: 100px
+    
+.last-updated-bottom
+  @extend .rounded-box
+
+.position-relative
+  position: relative
+
+.theme-switcher.light
+  @extend .rounded-box
+  padding-left: 30px
+  padding-right: 15px
+  border: 1px solid #EBE9F6
+  &:before
+    content: " "
+    display: block
+    position: absolute
+    width: 16px
+    height: 16px
+    border-radius: 100%
+    left: 7px
+    top: 50%
+    transform: translateY(-50%)
+    background: #FFFFFF
+    border: 1px solid #EBE9F6
+  &:after
+    display: none
+
+.button.is-link
+  font-size: 14px
+  letter-spacing: 0.78px
+  background-color: transparent
+  &:hover
+    background-color: #5460FF
+  &.is-active
+    border-radius: 3px
+
+.justified-content-center
+  justify-content: center

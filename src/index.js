@@ -6,7 +6,7 @@ import App from "./App";
 import { Provider } from "react-redux";
 import { store } from "./config/store";
 import "styling/bulma/bulma.sass";
-import "styling/custom.sass";
+import "styling/main.sass";
 
 const render = Component => {
   ReactDOM.render(

@@ -5,6 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "bulma": "^0.7.1",
+    "classnames": "^2.2.6",
     "emotion": "^9.2.6",
     "lodash": "^4.17.10",
     "mobx": "^5.0.3",

@@ -174,8 +174,8 @@ class App extends React.Component {
         </div>
         <div className="container chart-section" id="hav">
           <div>
-            <div className="level">
-              <div className="level-left">
+            <div className="level is-mobile chart-section__heading">
+              <div className="level-left is-hidden-mobile">
                 <div className="level-item title">
                   <h2>HAV</h2>
                   <span>(HAVVEN)</span>
@@ -227,14 +227,16 @@ class App extends React.Component {
                     value={currentHavStat.value}
                     trend={currentHavStat.trend}
                   />
-                  <Chart
-                    info={charts[this.state.havChartName]}
-                    onCursorChange={this.onCursorChange}
-                    fullSize={true}
-                    colorGradient="green"
-                    lastUpdated={lastUpdated}
-                    currencySwitch={this.state.havButtons}
-                  />
+                  <div>
+                    <Chart
+                      info={charts[this.state.havChartName]}
+                      onCursorChange={this.onCursorChange}
+                      fullSize={true}
+                      colorGradient="green"
+                      lastUpdated={lastUpdated}
+                      currencySwitch={this.state.havButtons}
+                    />
+                  </div>
                 </div>
               </div>
             </div>

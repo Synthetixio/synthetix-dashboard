@@ -64,7 +64,15 @@ export default (state = initialState, action) => {
               data.NominPrice.data[data.NominPrice.data.length - 1].usdValue,
             nominVolume24h:
               data.NominVolume24h.data[data.NominVolume24h.data.length - 1]
-                .usdValue
+                .usdValue,
+            nominFeesCollected:
+              data.NominFeesCollected.data[
+                data.NominFeesCollected.data.length - 1
+              ].usdValue,
+            collateralizationRatio:
+              data.CollateralizationRatio.data[
+                data.CollateralizationRatio.data.length - 1
+              ].usdValue
           }
         };
       } catch (e) {

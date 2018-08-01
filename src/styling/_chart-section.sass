@@ -8,6 +8,7 @@
       font-size: 56px
       letter-spacing: -1.95px
     span
+    span
       display: block
       font-size: 14px
       letter-spacing: 1px
@@ -50,7 +51,7 @@
       background-color: #D42351
 
 .chart-box__info
-  padding: ($box-padding + 0.7rem) $box-padding $box-padding $box-padding
+  padding: ($box-padding + 0.7rem) $box-padding ($box-padding - 1.3rem) $box-padding
   h3
     font-size: 14px
     font-weight: 500
@@ -62,6 +63,28 @@
     width: 195px
     line-height: 20px
 
+.time-toggles
+  &.is-hidden-mobile
+    position: absolute
+    top: $box-padding
+    right: $box-padding
+  &.is-hidden-tablet
+    text-align: center
+    padding-top: 1rem
+    padding-bottom: 1.5rem
+  button
+    font-size: 14px
+    font-weight: 500
+    letter-spacing: 0.78px
+    line-height: 16px
+    cursor: pointer
+    border: none
+    background-color: transparent
+    padding: 0.7em
+    border-radius: 3px
+    transition: 250ms all ease
+    margin-left: 0.5em
+
 +mobile
   html
     .chart-section > div
@@ -71,6 +94,25 @@
       border: none
       margin-left: -$gap
       margin-right: -$gap
+    .chart-section__heading
+      justify-content: flex-end
+      .level-right
+        flex-direction: column
+        align-items: flex-end
+        button
+          font-size: 18px
+          margin-bottom: 0.3em
+    .chart-box--main
+      position: static
+    .chart-box__stat
+      position: absolute
+      top: $box-padding
+      left: 0
+      > div
+        display: table
+        margin-left: 0
+        margin-top: 1.3rem
+        font-size: 18px
 
 +desktop
   .chart-section > div

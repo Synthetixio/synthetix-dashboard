@@ -47,10 +47,9 @@ a.navbar-item {
   position: relative;
   height: 60px; }
 
-@media screen and (min-width: 769px), print {
-  .footer-info .last-updated-bottom {
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%); } }
+@media screen and (max-width: 768px) {
+  .footer-info {
+    margin-top: -2rem; } }
 .chart-section {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem; }
@@ -100,7 +99,7 @@ a.navbar-item {
     background-color: #D42351; }
 
 .chart-box__info {
-  padding: 2.7rem 2rem 2rem 2rem; }
+  padding: 2.7rem 2rem 0.7rem 2rem; }
   .chart-box__info h3 {
     font-size: 14px;
     font-weight: 500;
@@ -112,6 +111,27 @@ a.navbar-item {
     width: 195px;
     line-height: 20px; }
 
+.time-toggles.is-hidden-mobile {
+  position: absolute;
+  top: 2rem;
+  right: 2rem; }
+.time-toggles.is-hidden-tablet {
+  text-align: center;
+  padding-top: 1rem;
+  padding-bottom: 1.5rem; }
+.time-toggles button {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.78px;
+  line-height: 16px;
+  cursor: pointer;
+  border: none;
+  background-color: transparent;
+  padding: 0.7em;
+  border-radius: 3px;
+  transition: 250ms all ease;
+  margin-left: 0.5em; }
+
 @media screen and (max-width: 768px) {
   html .chart-section > div {
     border: none;
@@ -119,7 +139,26 @@ a.navbar-item {
   html .chart-box--main {
     border: none;
     margin-left: -30px;
-    margin-right: -30px; } }
+    margin-right: -30px; }
+  html .chart-section__heading {
+    justify-content: flex-end; }
+    html .chart-section__heading .level-right {
+      flex-direction: column;
+      align-items: flex-end; }
+      html .chart-section__heading .level-right button {
+        font-size: 18px;
+        margin-bottom: 0.3em; }
+  html .chart-box--main {
+    position: static; }
+  html .chart-box__stat {
+    position: absolute;
+    top: 2rem;
+    left: 0; }
+    html .chart-box__stat > div {
+      display: table;
+      margin-left: 0;
+      margin-top: 1.3rem;
+      font-size: 18px; } }
 @media screen and (min-width: 1260px) {
   .chart-section > div {
     margin-left: -30px;
@@ -199,7 +238,10 @@ a.navbar-item {
     float: right; } }
 @media screen and (max-width: 768px) {
   body {
-    padding-top: 127px; } }
+    padding-top: 127px; }
+
+  .is-mobile.justified-content-center {
+    justify-content: center; } }
 .dashboard-root {
   position: relative; }
 
@@ -264,8 +306,5 @@ a.navbar-item {
     background-color: #5460FF; }
   .button.is-link.is-active {
     border-radius: 3px; }
-
-.justified-content-center {
-  justify-content: center; }
 
 /*# sourceMappingURL=main.css.map */

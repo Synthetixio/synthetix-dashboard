@@ -253,6 +253,13 @@ class App extends React.Component {
                     value={currentHavStat.value}
                     trend={currentHavStat.trend}
                   />
+                  <div className="time-toggles is-hidden-mobile">
+                    <button>1D</button>
+                    <button>1W</button>
+                    <button>1M</button>
+                    <button>1Y</button>
+                    <button className="is-active">ALL</button>
+                  </div>
                   <div>
                     <Chart
                       info={charts[havChartName]}
@@ -267,6 +274,13 @@ class App extends React.Component {
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="time-toggles is-hidden-tablet">
+              <button>1D</button>
+              <button>1W</button>
+              <button>1M</button>
+              <button>1Y</button>
+              <button className="is-active">ALL</button>
             </div>
             <div className="level is-mobile justified-content-center">
               <div className="level-left" />
@@ -347,8 +361,8 @@ class App extends React.Component {
         </div>
         <div className="container chart-section" id="nusd">
           <div>
-            <div className="level is-mobile">
-              <div className="level-left">
+            <div className="level is-mobile chart-section__heading">
+              <div className="level-left is-hidden-mobile">
                 <div className="level-item title">
                   <h2>nUSD</h2>
                   <span>(NOMINS)</span>
@@ -401,20 +415,80 @@ class App extends React.Component {
                     value={currentNominStat.value}
                     trend={currentNominStat.trend}
                   />
-                  <Chart
-                    info={charts[nUSDChartName]}
-                    decimals={DECIMALS[nUSDChartName]}
-                    onCursorChange={this.onCursorChange}
-                    fullSize={true}
-                    colorGradient="green"
-                    lastUpdated={lastUpdated}
-                  />
+                  <div className="time-toggles is-hidden-mobile">
+                    <button>1D</button>
+                    <button>1W</button>
+                    <button>1M</button>
+                    <button>1Y</button>
+                    <button className="is-active">ALL</button>
+                  </div>
+                  <div>
+                    <Chart
+                      info={charts[nUSDChartName]}
+                      decimals={DECIMALS[nUSDChartName]}
+                      onCursorChange={this.onCursorChange}
+                      fullSize={true}
+                      colorGradient="green"
+                      lastUpdated={lastUpdated}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="time-toggles is-hidden-tablet">
+              <button>1D</button>
+              <button>1W</button>
+              <button>1M</button>
+              <button>1Y</button>
+              <button className="is-active">ALL</button>
+            </div>
+            <div className="level is-mobile justified-content-center">
+              <div className="level-left" />
+              <div className="level-right currency-toggles">
+                <div className="level-item">
+                  <button
+                    className={cx("button is-link usd", {
+                      "is-active": havButtons.Usd
+                    })}
+                    onClick={() => this.onCurrencyClick("Usd")}
+                  >
+                    USD
+                  </button>
+                </div>
+                <div className="level-item">
+                  <button
+                    className={cx("button is-link btc", {
+                      "is-active": havButtons.Btc
+                    })}
+                    onClick={() => this.onCurrencyClick("Btc")}
+                  >
+                    BTC
+                  </button>
+                </div>
+                <div className="level-item">
+                  <button
+                    className={cx("button is-link eth", {
+                      "is-active": havButtons.Eth
+                    })}
+                    onClick={() => this.onCurrencyClick("Eth")}
+                  >
+                    ETH
+                  </button>
                 </div>
               </div>
             </div>
             <div className="columns">
               <div className="column">
                 <div className="chart-box">
+                  <div className="chart-box__info">
+                    <h3>TOTAL FEES</h3>
+                    <div>
+                      The cumulative USD value of fees collected over time.
+                    </div>
+                  </div>
+                  <div className="chart-box__number">
+                    {numeral(stats.nominFeesCollected).format(`$0,0.`)}
+                  </div>
                   <Chart
                     info={charts.NominFeesCollected}
                     decimals={DECIMALS[NominFeesCollected]}
@@ -426,6 +500,15 @@ class App extends React.Component {
               </div>
               <div className="column">
                 <div className="chart-box">
+                  <div className="chart-box__info">
+                    <h3>COLLATERALIZATION RATIO</h3>
+                    <div>
+                      The ratio of nUSD market cap to locked HAV market cap.
+                    </div>
+                  </div>
+                  <div className="chart-box__number">
+                    {numeral(stats.collateralizationRatio * 100).format("0.00")}%
+                  </div>
                   <Chart
                     info={charts.CollateralizationRatio}
                     decimals={DECIMALS[CollateralizationRatio]}

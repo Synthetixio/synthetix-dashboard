@@ -12,6 +12,9 @@ $color-8: #53B167
 $color-9: #D9AB44
 $color-10: #42217E
 $color-toggle-btn-active: #FFF
+$color-time-toggle-btn-active: #25244B
+$color-time-toggle-btn-active-bg: #e8e8e8
+
 
 html
   background-color: $bg-color
@@ -145,3 +148,12 @@ a.navbar-item
 
 .chart-box__number
   color: $color-1
+
+.time-toggles
+  button
+    color: $color-2
+    &:hover
+      background-color: rgba($color-1,.05)
+    &.is-active
+      background-color: $color-time-toggle-btn-active-bg
+      color: $color-time-toggle-btn-active

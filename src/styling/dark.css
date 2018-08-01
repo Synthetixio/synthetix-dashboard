@@ -116,4 +116,12 @@ a.navbar-item {
 .chart-box__number {
   color: #fff; }
 
+.time-toggles button {
+  color: #6f6e98; }
+  .time-toggles button:hover {
+    background-color: rgba(255, 255, 255, 0.05); }
+  .time-toggles button.is-active {
+    background-color: #fff;
+    color: #25244B; }
+
 /*# sourceMappingURL=dark.css.map */

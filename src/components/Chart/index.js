@@ -8,8 +8,11 @@ import {
   Line,
   VictoryScatter,
   VictoryLine,
-  VictoryArea
+  VictoryArea,
+  VictoryTooltip,
 } from "victory";
+import { round } from "lodash";
+import GraphTooltip from "../Tooltip"
 import moment from "moment";
 import havvenTheme from "../../config/theme";
 const CURRENCY_MAP = ["Usd", "Btc", "Eth"];
@@ -395,6 +398,15 @@ export default class HavvenChart extends React.Component {
                   cursorDimension={"x"}
                   cursorComponent={<Line style={{ stroke: "transparent" }} />}
                   onCursorChange={this.onCursorChange}
+                  cursorLabel={() => ''}
+                  cursorLabelComponent={ <VictoryTooltip flyoutComponent={<GraphTooltip scatterY={this.state.scatterY} scatterX={this.state.scatterX}/>}/> }
+                  // labelComponent={<VictoryTooltip flyoutComponent={<GraphTooltip/>}/>}
+                  // cursorLabel={ d => {
+                  //   // xVal =round(d.x, 2);// yVal = round(d.y, 2);
+                  //   // this.setSelectorX(xVal);
+                  //   // return `${round(d.x, 2)}`
+                  //   //return "";
+                  // }}
                 />
               }
             >

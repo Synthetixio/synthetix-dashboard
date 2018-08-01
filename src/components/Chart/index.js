@@ -9,10 +9,10 @@ import {
   VictoryScatter,
   VictoryLine,
   VictoryArea,
-  VictoryTooltip,
+  VictoryTooltip
 } from "victory";
 import { round } from "lodash";
-import GraphTooltip from "../Tooltip"
+import GraphTooltip from "../Tooltip";
 import moment from "moment";
 import havvenTheme from "../../config/theme";
 const CURRENCY_MAP = ["Usd", "Btc", "Eth"];
@@ -229,7 +229,7 @@ export default class HavvenChart extends React.Component {
       minValueEth,
       maxValueEth
     } = this.state;
-    const {currencySwitch} = this.props;
+    const { currencySwitch } = this.props;
 
     return (
       <div className={[styles.container]}>
@@ -300,7 +300,7 @@ export default class HavvenChart extends React.Component {
             this.props.currencySwitch["Btc"] && (
               <div style={{ position: "absolute", top: 0 }}>
                 <VictoryChart
-                  domain={{ y: [minValueBtc*0.9, maxValueBtc*1.1] }}
+                  domain={{ y: [minValueBtc * 0.9, maxValueBtc * 1.1] }}
                   scale={{ x: "time" }}
                   padding={{ bottom: 40 }}
                   theme={havvenTheme}
@@ -345,7 +345,7 @@ export default class HavvenChart extends React.Component {
             this.props.currencySwitch["Eth"] && (
               <div style={{ position: "absolute", top: 0 }}>
                 <VictoryChart
-                  domain={{ y: [minValueEth*0.9, maxValueEth*1.1] }}
+                  domain={{ y: [minValueEth * 0.9, maxValueEth * 1.1] }}
                   scale={{ x: "time" }}
                   padding={{ bottom: 40 }}
                   theme={havvenTheme}
@@ -389,7 +389,7 @@ export default class HavvenChart extends React.Component {
 
           <div>
             <VictoryChart
-              domain={{ y: [minValue*0.9, maxValue*1.1] }}
+              domain={{ y: [minValue * 0.9, maxValue * 1.1] }}
               scale={{ x: "time" }}
               padding={{ bottom: 40 }}
               theme={havvenTheme}
@@ -400,16 +400,30 @@ export default class HavvenChart extends React.Component {
                   cursorDimension={"x"}
                   cursorComponent={<Line style={{ stroke: "transparent" }} />}
                   onCursorChange={this.onCursorChange}
-                  cursorLabel={() => ''}
+                  cursorLabel={() => ""}
                   cursorLabelOffset={{ x: -85, y: 0 }}
-                  cursorLabelComponent={ <VictoryTooltip flyoutComponent={<GraphTooltip
-                    scatterY={this.state.scatterY}
-                    scatterX={this.state.scatterX}
-                    scatterYBtc={currencySwitch && currencySwitch.Btc && this.state.scatterYBtc}
-                    scatterYEth={currencySwitch && currencySwitch.Eth && this.state.scatterYEth}
-                    decimals={this.props.decimals}
-                    sign={this.props.sign}
-                  />}/> }
+                  cursorLabelComponent={
+                    <VictoryTooltip
+                      flyoutComponent={
+                        <GraphTooltip
+                          scatterY={this.state.scatterY}
+                          scatterX={this.state.scatterX}
+                          scatterYBtc={
+                            currencySwitch &&
+                            currencySwitch.Btc &&
+                            this.state.scatterYBtc
+                          }
+                          scatterYEth={
+                            currencySwitch &&
+                            currencySwitch.Eth &&
+                            this.state.scatterYEth
+                          }
+                          decimals={this.props.decimals}
+                          sign={this.props.sign}
+                        />
+                      }
+                    />
+                  }
                 />
               }
             >
@@ -431,34 +445,39 @@ export default class HavvenChart extends React.Component {
               <VictoryLine
                 data={timeSeries}
                 style={{
-                  data: { stroke: (this.props.colorGradient && LINE_COLOR[this.props.colorGradient]) || LINE_COLOR["red"], strokeWidth: 2 }
-                }}
-              />
-
-
-              {this.state.showScatter &&
-              <VictoryLine
-                style={{
-                  data: { stroke: "rgba(255,255,255,0.15)" },
-                }}
-                data={[
-                  { x: this.state.scatterX, y: minValue*0.9 },
-                  { x: this.state.scatterX, y: maxValue*1.1 },
-                ]}
-              />}
-              {this.state.showScatter &&
-              <VictoryScatter
-                data={[
-                  {
-                    x: this.state.scatterX,
-                    y: this.state.scatterY,
-                    symbol: "circle",
-                    size: 5
+                  data: {
+                    stroke:
+                      (this.props.colorGradient &&
+                        LINE_COLOR[this.props.colorGradient]) ||
+                      LINE_COLOR["red"],
+                    strokeWidth: 2
                   }
-                ]}
+                }}
               />
-              }
 
+              {this.state.showScatter && (
+                <VictoryLine
+                  style={{
+                    data: { stroke: "rgba(255,255,255,0.15)" }
+                  }}
+                  data={[
+                    { x: this.state.scatterX, y: minValue * 0.9 },
+                    { x: this.state.scatterX, y: maxValue * 1.1 }
+                  ]}
+                />
+              )}
+              {this.state.showScatter && (
+                <VictoryScatter
+                  data={[
+                    {
+                      x: this.state.scatterX,
+                      y: this.state.scatterY,
+                      symbol: "circle",
+                      size: 5
+                    }
+                  ]}
+                />
+              )}
             </VictoryChart>
           </div>
         </div>

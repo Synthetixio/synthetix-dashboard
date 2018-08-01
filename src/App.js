@@ -7,8 +7,20 @@ import TopNavBar from "components/TopNavBar";
 import { switchTheme } from "actions/theme";
 import { cx } from "emotion";
 import moment from "moment";
-const HAV_CHART = { HavvenPrice: "HavvenPrice", HavvenMarketCap: "HavvenMarketCap", HavvenVolume24h: "HavvenVolume24h"};
-const nUSD_CHART = { NominPrice: "NominPrice",  NominMarketCap: "NominMarketCap", NominVolume24h: "NominVolume24h"};
+const HAV_CHART = { HavvenPrice: "HavvenPrice", HavvenMarketCap: "HavvenMarketCap", HavvenVolume24h: "HavvenVolume24h", LockedUpHavven: "LockedUpHavven" };
+const nUSD_CHART = { NominPrice: "NominPrice",  NominMarketCap: "NominMarketCap", NominVolume24h: "NominVolume24h", NominFeesCollected: "NominFeesCollected", CollateralizationRatio: "CollateralizationRatio"};
+const DECIMALS = {
+  HavvenMarketCap : { Val: 0, Btc: 0 },
+  HavvenPrice : { Val: 3, Btc: 4 },
+  HavvenVolume24h : { Val: 0, Btc: 0 },
+  LockedUpHavven:{ Val: 2 },
+  HavvenVolume24h:{ Val: 0 },
+  NominMarketCap:{ Val: 2 },
+  NominPrice:{ Val: 4 },
+  NominVolume24h:{ Val: 2 },
+  NominFeesCollected: { Val: 2 },
+  CollateralizationRatio: { Val: 2 },//%
+};
 
 class App extends React.Component {
   constructor(props) {
@@ -82,8 +94,8 @@ class App extends React.Component {
     const { charts, theme } = this.props;
     const { activeSection, themeCss, havButtons, havChartName, nUSDChartName } = this.state;
     const { stats, lastUpdated } = charts;
-    const { HavvenMarketCap, HavvenVolume24h, HavvenPrice } = HAV_CHART;
-    const { NominMarketCap, NominVolume24h, NominPrice } = nUSD_CHART;
+    const { HavvenMarketCap, HavvenVolume24h, HavvenPrice, LockedUpHavven } = HAV_CHART;
+    const { NominMarketCap, NominVolume24h, NominPrice, CollateralizationRatio, NominFeesCollected } = nUSD_CHART;
 
     const minsAgo = moment(Date.now()).diff(lastUpdated, "minutes");
 
@@ -148,12 +160,14 @@ class App extends React.Component {
             <div className="columns">
               <div className="column">
                 <Chart
-                  info={charts[this.state.havChartName]}
+                  info={charts[havChartName]}
+                  decimals={DECIMALS[havChartName]}
                   onCursorChange={this.onCursorChange}
                   fullSize={true}
                   colorGradient="green"
                   lastUpdated={lastUpdated}
                   currencySwitch={this.state.havButtons}
+                  tooltipDecimal={{}}
                 />
               </div>
             </div>
@@ -176,6 +190,7 @@ class App extends React.Component {
               <div className="column">
                 <Chart
                   info={charts.LockedUpHavven}
+                  decimals={DECIMALS[LockedUpHavven]}
                   onCursorChange={this.onCursorChange}
                   colorGradient="yellow"
                   lastUpdated={lastUpdated}
@@ -184,6 +199,7 @@ class App extends React.Component {
               <div className="column">
                 <Chart
                   info={charts.HavvenVolume24h}
+                  decimals={DECIMALS[HavvenVolume24h]}
                   onCursorChange={this.onCursorChange}
                   colorGradient="red"
                   lastUpdated={lastUpdated}
@@ -218,6 +234,7 @@ class App extends React.Component {
               <div className="column">
                 <Chart
                   info={charts[nUSDChartName]}
+                  decimals={DECIMALS[nUSDChartName]}
                   onCursorChange={this.onCursorChange}
                   fullSize={true}
                   colorGradient="green"
@@ -229,6 +246,7 @@ class App extends React.Component {
               <div className="column">
                 <Chart
                   info={charts.NominFeesCollected}
+                  decimals={DECIMALS[NominFeesCollected]}
                   onCursorChange={this.onCursorChange}
                   colorGradient="green"
                   lastUpdated={lastUpdated}
@@ -237,9 +255,11 @@ class App extends React.Component {
               <div className="column">
                 <Chart
                   info={charts.CollateralizationRatio}
+                  decimals={DECIMALS[CollateralizationRatio]}
                   onCursorChange={this.onCursorChange}
                   colorGradient="red"
                   lastUpdated={lastUpdated}
+                  sign="%"
                 />
               </div>
             </div>

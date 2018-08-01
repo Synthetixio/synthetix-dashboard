@@ -42,6 +42,7 @@ export default class HavvenChart extends React.Component {
       windowWidth: window.innerWidth || 800,
       gradientUrl: `url(#gradient-${colorGradient})`,
       colorGradient,
+      decimals: {}
     };
   }
 
@@ -400,11 +401,14 @@ export default class HavvenChart extends React.Component {
                   cursorComponent={<Line style={{ stroke: "transparent" }} />}
                   onCursorChange={this.onCursorChange}
                   cursorLabel={() => ''}
+                  cursorLabelOffset={{ x: -85, y: 0 }}
                   cursorLabelComponent={ <VictoryTooltip flyoutComponent={<GraphTooltip
                     scatterY={this.state.scatterY}
                     scatterX={this.state.scatterX}
                     scatterYBtc={currencySwitch && currencySwitch.Btc && this.state.scatterYBtc}
                     scatterYEth={currencySwitch && currencySwitch.Eth && this.state.scatterYEth}
+                    decimals={this.props.decimals}
+                    sign={this.props.sign}
                   />}/> }
                 />
               }

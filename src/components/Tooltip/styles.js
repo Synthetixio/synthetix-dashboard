@@ -21,7 +21,7 @@ export default {
     padding-left:5px;  
   `,
   ETH: css`
-    color: #D9AB44;
+    color: #42217E;
     padding-right:10px;
     padding-left:5px;  
   `,
@@ -32,6 +32,7 @@ export default {
   `,
   value: css`
     color: #FFFFFF;
+    font-variant: tabular-nums;
   `,
   dateSm: css`
   padding:10px;

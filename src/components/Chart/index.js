@@ -228,6 +228,7 @@ export default class HavvenChart extends React.Component {
       minValueEth,
       maxValueEth
     } = this.state;
+    const {currencySwitch} = this.props;
 
     return (
       <div className={[styles.container]}>
@@ -399,14 +400,12 @@ export default class HavvenChart extends React.Component {
                   cursorComponent={<Line style={{ stroke: "transparent" }} />}
                   onCursorChange={this.onCursorChange}
                   cursorLabel={() => ''}
-                  cursorLabelComponent={ <VictoryTooltip flyoutComponent={<GraphTooltip scatterY={this.state.scatterY} scatterX={this.state.scatterX}/>}/> }
-                  // labelComponent={<VictoryTooltip flyoutComponent={<GraphTooltip/>}/>}
-                  // cursorLabel={ d => {
-                  //   // xVal =round(d.x, 2);// yVal = round(d.y, 2);
-                  //   // this.setSelectorX(xVal);
-                  //   // return `${round(d.x, 2)}`
-                  //   //return "";
-                  // }}
+                  cursorLabelComponent={ <VictoryTooltip flyoutComponent={<GraphTooltip
+                    scatterY={this.state.scatterY}
+                    scatterX={this.state.scatterX}
+                    scatterYBtc={currencySwitch && currencySwitch.Btc && this.state.scatterYBtc}
+                    scatterYEth={currencySwitch && currencySwitch.Eth && this.state.scatterYEth}
+                  />}/> }
                 />
               }
             >

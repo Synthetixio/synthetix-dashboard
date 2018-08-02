@@ -29,8 +29,7 @@ class GraphTooltip extends React.Component {
     const base = "0,0";
     const baseVal = sign ? base : "$" + base;
 
-    if(!showScatter)
-      return null;
+    if (!showScatter) return null;
 
     return (
       <g style={{ pointerEvents: "none" }}>
@@ -44,12 +43,14 @@ class GraphTooltip extends React.Component {
               </span>
             </div>
 
-            {scatterY && (<div>
-              <span className={[styles.value]}>
-                {numeral(scatterY.toString()).format(baseVal + dec)}
-              </span>
-              <span className={[styles.USD]}>{sign ? sign : "USD"}</span>
-            </div>)}
+            {scatterY && (
+              <div>
+                <span className={[styles.value]}>
+                  {numeral(scatterY.toString()).format(baseVal + dec)}
+                </span>
+                <span className={[styles.USD]}>{sign ? sign : "USD"}</span>
+              </div>
+            )}
 
             {scatterYBtc && (
               <div>

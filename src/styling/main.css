@@ -197,7 +197,8 @@ a.navbar-item {
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  transition: all 200ms ease; }
+  transition: all 200ms ease;
+  cursor: pointer; }
   .single-stat-box:hover {
     transform: scale(1.05); }
 

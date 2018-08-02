@@ -9,6 +9,8 @@ import cx from "classnames";
 import moment from "moment";
 import SingleStat from "components/SingleStat";
 import numeral from "numeral";
+import { scroller } from "react-scroll";
+
 const HAV_CHART = {
   HavvenPrice: "HavvenPrice",
   HavvenMarketCap: "HavvenMarketCap",
@@ -55,7 +57,7 @@ class App extends React.Component {
   componentWillMount() {
     this.fetchCharts();
     this.setState({
-      intervalId: setInterval(this.fetchCharts, 60000)
+      intervalId: setInterval(this.fetchCharts, 10 * 60 * 1000)
     });
   }
 
@@ -127,6 +129,13 @@ class App extends React.Component {
 
     const minsAgo = moment(Date.now()).diff(lastUpdated, "minutes");
 
+    const scrollToOptions = {
+      duration: 500,
+      delay: 100,
+      smooth: "easeInOutQuint",
+      offset: -110
+    };
+
     const havStats = {
       [HAV_CHART.HavvenMarketCap]: {
         value: stats.havvenMarketCap,
@@ -173,6 +182,10 @@ class App extends React.Component {
               trend={stats.havvenMarketCap24hDelta * 100}
               label="HAVVEN MARKET CAP"
               desc="Price of Havven multipled by it’s curiculating supply."
+              onClick={() => {
+                this.setHavChart(HavvenMarketCap);
+                scroller.scrollTo("hav-main-chart", scrollToOptions);
+              }}
             />
             <SingleStatBox
               value={stats.havvenPriceCap}
@@ -180,12 +193,20 @@ class App extends React.Component {
               label="HAVVEN PRICE"
               desc="Price of Havven multipled by it’s curiculating supply."
               decimals={3}
+              onClick={() => {
+                this.setHavChart(HavvenPrice);
+                scroller.scrollTo("hav-main-chart", scrollToOptions);
+              }}
             />
             <SingleStatBox
               value={stats.nominMarketCap}
               trend={stats.nominMarketCap24hDelta * 100}
               label="nUSD MARKET CAP"
               desc="Price of Havven multipled by it’s curiculating supply."
+              onClick={() => {
+                this.setnUSDChart(NominMarketCap);
+                scroller.scrollTo("nomin-main-chart", scrollToOptions);
+              }}
             />
             <SingleStatBox
               value={stats.nominPriceCap}
@@ -193,6 +214,10 @@ class App extends React.Component {
               label="nUSD PRICE"
               desc="Price of Havven multipled by it’s curiculating supply."
               decimals={3}
+              onClick={() => {
+                this.setnUSDChart(NominPrice);
+                scroller.scrollTo("nomin-main-chart", scrollToOptions);
+              }}
             />
           </div>
         </div>
@@ -246,7 +271,7 @@ class App extends React.Component {
             </div>
             <div className="columns">
               <div className="column">
-                <div className="chart-box chart-box--main">
+                <div className="chart-box chart-box--main" id="hav-main-chart">
                   <SingleStat
                     value={currentHavStat.value}
                     trend={currentHavStat.trend}
@@ -405,7 +430,10 @@ class App extends React.Component {
 
             <div className="columns">
               <div className="column">
-                <div className="chart-box chart-box--main">
+                <div
+                  className="chart-box chart-box--main"
+                  id="nomin-main-chart"
+                >
                   <SingleStat
                     value={currentNominStat.value}
                     trend={currentNominStat.trend}
@@ -435,41 +463,6 @@ class App extends React.Component {
               <button>1M</button>
               <button>1Y</button>
               <button className="is-active">ALL</button>
-            </div>
-            <div className="level is-mobile justified-content-center">
-              <div className="level-left" />
-              <div className="level-right currency-toggles">
-                <div className="level-item">
-                  <button
-                    className={cx("button is-link usd", {
-                      "is-active": havButtons.Usd
-                    })}
-                    onClick={() => this.onCurrencyClick("Usd")}
-                  >
-                    USD
-                  </button>
-                </div>
-                <div className="level-item">
-                  <button
-                    className={cx("button is-link btc", {
-                      "is-active": havButtons.Btc
-                    })}
-                    onClick={() => this.onCurrencyClick("Btc")}
-                  >
-                    BTC
-                  </button>
-                </div>
-                <div className="level-item">
-                  <button
-                    className={cx("button is-link eth", {
-                      "is-active": havButtons.Eth
-                    })}
-                    onClick={() => this.onCurrencyClick("Eth")}
-                  >
-                    ETH
-                  </button>
-                </div>
-              </div>
             </div>
             <div className="columns">
               <div className="column">

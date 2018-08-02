@@ -143,11 +143,11 @@ export default class HavvenChart extends React.Component {
     }
 
     const { currencySwitch } = this.props;
-    if(currencySwitch && prevProps.currencySwitch !== currencySwitch ){
-      const hideScatter = !currencySwitch.Usd && !currencySwitch.Btc && !currencySwitch.Eth;
-      this.setState({showScatter: !hideScatter});
+    if (currencySwitch && prevProps.currencySwitch !== currencySwitch) {
+      const hideScatter =
+        !currencySwitch.Usd && !currencySwitch.Btc && !currencySwitch.Eth;
+      this.setState({ showScatter: !hideScatter });
     }
-
   }
 
   parseProps = props => {
@@ -387,60 +387,60 @@ export default class HavvenChart extends React.Component {
                 </VictoryChart>
               </div>
             )}
-          {(this.props.currencySwitch &&
-          this.props.currencySwitch["Usd"] || !this.props.currencySwitch) &&
-          (<div style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
-            <VictoryChart
-              domain={{ y: [minValue * 0.9, maxValue * 1.1] }}
-              scale={{ x: "time" }}
-              padding={{ bottom: 40 }}
-              theme={havvenTheme}
-              domainPadding={{ y: [0, 20] }}
-              width={this.state.windowWidth}
-            >
-              <VictoryAxis
-                style={{
-                  grid: { stroke: "transparent" },
-                  axis: { stroke: "transparent" }
-                }}
-                tickCount={5}
-                tickFormat={t => `${moment(t).format("DD/MM")}`}
-              />
-
-              <VictoryArea
-                data={timeSeries}
-                style={{
-                  data: { fill: this.state.gradientUrl }
-                }}
-              />
-              <VictoryLine
-                data={timeSeries}
-                style={{
-                  data: {
-                    stroke:
-                    (this.props.colorGradient &&
-                      LINE_COLOR[this.props.colorGradient]) ||
-                    LINE_COLOR["red"],
-                    strokeWidth: 2
-                  }
-                }}
-              />
-
-
-              {this.state.showScatter && (
-                <VictoryScatter
-                  data={[
-                    {
-                      x: this.state.scatterX,
-                      y: this.state.scatterY,
-                      symbol: "circle",
-                      size: 5
-                    }
-                  ]}
+          {((this.props.currencySwitch && this.props.currencySwitch["Usd"]) ||
+            !this.props.currencySwitch) && (
+            <div style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
+              <VictoryChart
+                domain={{ y: [minValue * 0.9, maxValue * 1.1] }}
+                scale={{ x: "time" }}
+                padding={{ bottom: 40 }}
+                theme={havvenTheme}
+                domainPadding={{ y: [0, 20] }}
+                width={this.state.windowWidth}
+              >
+                <VictoryAxis
+                  style={{
+                    grid: { stroke: "transparent" },
+                    axis: { stroke: "transparent" }
+                  }}
+                  tickCount={5}
+                  tickFormat={t => `${moment(t).format("DD/MM")}`}
                 />
-              )}
-            </VictoryChart>
-          </div>)}
+
+                <VictoryArea
+                  data={timeSeries}
+                  style={{
+                    data: { fill: this.state.gradientUrl }
+                  }}
+                />
+                <VictoryLine
+                  data={timeSeries}
+                  style={{
+                    data: {
+                      stroke:
+                        (this.props.colorGradient &&
+                          LINE_COLOR[this.props.colorGradient]) ||
+                        LINE_COLOR["red"],
+                      strokeWidth: 2
+                    }
+                  }}
+                />
+
+                {this.state.showScatter && (
+                  <VictoryScatter
+                    data={[
+                      {
+                        x: this.state.scatterX,
+                        y: this.state.scatterY,
+                        symbol: "circle",
+                        size: 5
+                      }
+                    ]}
+                  />
+                )}
+              </VictoryChart>
+            </div>
+          )}
           <div>
             <VictoryChart
               domain={{ y: [minValue * 0.9, maxValue * 1.1] }}
@@ -462,9 +462,10 @@ export default class HavvenChart extends React.Component {
                         <GraphTooltip
                           showScatter={this.state.showScatter}
                           scatterY={
-                            currencySwitch &&
-                            !currencySwitch.Usd ? undefined :
-                            this.state.scatterY}
+                            currencySwitch && !currencySwitch.Usd
+                              ? undefined
+                              : this.state.scatterY
+                          }
                           scatterX={this.state.scatterX}
                           scatterYBtc={
                             currencySwitch &&
@@ -498,8 +499,7 @@ export default class HavvenChart extends React.Component {
                 data={timeSeries}
                 style={{
                   data: {
-                    stroke:
-                      "transparent",
+                    stroke: "transparent",
                     strokeWidth: 2
                   }
                 }}
@@ -516,7 +516,6 @@ export default class HavvenChart extends React.Component {
                   ]}
                 />
               )}
-
             </VictoryChart>
           </div>
         </div>

@@ -101,8 +101,6 @@ class App extends React.Component {
     }
   }
 
-  onCursorChange = () => {};
-
   render() {
     const { charts, theme } = this.props;
     const {
@@ -264,7 +262,6 @@ class App extends React.Component {
                     <Chart
                       info={charts[havChartName]}
                       decimals={DECIMALS[havChartName]}
-                      onCursorChange={this.onCursorChange}
                       fullSize={true}
                       colorGradient="green"
                       lastUpdated={lastUpdated}
@@ -330,7 +327,6 @@ class App extends React.Component {
                   <Chart
                     info={charts.LockedUpHavven}
                     decimals={DECIMALS[LockedUpHavven]}
-                    onCursorChange={this.onCursorChange}
                     colorGradient="yellow"
                     lastUpdated={lastUpdated}
                   />
@@ -350,7 +346,6 @@ class App extends React.Component {
                   <Chart
                     info={charts.HavvenVolume24h}
                     decimals={DECIMALS[HavvenVolume24h]}
-                    onCursorChange={this.onCursorChange}
                     colorGradient="red"
                     lastUpdated={lastUpdated}
                   />
@@ -426,7 +421,6 @@ class App extends React.Component {
                     <Chart
                       info={charts[nUSDChartName]}
                       decimals={DECIMALS[nUSDChartName]}
-                      onCursorChange={this.onCursorChange}
                       fullSize={true}
                       colorGradient="green"
                       lastUpdated={lastUpdated}
@@ -492,7 +486,6 @@ class App extends React.Component {
                   <Chart
                     info={charts.NominFeesCollected}
                     decimals={DECIMALS[NominFeesCollected]}
-                    onCursorChange={this.onCursorChange}
                     colorGradient="green"
                     lastUpdated={lastUpdated}
                   />
@@ -512,7 +505,6 @@ class App extends React.Component {
                   <Chart
                     info={charts.CollateralizationRatio}
                     decimals={DECIMALS[CollateralizationRatio]}
-                    onCursorChange={this.onCursorChange}
                     colorGradient="red"
                     lastUpdated={lastUpdated}
                     sign="%"

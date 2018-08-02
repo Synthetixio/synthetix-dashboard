@@ -26,10 +26,10 @@ const DECIMALS = {
   HavvenMarketCap: { Val: 0, Btc: 0 },
   HavvenPrice: { Val: 3, Btc: 4 },
   HavvenVolume24h: { Val: 0, Btc: 0 },
-  LockedUpHavven: { Val: 2 },
+  LockedUpHavven: { Val: 0 },
   HavvenVolume24h: { Val: 0 },
   NominMarketCap: { Val: 2 },
-  NominPrice: { Val: 4 },
+  NominPrice: { Val: 3 },
   NominVolume24h: { Val: 2 },
   NominFeesCollected: { Val: 2 },
   CollateralizationRatio: { Val: 2 } //%

@@ -14,29 +14,32 @@ export default {
     color: #53b167;
     padding-right: 10px;
     padding-left: 5px;
+    font-size: 14px;
   `,
   BTC: css`
     color: #d9ab44;
     padding-right: 10px;
     padding-left: 5px;
+    font-size: 14px;
   `,
   ETH: css`
     color: #42217e;
     padding-right: 10px;
     padding-left: 5px;
+    font-size: 14px;
   `,
 
   text: css`
-    font-size: 14px;
     letter-spacing: -0.49px;
   `,
   value: css`
     color: #ffffff;
+    font-size: 14px;
     font-variant: tabular-nums;
   `,
   dateSm: css`
     padding: 10px;
-    font-size: 12px;
+    font-size: 11px;
     color: #6f6e98;
     letter-spacing: 0.56px;
   `

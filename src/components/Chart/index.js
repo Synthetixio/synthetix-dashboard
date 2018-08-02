@@ -39,12 +39,19 @@ export default class HavvenChart extends React.Component {
       periodSwitch: periodSwitch,
       showChart: false,
       tickerLabelPadding: 48,
-      windowWidth: window.innerWidth || 800,
+      windowWidth: this.getWidth(),
       gradientUrl: `url(#gradient-${colorGradient})`,
       colorGradient,
       decimals: {}
     };
   }
+
+  getWidth = () => {
+    const w = window.innerWidth;
+    console.log("window.innerWidth", window.innerWidth);
+    const r = w > 1350 ? 1350 : w;
+    return r < 769 ? r : this.props.fullSize ? r : r / 2;
+  };
 
   onCursorChange = (value, props) => {
     if (value) {
@@ -112,19 +119,7 @@ export default class HavvenChart extends React.Component {
   }
 
   updateDimensions = () => {
-    const n = this.props.fullSize ? 1 : 0.5;
-    let chartWidth;
-    if (window.innerWidth > 1468) {
-      chartWidth = 1368 * n;
-    } else if (window.innerWidth > 1000) {
-      chartWidth = 1200 * n;
-    } else {
-      chartWidth = 1000 * n;
-    }
-    console.log("updating dimensions innerWidth", window.innerWidth);
-    console.log("setting dimensions ", chartWidth);
-
-    this.setState({ windowWidth: chartWidth });
+    this.setState({ windowWidth: this.getWidth() });
   };
 
   componentDidMount() {
@@ -298,7 +293,7 @@ export default class HavvenChart extends React.Component {
         <div style={{ position: "relative" }}>
           {this.props.currencySwitch &&
             this.props.currencySwitch["Btc"] && (
-              <div style={{ position: "absolute", top: 0 }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
                 <VictoryChart
                   domain={{ y: [minValueBtc * 0.9, maxValueBtc * 1.1] }}
                   scale={{ x: "time" }}
@@ -343,7 +338,7 @@ export default class HavvenChart extends React.Component {
             )}
           {this.props.currencySwitch &&
             this.props.currencySwitch["Eth"] && (
-              <div style={{ position: "absolute", top: 0 }}>
+              <div style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
                 <VictoryChart
                   domain={{ y: [minValueEth * 0.9, maxValueEth * 1.1] }}
                   scale={{ x: "time" }}

@@ -6,7 +6,7 @@ import SingleStatBox from "components/SingleStatBox";
 import TopNavBar from "components/TopNavBar";
 import { switchTheme } from "actions/theme";
 import cx from "classnames";
-import moment from "moment";
+import differenceInMins from "date-fns/difference_in_minutes";
 import SingleStat from "components/SingleStat";
 import numeral from "numeral";
 import { scroller } from "react-scroll";
@@ -127,7 +127,7 @@ class App extends React.Component {
       NominFeesCollected
     } = nUSD_CHART;
 
-    const minsAgo = moment(Date.now()).diff(lastUpdated, "minutes");
+    const minsAgo = differenceInMins(Date.now(), lastUpdated);
 
     const scrollToOptions = {
       duration: 500,

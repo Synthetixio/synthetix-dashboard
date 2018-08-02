@@ -11,9 +11,8 @@ import {
   VictoryArea,
   VictoryTooltip
 } from "victory";
-import { round } from "lodash";
 import GraphTooltip from "../Tooltip";
-import moment from "moment";
+import format from "date-fns/format";
 import havvenTheme from "../../config/theme";
 const CURRENCY_MAP = ["Usd", "Btc", "Eth"];
 const LINE_COLOR = {
@@ -314,7 +313,7 @@ export default class HavvenChart extends React.Component {
                       axis: { stroke: "transparent" }
                     }}
                     tickCount={5}
-                    tickFormat={t => `${moment(t).format("DD/MM")}`}
+                    tickFormat={t => `${format(t, "DD/MM")}`}
                   />
 
                   <VictoryArea
@@ -359,7 +358,7 @@ export default class HavvenChart extends React.Component {
                       axis: { stroke: "transparent" }
                     }}
                     tickCount={5}
-                    tickFormat={t => `${moment(t).format("DD/MM")}`}
+                    tickFormat={t => `${format(t, "DD/MM")}`}
                   />
 
                   <VictoryArea
@@ -404,7 +403,7 @@ export default class HavvenChart extends React.Component {
                     axis: { stroke: "transparent" }
                   }}
                   tickCount={5}
-                  tickFormat={t => `${moment(t).format("DD/MM")}`}
+                  tickFormat={t => `${format(t, "DD/MM")}`}
                 />
 
                 <VictoryArea
@@ -492,7 +491,7 @@ export default class HavvenChart extends React.Component {
                   axis: { stroke: "transparent" }
                 }}
                 tickCount={5}
-                tickFormat={t => `${moment(t).format("DD/MM")}`}
+                tickFormat={t => `${format(t, "DD/MM")}`}
               />
 
               <VictoryLine

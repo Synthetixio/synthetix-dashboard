@@ -1,8 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
 import numeral from "numeral";
 import styles from "./styles";
+import format from "date-fns/format";
 
 class GraphTooltip extends React.Component {
   static propTypes = {
@@ -37,9 +37,7 @@ class GraphTooltip extends React.Component {
           <div className={[styles.container]}>
             <div>
               <span className={styles.dateSm}>
-                {moment(scatterX)
-                  .format("Do MMMM YYYY")
-                  .toUpperCase()}
+                {format(scatterX, "Do MMMM YYYY").toUpperCase()}
               </span>
             </div>
 

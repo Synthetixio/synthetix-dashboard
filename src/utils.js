@@ -1,4 +1,5 @@
-import _ from "lodash";
+import minBy from "lodash/minBy";
+import maxBy from "lodash/maxBy";
 
 export const parseChartData = (sourceData, key) => {
   let timeSeries = [];
@@ -26,16 +27,16 @@ export const parseChartData = (sourceData, key) => {
   }
   last = timeSeries[timeSeries.length - 1];
 
-  let minValueUsd = _.minBy(timeSeries, o => o.usdValue).usdValue;
-  let minValueBtc = _.minBy(timeSeries, o => o.btcValue);
+  let minValueUsd = minBy(timeSeries, o => o.usdValue).usdValue;
+  let minValueBtc = minBy(timeSeries, o => o.btcValue);
   minValueBtc = (minValueBtc && minValueBtc.btcValue) || 0;
-  let minValueEth = _.minBy(timeSeries, o => o.ethValue);
+  let minValueEth = minBy(timeSeries, o => o.ethValue);
   minValueEth = (minValueEth && minValueEth.ethValue) || 0;
 
-  let maxValueUsd = _.maxBy(timeSeries, o => o.usdValue).usdValue;
-  let maxValueBtc = _.maxBy(timeSeries, o => o.btcValue);
+  let maxValueUsd = maxBy(timeSeries, o => o.usdValue).usdValue;
+  let maxValueBtc = maxBy(timeSeries, o => o.btcValue);
   maxValueBtc = (maxValueBtc && maxValueBtc.btcValue) || 0;
-  let maxValueEth = _.maxBy(timeSeries, o => o.ethValue);
+  let maxValueEth = maxBy(timeSeries, o => o.ethValue);
   maxValueEth = (maxValueEth && maxValueEth.ethValue) || 0;
 
   let data = {

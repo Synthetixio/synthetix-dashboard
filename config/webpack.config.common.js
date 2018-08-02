@@ -2,6 +2,7 @@ const autoprefixer = require("autoprefixer");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const path = require("path");
 const ModuleScopePlugin = require("react-dev-utils/ModuleScopePlugin");
+const webpack = require("webpack");
 
 const paths = require("./paths");
 
@@ -130,7 +131,8 @@ module.exports = {
       // To fix this, we prevent you from importing files out of src/ -- if you'd like to,
       // please link the files into your node_modules/ and let module-resolution kick in.
       // Make sure your source files are compiled, as they will not be processed in any way.
-      new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson])
+      new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
+      new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/)
     ]
   }
 };

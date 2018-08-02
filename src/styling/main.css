@@ -247,6 +247,9 @@ a.navbar-item {
     float: left; }
   .single-stat-box__stats div {
     float: right; } }
+*:focus {
+  outline: 0; }
+
 @media screen and (max-width: 768px) {
   body {
     padding-top: 127px; }

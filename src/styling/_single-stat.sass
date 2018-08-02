@@ -1,0 +1,54 @@
+.single-stat-box
+  min-height: 300px
+  border-radius: 4px
+  padding: 2rem
+  display: flex
+  flex-direction: column
+  transition: all 200ms ease
+  &:hover
+    transform: scale(1.05)
+
+.single-stat-box__bottom
+  h3
+    font-size: 14px
+    padding-bottom: 0.5em
+  p
+    font-size: 14px
+    line-height: 20px
+
+.single-stat-box__stats
+  flex-grow: 1
+  h2
+    font-size: 40px
+    line-height: 40px
+    padding-bottom: 18px
+  div
+    border-radius: 4px
+    display: inline-block
+    padding: 0.3em 0.5em
+    color: #fff
+
+.single-stat-box__stats.is-positive
+  h2
+    color: #53B167
+  div
+    background-color: #53B167
+
+.single-stat-box__stats.is-negative
+  h2
+    color: #D42351
+  div
+    background-color: #D42351
+
+
++mobile
+  .single-stat-box
+    min-height: auto
+    & > div:first-child
+      padding-bottom: 1rem
+
+  .single-stat-box__stats
+    h2
+      float: left
+    div
+      float: right

@@ -79,7 +79,7 @@ export default class TopNavBar extends React.Component {
                 spy={true}
                 smooth={true}
                 duration={500}
-                offset={-120}
+                offset={-70}
               >
                 HAV
               </Link>
@@ -92,7 +92,7 @@ export default class TopNavBar extends React.Component {
                   spy={true}
                   smooth={true}
                   duration={500}
-                  offset={-120}
+                  offset={-70}
                 >
                   nUSD
                 </Link>

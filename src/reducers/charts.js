@@ -36,20 +36,43 @@ export default (state = initialState, action) => {
             data.HavvenMarketCap.data[data.HavvenMarketCap.data.length - 1]
               .created,
           stats: {
-            havvenMarketCapUsd24hDelta: data.HavvenMarketCap.usd24hDelta,
-            havvenPriceCapUsd24hDelta: data.HavvenPrice.usd24hDelta,
-            nominMarketCapUsd24hDelta: data.NominMarketCap.usd24hDelta,
-            nominPriceCapUsd24hDelta: data.NominPrice.usd24hDelta,
-            havvenMarketCapUsd:
+            havvenMarketCap24hDelta: data.HavvenMarketCap.usd24hDelta,
+            havvenPriceCap24hDelta: data.HavvenPrice.usd24hDelta,
+            havvenVolume24hDelta: data.HavvenVolume24h.usd24hDelta,
+            nominMarketCap24hDelta: data.NominMarketCap.usd24hDelta,
+            nominPriceCap24hDelta: data.NominPrice.usd24hDelta,
+            nominVolume24hDelta: data.NominVolume24h.usd24hDelta,
+            havvenMarketCap:
               data.HavvenMarketCap.data[data.HavvenMarketCap.data.length - 1]
                 .usdValue,
-            havvenPriceCapUsd:
+            havvenPriceCap:
               data.HavvenPrice.data[data.HavvenPrice.data.length - 1].usdValue,
-            nominMarketCapUsd:
+            havvenVolume24h:
+              data.HavvenVolume24h.data[data.HavvenVolume24h.data.length - 1]
+                .usdValue,
+            lockedUpHavven:
+              data.LockedUpHavven.data[data.LockedUpHavven.data.length - 1]
+                .usdValue,
+            lockedUpHavvenRatio:
+              data.LockedUpHavvenRatio.data[
+                data.LockedUpHavvenRatio.data.length - 1
+              ].usdValue,
+            nominMarketCap:
               data.NominMarketCap.data[data.NominMarketCap.data.length - 1]
                 .usdValue,
-            nominPriceCapUsd:
-              data.NominPrice.data[data.NominPrice.data.length - 1].usdValue
+            nominPriceCap:
+              data.NominPrice.data[data.NominPrice.data.length - 1].usdValue,
+            nominVolume24h:
+              data.NominVolume24h.data[data.NominVolume24h.data.length - 1]
+                .usdValue,
+            nominFeesCollected:
+              data.NominFeesCollected.data[
+                data.NominFeesCollected.data.length - 1
+              ].usdValue,
+            collateralizationRatio:
+              data.CollateralizationRatio.data[
+                data.CollateralizationRatio.data.length - 1
+              ].usdValue
           }
         };
       } catch (e) {

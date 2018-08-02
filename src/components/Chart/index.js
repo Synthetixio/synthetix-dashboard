@@ -48,7 +48,6 @@ export default class HavvenChart extends React.Component {
 
   getWidth = () => {
     const w = window.innerWidth;
-    console.log("window.innerWidth", window.innerWidth);
     const r = w > 1350 ? 1350 : w;
     return r < 769 ? r : this.props.fullSize ? r : r / 2;
   };
@@ -142,6 +141,13 @@ export default class HavvenChart extends React.Component {
     if (initialData || differentChartData || freshChartData) {
       this.parseProps(this.props);
     }
+
+    const { currencySwitch } = this.props;
+    if(currencySwitch && prevProps.currencySwitch !== currencySwitch ){
+      const hideScatter = !currencySwitch.Usd && !currencySwitch.Btc && !currencySwitch.Eth;
+      this.setState({showScatter: !hideScatter});
+    }
+
   }
 
   parseProps = props => {
@@ -454,6 +460,7 @@ export default class HavvenChart extends React.Component {
                     <VictoryTooltip
                       flyoutComponent={
                         <GraphTooltip
+                          showScatter={this.state.showScatter}
                           scatterY={this.state.scatterY}
                           scatterX={this.state.scatterX}
                           scatterYBtc={

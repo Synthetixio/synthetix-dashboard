@@ -21,12 +21,16 @@ class GraphTooltip extends React.Component {
       x,
       y,
       decimals = { Val: 2, Btc: 4 },
-      sign
+      sign,
+      showScatter
     } = this.props;
     const dec = decimals.Val > 0 ? "." + "0".repeat(decimals.Val) : "";
     const decBtc = decimals.Btc > 0 ? "." + "0".repeat(decimals.Btc) : "";
     const base = "0,0";
     const baseVal = sign ? base : "$" + base;
+
+    if(!showScatter)
+      return null;
 
     return (
       <g style={{ pointerEvents: "none" }}>

@@ -7,7 +7,7 @@ import { doFetch } from "./api";
 const API_URI = "https://api.havven.io/api/";
 const STAGING_API_URI = "https://staging-api.havven.io/api/";
 
-let useStagingApi = true; //false;
+let useStagingApi = false; //false;
 let apiUri = useStagingApi ? STAGING_API_URI : API_URI;
 
 let headers = new Headers();

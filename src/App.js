@@ -24,7 +24,7 @@ const nUSD_CHART = {
 };
 const DECIMALS = {
   HavvenMarketCap: { Val: 0, Btc: 0 },
-  HavvenPrice: { Val: 3, Btc: 4 },
+  HavvenPrice: { Val: 3, Btc: 7 },
   HavvenVolume24h: { Val: 0, Btc: 0 },
   LockedUpHavven: { Val: 0 },
   HavvenVolume24h: { Val: 0 },

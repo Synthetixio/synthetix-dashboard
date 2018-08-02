@@ -44,17 +44,17 @@ class GraphTooltip extends React.Component {
               </span>
             </div>
 
-            <div>
+            {scatterY && (<div>
               <span className={[styles.value]}>
                 {numeral(scatterY.toString()).format(baseVal + dec)}
               </span>
               <span className={[styles.USD]}>{sign ? sign : "USD"}</span>
-            </div>
+            </div>)}
 
             {scatterYBtc && (
               <div>
                 <span className={[styles.value]}>
-                  {numeral(scatterY.toString()).format(base + decBtc)}
+                  {numeral(scatterYBtc.toString()).format(base + decBtc)}
                 </span>
                 <span className={styles.BTC}>BTC</span>
               </div>
@@ -62,7 +62,7 @@ class GraphTooltip extends React.Component {
             {scatterYEth && (
               <div>
                 <span className={[styles.value]}>
-                  {numeral(scatterY.toString()).format(base + decBtc)}
+                  {numeral(scatterYEth.toString()).format(base + decBtc)}
                 </span>
                 <span className={styles.ETH}>ETH</span>
               </div>

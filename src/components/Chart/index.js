@@ -461,7 +461,10 @@ export default class HavvenChart extends React.Component {
                       flyoutComponent={
                         <GraphTooltip
                           showScatter={this.state.showScatter}
-                          scatterY={this.state.scatterY}
+                          scatterY={
+                            currencySwitch &&
+                            !currencySwitch.Usd ? undefined :
+                            this.state.scatterY}
                           scatterX={this.state.scatterX}
                           scatterYBtc={
                             currencySwitch &&

@@ -5,7 +5,8 @@
     transform: rotate(359deg); } }
 .navbar {
   background-color: transparent !important;
-  padding: 0.5rem 1rem 1rem 1rem; }
+  padding: 0.5rem 1rem 1rem 1rem;
+  font-weight: 500; }
 
 .navbar-menu {
   background-color: transparent !important; }
@@ -42,7 +43,8 @@ a.navbar-item {
 @media screen and (min-width: 769px), print {
   .footer-info .last-updated-bottom {
     left: 50%;
-    transform: translateX(-50%) translateY(-50%); } }
+    transform: translateX(-50%) translateY(-50%);
+    font-weight: 600; } }
 .footer-info {
   position: relative;
   height: 60px; }
@@ -57,7 +59,8 @@ a.navbar-item {
     padding: 1.75rem; }
   .chart-section .title h2 {
     font-size: 56px;
-    letter-spacing: -1.95px; }
+    letter-spacing: -1.95px;
+    font-weight: 700; }
   .chart-section .title span {
     display: block;
     font-size: 14px;
@@ -69,9 +72,9 @@ a.navbar-item {
   border-radius: 4px;
   position: relative; }
   .chart-box .chart-box__number {
-    font-size: 28px;
-    font-weight: 500;
-    letter-spacing: -0.98px;
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
     line-height: 34px;
     right: 2rem;
     top: 2rem;
@@ -88,21 +91,22 @@ a.navbar-item {
   .chart-box__stat div {
     border-radius: 4px;
     display: inline-block;
-    padding: 0.3em 0.5em;
+    padding: 0.2em 0.5em;
     vertical-align: top;
-    margin-left: 2.5rem;
+    margin-left: 1.2rem;
     margin-top: 0.3rem;
-    color: #fff; }
+    color: #fff;
+    font-weight: 600; }
   .chart-box__stat.chart-box__stat.is-positive div {
     background-color: #53B167; }
   .chart-box__stat.chart-box__stat.is-negative div {
     background-color: #D42351; }
 
 .chart-box__info {
-  padding: 2.7rem 2rem 0.7rem 2rem; }
+  padding: 2.5rem 2rem 0.7rem 2rem; }
   .chart-box__info h3 {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: 0.78px;
     line-height: 14px; }
   .chart-box__info div {
@@ -199,22 +203,28 @@ a.navbar-item {
 
 .single-stat-box__bottom h3 {
   font-size: 14px;
-  padding-bottom: 0.5em; }
+  padding-bottom: 0.5em;
+  font-weight: 600;
+  letter-spacing: 0.5px; }
 .single-stat-box__bottom p {
   font-size: 14px;
-  line-height: 20px; }
+  line-height: 20px;
+  max-width: 200px; }
 
 .single-stat-box__stats {
   flex-grow: 1; }
   .single-stat-box__stats h2 {
     font-size: 40px;
     line-height: 40px;
-    padding-bottom: 18px; }
+    padding-bottom: 18px;
+    font-weight: 600; }
   .single-stat-box__stats div {
     border-radius: 4px;
     display: inline-block;
-    padding: 0.3em 0.5em;
-    color: #fff; }
+    padding: 0.2em 0.5em;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: -0.5px; }
 
 .single-stat-box__stats.is-positive h2 {
   color: #53B167; }
@@ -274,7 +284,8 @@ a.navbar-item {
   transform: translateX(-50%);
   top: 25px;
   padding: 5px 15px;
-  border-radius: 100px; }
+  border-radius: 100px;
+  font-weight: 600; }
 
 .position-relative {
   position: relative; }
@@ -301,9 +312,12 @@ a.navbar-item {
 .button.is-link {
   font-size: 14px;
   letter-spacing: 0.78px;
-  background-color: transparent; }
+  background-color: transparent;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: 0.2s; }
   .button.is-link:hover {
-    background-color: #5460FF; }
+    background-color: #25244B; }
   .button.is-link.is-active {
     border-radius: 3px; }
 

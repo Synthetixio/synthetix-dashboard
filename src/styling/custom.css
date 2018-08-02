@@ -53,7 +53,7 @@
   .theme-switcher > * {
     cursor: pointer; }
   .theme-switcher label {
-    text-transform: capitalize; }
+    text-transform: uppercase; }
 
 .last-updated-top {
   font-size: 12px;

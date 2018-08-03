@@ -193,7 +193,7 @@ a.navbar-item {
 
 @media screen and (max-width: 768px) {
   .chart-box__info {
-    padding: 1.25rem 1rem 0.35rem 1rem; } }
+    padding: 1.625rem 1.3rem 0.455rem 1.3rem; } }
 .single-stat-box {
   min-height: 300px;
   border-radius: 4px;
@@ -242,7 +242,7 @@ a.navbar-item {
 
 @media screen and (max-width: 768px) {
   .single-stat-box {
-    padding: 1rem;
+    padding: 1.3rem;
     min-height: auto; }
     .single-stat-box > div:first-child {
       padding-bottom: 1rem; }
@@ -314,8 +314,8 @@ a.navbar-item {
     margin-left: -10px;
     margin-right: -10px; }
     .chart-box .chart-box__number {
-      top: 1rem;
-      right: 1rem; }
+      top: 1.3rem;
+      right: 1.3rem; }
 
   .chart-box--main {
     margin-top: -20px; } }

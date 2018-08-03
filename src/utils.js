@@ -1,15 +1,29 @@
 import minBy from "lodash/minBy";
 import maxBy from "lodash/maxBy";
+const TICKS = {
+  "1D":-24,
+  "1W":-168,//24*7,
+  "1M":-744,//24*7*31
+  "1Y":-8760,//365*24
+  "ALL":0
+}
 
-export const parseChartData = (sourceData, key) => {
+const selectPeriod = (sourceData, period) => {
+  let data = sourceData.slice(TICKS[period]);
+  return data;
+}
+
+export const parseChartData = (sourceData, key, period = "ALL") => {
+  console.log(sourceData, key);
+  const dataSelected = selectPeriod(sourceData, period);
   let timeSeries = [];
-  let modulo = Math.floor(sourceData.length / 100);
+  let modulo = Math.floor(dataSelected.length / 100);
   if (modulo < 1) modulo = 1;
   // optimization to show about 100 data points for all charts
-  sourceData.forEach((o, i) => {
+  dataSelected.forEach((o, i) => {
     if (i % modulo === 0) timeSeries.push(o);
   });
-  let last = sourceData[sourceData.length - 1];
+  let last = dataSelected[dataSelected.length - 1];
   if (timeSeries[timeSeries.length - 1].created !== last.created) {
     timeSeries.push(last);
   }

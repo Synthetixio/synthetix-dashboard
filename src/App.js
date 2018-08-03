@@ -1,7 +1,7 @@
 import React from "react";
 import Chart from "components/Chart";
 import { connect } from "react-redux";
-import { fetchCharts, parsePeriod } from "./actions/charts";
+import { fetchCharts, setPeriod } from "./actions/charts";
 import SingleStatBox from "components/SingleStatBox";
 import TopNavBar from "components/TopNavBar";
 import { switchTheme } from "actions/theme";
@@ -15,7 +15,8 @@ const HAV_CHART = {
   HavvenPrice: "HavvenPrice",
   HavvenMarketCap: "HavvenMarketCap",
   HavvenVolume24h: "HavvenVolume24h",
-  LockedUpHavven: "LockedUpHavven"
+  LockedUpHavven: "LockedUpHavven",
+  LockedUpHavvenRatio: "LockedUpHavvenRatio"
 };
 const nUSD_CHART = {
   NominPrice: "NominPrice",
@@ -29,7 +30,7 @@ const DECIMALS = {
   HavvenPrice: { Val: 3, Btc: 7 },
   HavvenVolume24h: { Val: 0, Btc: 0 },
   LockedUpHavven: { Val: 0 },
-  HavvenVolume24h: { Val: 0 },
+  LockedUpHavvenRatio: { Val: 0 },
   NominMarketCap: { Val: 2 },
   NominPrice: { Val: 3 },
   NominVolume24h: { Val: 2 },
@@ -47,7 +48,9 @@ class App extends React.Component {
     themeCss: "",
     havButtons: { Usd: true, Btc: true, Eth: false },
     havChartName: HAV_CHART.HavvenPrice,
-    nUSDChartName: nUSD_CHART.NominPrice
+    nUSDChartName: nUSD_CHART.NominPrice,
+    // havPeriod: "ALL",
+    // nUSDPeriod: "ALL"
   };
 
   componentDidMount() {
@@ -77,9 +80,8 @@ class App extends React.Component {
     this.setState({ nUSDChartName: chartName });
   };
 
-  setPeriod = (period, curr="HAV")=> {
-      this.props.parsePeriod(period, curr);
-      /*1D,1W,1M,1Y,ALL*/
+  setPeriod = (val, token) => {
+    this.props.setPeriod(val, token);
   };
 
   componentWillUnmount() {
@@ -110,6 +112,7 @@ class App extends React.Component {
 
   render() {
     const { charts, theme } = this.props;
+    const { havPeriod, nUSDPeriod } = charts;
     const {
       activeSection,
       themeCss,
@@ -282,32 +285,102 @@ class App extends React.Component {
                     trend={currentHavStat.trend}
                   />
                   <div className="time-toggles is-hidden-mobile">
-                    <button onClick={()=>this.setPeriod("1D")}>1D</button>
-                    <button onClick={()=>this.setPeriod("1W")}>1W</button>
-                    <button onClick={()=>this.setPeriod("1M")}>1M</button>
-                    <button onClick={()=>this.setPeriod("1Y")}>1Y</button>
-                    <button onClick={()=>this.setPeriod("ALL")} className="is-active">ALL</button>
+                    <button
+                      onClick={() => this.setPeriod("1D", "HAV")}
+                      className={cx({
+                        "is-active": havPeriod === "1D"
+                      })}
+                    >
+                      1D
+                    </button>
+                    <button
+                      onClick={() => this.setPeriod("1W", "HAV")}
+                      className={cx({
+                        "is-active": havPeriod === "1W"
+                      })}
+                    >
+                      1W
+                    </button>
+                    <button
+                      onClick={() => this.setPeriod("1M", "HAV")}
+                      className={cx({
+                        "is-active": havPeriod === "1M"
+                      })}
+                    >
+                      1M
+                    </button>
+                    <button
+                      onClick={() => this.setPeriod("1Y", "HAV")}
+                      className={cx({
+                        "is-active": havPeriod === "1Y"
+                      })}
+                    >
+                      1Y
+                    </button>
+                    <button
+                      onClick={() => this.setPeriod("ALL", "HAV")}
+                      className={cx({
+                        "is-active": havPeriod === "ALL"
+                      })}
+                    >
+                      ALL
+                    </button>
                   </div>
                   <div>
                     <Chart
+                      period={havPeriod}
                       info={charts[havChartName]}
                       decimals={DECIMALS[havChartName]}
                       fullSize={true}
                       colorGradient="green"
                       lastUpdated={lastUpdated}
                       currencySwitch={this.state.havButtons}
-                      tooltipDecimal={{}}
                     />
                   </div>
                 </div>
               </div>
             </div>
             <div className="time-toggles is-hidden-tablet">
-              <button onClick={()=>this.setPeriod("1D")}>1D</button>
-              <button onClick={()=>this.setPeriod("1W")}>1W</button>
-              <button onClick={()=>this.setPeriod("1M")}>1M</button>
-              <button onClick={()=>this.setPeriod("1Y")}>1Y</button>
-              <button onClick={()=>this.setPeriod("ALL")} className="is-active">ALL</button>
+              <button
+                onClick={() => this.setPeriod("1D", "HAV")}
+                className={cx({
+                  "is-active": havPeriod === "1D"
+                })}
+              >
+                1D
+              </button>
+              <button
+                onClick={() => this.setPeriod("1W", "HAV")}
+                className={cx({
+                  "is-active": havPeriod === "1W"
+                })}
+              >
+                1W
+              </button>
+              <button
+                onClick={() => this.setPeriod("1M", "HAV")}
+                className={cx({
+                  "is-active": havPeriod === "1M"
+                })}
+              >
+                1M
+              </button>
+              <button
+                onClick={() => this.setPeriod("1Y", "HAV")}
+                className={cx({
+                  "is-active": havPeriod === "1Y"
+                })}
+              >
+                1Y
+              </button>
+              <button
+                onClick={() => this.setPeriod("ALL", "HAV")}
+                className={cx({
+                  "is-active": havPeriod === "ALL"
+                })}
+              >
+                ALL
+              </button>
             </div>
             <div className="level is-mobile justified-content-center">
               <div className="level-left" />
@@ -355,6 +428,7 @@ class App extends React.Component {
                     {numeral(stats.lockedUpHavven).format(`$0,0.`)}
                   </div>
                   <Chart
+                    period={havPeriod}
                     info={charts.LockedUpHavven}
                     decimals={DECIMALS[LockedUpHavven]}
                     colorGradient="yellow"
@@ -374,10 +448,12 @@ class App extends React.Component {
                     {numeral(stats.lockedUpHavvenRatio * 100).format("0.00")}%
                   </div>
                   <Chart
-                    info={charts.HavvenVolume24h}
-                    decimals={DECIMALS[HavvenVolume24h]}
+                    period={havPeriod}
+                    info={charts.LockedUpHavvenRatio}
+                    decimals={DECIMALS.LockedUpHavvenRatio}
                     colorGradient="red"
                     lastUpdated={lastUpdated}
+                    sign="%"
                   />
                 </div>
               </div>
@@ -444,14 +520,50 @@ class App extends React.Component {
                     trend={currentNominStat.trend}
                   />
                   <div className="time-toggles is-hidden-mobile">
-                    <button>1D</button>
-                    <button>1W</button>
-                    <button>1M</button>
-                    <button>1Y</button>
-                    <button className="is-active">ALL</button>
+                    <button
+                      onClick={() => this.setPeriod("1D", "nUSD")}
+                      className={cx({
+                        "is-active": nUSDPeriod === "1D"
+                      })}
+                    >
+                      1D
+                    </button>
+                    <button
+                      onClick={() => this.setPeriod("1W", "nUSD")}
+                      className={cx({
+                        "is-active": nUSDPeriod === "1W"
+                      })}
+                    >
+                      1W
+                    </button>
+                    <button
+                      onClick={() => this.setPeriod("1M", "nUSD")}
+                      className={cx({
+                        "is-active": nUSDPeriod === "1M"
+                      })}
+                    >
+                      1M
+                    </button>
+                    <button
+                      onClick={() => this.setPeriod("1Y", "nUSD")}
+                      className={cx({
+                        "is-active": nUSDPeriod === "1Y"
+                      })}
+                    >
+                      1Y
+                    </button>
+                    <button
+                      onClick={() => this.setPeriod("ALL", "nUSD")}
+                      className={cx({
+                        "is-active": nUSDPeriod === "ALL"
+                      })}
+                    >
+                      ALL
+                    </button>
                   </div>
                   <div>
                     <Chart
+                      period={nUSDPeriod}
                       info={charts[nUSDChartName]}
                       decimals={DECIMALS[nUSDChartName]}
                       fullSize={true}
@@ -463,11 +575,46 @@ class App extends React.Component {
               </div>
             </div>
             <div className="time-toggles is-hidden-tablet">
-              <button>1D</button>
-              <button>1W</button>
-              <button>1M</button>
-              <button>1Y</button>
-              <button className="is-active">ALL</button>
+              <button
+                onClick={() => this.setPeriod("1D", "nUSD")}
+                className={cx({
+                  "is-active": nUSDPeriod === "1D"
+                })}
+              >
+                1D
+              </button>
+              <button
+                onClick={() => this.setPeriod("1W", "nUSD")}
+                className={cx({
+                  "is-active": nUSDPeriod === "1W"
+                })}
+              >
+                1W
+              </button>
+              <button
+                onClick={() => this.setPeriod("1M", "nUSD")}
+                className={cx({
+                  "is-active": nUSDPeriod === "1M"
+                })}
+              >
+                1M
+              </button>
+              <button
+                onClick={() => this.setPeriod("1Y", "nUSD")}
+                className={cx({
+                  "is-active": nUSDPeriod === "1Y"
+                })}
+              >
+                1Y
+              </button>
+              <button
+                onClick={() => this.setPeriod("ALL", "nUSD")}
+                className={cx({
+                  "is-active": nUSDPeriod === "ALL"
+                })}
+              >
+                ALL
+              </button>
             </div>
             <div className="columns">
               <div className="column">
@@ -482,6 +629,7 @@ class App extends React.Component {
                     {numeral(stats.nominFeesCollected).format(`$0,0.`)}
                   </div>
                   <Chart
+                    period={nUSDPeriod}
                     info={charts.NominFeesCollected}
                     decimals={DECIMALS[NominFeesCollected]}
                     colorGradient="green"
@@ -501,6 +649,7 @@ class App extends React.Component {
                     {numeral(stats.collateralizationRatio * 100).format("0.00")}%
                   </div>
                   <Chart
+                    period={nUSDPeriod}
                     info={charts.CollateralizationRatio}
                     decimals={DECIMALS[CollateralizationRatio]}
                     colorGradient="red"
@@ -545,7 +694,9 @@ const mapStateToProps = state => {
   };
 };
 
-const ConnectedApp = connect(mapStateToProps, { switchTheme, fetchCharts, parsePeriod })(
-  App
-);
+const ConnectedApp = connect(mapStateToProps, {
+  switchTheme,
+  fetchCharts,
+  setPeriod
+})(App);
 export default ConnectedApp;

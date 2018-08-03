@@ -1,4 +1,4 @@
-import { FETCH_CHARTS_SUCCESS, PARSE_PERIOD_CHART } from "../actions/charts";
+import { FETCH_CHARTS_SUCCESS, SET_PERIOD_CHART } from "../actions/charts";
 import { parseChartData } from "../utils";
 
 const chartTypes = [
@@ -9,14 +9,31 @@ const chartTypes = [
   "HavvenVolume24h",
   "NominVolume24h",
   "NominFeesCollected",
-  "NominVelocity",
   "LockedUpHavven",
   "LockedUpHavvenRatio",
   "CollateralizationRatio"
 ];
 
+const chartTypesHAV = [
+  "HavvenMarketCap",
+  "HavvenPrice",
+  "HavvenVolume24h",
+  "LockedUpHavven",
+  "LockedUpHavvenRatio",
+];
+
+const chartTypesNomin = [
+  "NominMarketCap",
+  "NominPrice",
+  "NominVolume24h",
+  "NominFeesCollected",
+  "CollateralizationRatio",
+];
+
 const initialState = {
-  stats: {}
+  stats: {},
+  havPeriod: "ALL",
+  nUSDPeriod: "ALL"
 };
 chartTypes.forEach(type => (initialState[type] = {}));
 
@@ -81,11 +98,32 @@ export default (state = initialState, action) => {
         return state;
       }
 
-    case PARSE_PERIOD_CHART:
-      return {
-        ...state,
-        period: action.payload.period
-      };
+    case SET_PERIOD_CHART:
+
+      try {
+        const { token, period } = action;
+        if(!token || !period)
+          throw 'Error: Set chart period parameter missing!';
+        const types = token === "HAV" ? chartTypesHAV : chartTypesNomin;
+        const havPeriod = token === "HAV" ? period : state.havPeriod;
+        const nUSDPeriod = token === "nUSD" ? period : state.nUSDPeriod;
+
+        const chartData = types
+          .map(type => ({
+            [type]: parseChartData(state.sourceData[type].data, type, period)
+          }))
+          .reduce((acc, next) => ({ ...acc, ...next }), {});
+
+          return {
+            ...state,
+            ...chartData,
+            havPeriod,
+            nUSDPeriod,
+          };
+      } catch (e) {
+        console.log("error", e);
+        return state;
+      }
 
     default:
       return state;

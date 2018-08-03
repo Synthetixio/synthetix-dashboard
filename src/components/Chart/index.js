@@ -135,7 +135,9 @@ export default class HavvenChart extends React.Component {
 
     let freshChartData = prevProps.lastUpdated !== this.props.lastUpdated;
 
-    if (initialData || differentChartData || freshChartData) {
+    let periodChanged = prevProps.period !== this.props.period;
+
+    if (initialData || differentChartData || freshChartData || periodChanged) {
       this.parseProps(this.props);
     }
 

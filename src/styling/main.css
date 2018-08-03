@@ -247,6 +247,37 @@ a.navbar-item {
     float: left; }
   .single-stat-box__stats div {
     float: right; } }
+.chart-tooltip-box {
+  border-radius: 4px;
+  padding: 10px;
+  text-align: right;
+  overflow: visible;
+  box-shadow: 0 5px 10px 0 rgba(255, 255, 255, 0.06); }
+  .chart-tooltip-box .USD {
+    color: #53b167;
+    padding-right: 10px;
+    padding-left: 5px;
+    font-size: 14px; }
+  .chart-tooltip-box .BTC {
+    color: #d9ab44;
+    padding-right: 10px;
+    padding-left: 5px;
+    font-size: 14px; }
+  .chart-tooltip-box .ETH {
+    color: #42217e;
+    padding-right: 10px;
+    padding-left: 5px;
+    font-size: 14px; }
+  .chart-tooltip-box .text {
+    letter-spacing: -0.49px; }
+  .chart-tooltip-box .value {
+    font-size: 14px;
+    font-variant: tabular-nums; }
+  .chart-tooltip-box .dateSm {
+    padding: 10px;
+    font-size: 11px;
+    letter-spacing: 0.56px; }
+
 *:focus {
   outline: 0; }
 

@@ -1,6 +1,5 @@
 import React, { View, Text } from "react";
 import PropTypes from "prop-types";
-import styles from "./styles";
 import {
   VictoryChart,
   VictoryCursorContainer,
@@ -232,7 +231,7 @@ export default class HavvenChart extends React.Component {
     const { currencySwitch } = this.props;
 
     return (
-      <div className={[styles.container]}>
+      <div>
         <svg style={{ height: 0 }}>
           <defs>
             <linearGradient

@@ -81,14 +81,6 @@ export default class HavvenChart extends React.Component {
     }
   };
 
-  onTouchEnd = () => {
-    this.setScatterToLast();
-  };
-
-  onTouchStart = d => {
-    this.onCursorChange(d);
-  };
-
   setScatterToLast = () => {
     const { timeSeriesX, timeSeries } = this.state;
     const length = timeSeriesX.length;
@@ -98,7 +90,7 @@ export default class HavvenChart extends React.Component {
       this.setState({
         scatterX: timeSeries[index].x,
         scatterY: timeSeries[index].y,
-        showScatter: true,
+        //showScatter: true,
         showChart: true
       });
       this.props.onCursorChange &&
@@ -222,6 +214,16 @@ export default class HavvenChart extends React.Component {
     );
   };
 
+  cursorOut = (event) => {
+    event.stopPropagation();
+    this.setState({showScatter: false});
+  };
+
+  cursorOver = (event) => {
+    event.stopPropagation();
+    this.setState({showScatter: true});
+  };
+
   render() {
     const {
       timeSeries,
@@ -333,6 +335,7 @@ export default class HavvenChart extends React.Component {
                       data: { stroke: "#D9AB44", strokeWidth: 2 }
                     }}
                   />
+                  {this.state.showScatter && (
                   <VictoryScatter
                     data={[
                       {
@@ -342,7 +345,7 @@ export default class HavvenChart extends React.Component {
                         size: 3
                       }
                     ]}
-                  />
+                  />)}
                 </VictoryChart>
               </div>
             )}
@@ -378,6 +381,7 @@ export default class HavvenChart extends React.Component {
                       data: { stroke: "#42217E", strokeWidth: 2 }
                     }}
                   />
+                  {this.state.showScatter && (
                   <VictoryScatter
                     data={[
                       {
@@ -387,7 +391,7 @@ export default class HavvenChart extends React.Component {
                         size: 3
                       }
                     ]}
-                  />
+                  />)}
                 </VictoryChart>
               </div>
             )}
@@ -445,7 +449,7 @@ export default class HavvenChart extends React.Component {
               </VictoryChart>
             </div>
           )}
-          <div>
+          <div onMouseOut={this.cursorOut} onMouseOver={this.cursorOver}>
             <VictoryChart
               domain={{ y: [minValue * 0.9, maxValue * 1.1] }}
               scale={{ x: "time" }}

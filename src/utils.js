@@ -14,7 +14,6 @@ const selectPeriod = (sourceData, period) => {
 }
 
 export const parseChartData = (sourceData, key, period = "ALL") => {
-  console.log(sourceData, key);
   const dataSelected = selectPeriod(sourceData, period);
   let timeSeries = [];
   let modulo = Math.floor(dataSelected.length / 100);

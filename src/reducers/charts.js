@@ -50,6 +50,8 @@ export default (state = initialState, action) => {
         return {
           ...chartData,
           sourceData: data,
+          havPeriod: state.havPeriod,
+          nUSDPeriod: state.nUSDPeriod,
           lastUpdated:
             data.HavvenMarketCap.data[data.HavvenMarketCap.data.length - 1]
               .created,

@@ -1,7 +1,7 @@
 .single-stat-box
   min-height: 300px
   border-radius: 4px
-  padding: 2rem
+  padding: $box-padding
   display: flex
   flex-direction: column
   transition: all 200ms ease
@@ -50,6 +50,7 @@
 
 +mobile
   .single-stat-box
+    padding: $box-padding * $mobile-p-multiplier
     min-height: auto
     & > div:first-child
       padding-bottom: 1rem

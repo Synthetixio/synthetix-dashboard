@@ -191,6 +191,9 @@ a.navbar-item {
   .currency-toggles button.is-link:focus {
     background-color: transparent; }
 
+@media screen and (max-width: 768px) {
+  .chart-box__info {
+    padding: 1.25rem 1rem 0.35rem 1rem; } }
 .single-stat-box {
   min-height: 300px;
   border-radius: 4px;
@@ -239,6 +242,7 @@ a.navbar-item {
 
 @media screen and (max-width: 768px) {
   .single-stat-box {
+    padding: 1rem;
     min-height: auto; }
     .single-stat-box > div:first-child {
       padding-bottom: 1rem; }
@@ -286,7 +290,35 @@ a.navbar-item {
     padding-top: 127px; }
 
   .is-mobile.justified-content-center {
-    justify-content: center; } }
+    justify-content: center; }
+
+  .navbar {
+    padding-left: calc(1rem - 10px);
+    padding-right: calc(1rem - 10px); }
+
+  .single-stat-box {
+    margin-left: -10px;
+    margin-right: -10px; }
+
+  .chart-box__stat {
+    margin-left: -10px; }
+
+  .chart-section__heading {
+    margin-left: -10px;
+    margin-right: -10px;
+    padding-bottom: 0; }
+    .chart-section__heading .level-right {
+      margin-right: -10px; }
+
+  .chart-box {
+    margin-left: -10px;
+    margin-right: -10px; }
+    .chart-box .chart-box__number {
+      top: 1rem;
+      right: 1rem; }
+
+  .chart-box--main {
+    margin-top: -20px; } }
 .dashboard-root {
   position: relative; }
 

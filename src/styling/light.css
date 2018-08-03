@@ -43,7 +43,7 @@ a {
   border: 1px solid #EBE9F6;
   background-color: #fff; }
   .single-stat-box:hover {
-    background-color: trasparent; }
+    background-color: #fff; }
   .single-stat-box .single-stat-box__bottom h3 {
     color: #25244B; }
   .single-stat-box .single-stat-box__bottom p {
@@ -123,5 +123,13 @@ a.navbar-item {
   .time-toggles button.is-active {
     background-color: #e8e8e8;
     color: #25244B; }
+
+.chart-tooltip-box {
+  background: #fff;
+  border: 1px solid #EBE9F6; }
+  .chart-tooltip-box .value {
+    color: #25244B; }
+  .chart-tooltip-box .dateSm {
+    color: #6F6E98; }
 
 /*# sourceMappingURL=light.css.map */

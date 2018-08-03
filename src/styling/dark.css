@@ -124,4 +124,12 @@ a.navbar-item {
     background-color: #fff;
     color: #25244B; }
 
+.chart-tooltip-box {
+  background: #11112f;
+  border: 1px solid #25244b; }
+  .chart-tooltip-box .value {
+    color: #fff; }
+  .chart-tooltip-box .dateSm {
+    color: #6f6e98; }
+
 /*# sourceMappingURL=dark.css.map */

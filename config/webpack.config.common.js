@@ -2,6 +2,7 @@ const autoprefixer = require("autoprefixer");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const path = require("path");
 const ModuleScopePlugin = require("react-dev-utils/ModuleScopePlugin");
+const webpack = require("webpack");
 
 const paths = require("./paths");
 

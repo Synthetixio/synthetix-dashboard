@@ -5,11 +5,11 @@
   "license": "MIT",
   "dependencies": {
     "bulma": "^0.7.1",
-    "emotion": "^9.2.6",
+    "classnames": "latest",
+    "date-fns": "^1.29.0",
     "lodash": "^4.17.10",
     "mobx": "^5.0.3",
     "mobx-react": "^5.2.3",
-    "moment": "^2.22.2",
     "node-sass": "^4.9.2",
     "numeral": "^2.0.6",
     "prop-types": "^15.6.2",
@@ -25,8 +25,7 @@
     "redux-saga": "^0.16.0",
     "resolve-url-loader": "^2.3.0",
     "sass-loader": "^7.0.3",
-    "victory": "^30.0.0",
-    "classnames": "latest"
+    "victory": "^30.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.54",

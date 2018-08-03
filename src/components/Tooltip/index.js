@@ -1,8 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import moment from "moment";
 import numeral from "numeral";
-import styles from "./styles";
+import format from "date-fns/format";
 
 class GraphTooltip extends React.Component {
   static propTypes = {
@@ -29,42 +28,41 @@ class GraphTooltip extends React.Component {
     const base = "0,0";
     const baseVal = sign ? base : "$" + base;
 
-    if(!showScatter)
-      return null;
+    if (!showScatter) return null;
 
     return (
       <g style={{ pointerEvents: "none" }}>
         <foreignObject x={x} y={y} width="170" height="150">
-          <div className={[styles.container]}>
+          <div className="chart-tooltip-box">
             <div>
-              <span className={styles.dateSm}>
-                {moment(scatterX)
-                  .format("Do MMMM YYYY")
-                  .toUpperCase()}
+              <span className="dateSm">
+                {format(scatterX, "Do MMMM YYYY").toUpperCase()}
               </span>
             </div>
 
-            {scatterY && (<div>
-              <span className={[styles.value]}>
-                {numeral(scatterY.toString()).format(baseVal + dec)}
-              </span>
-              <span className={[styles.USD]}>{sign ? sign : "USD"}</span>
-            </div>)}
+            {scatterY && (
+              <div>
+                <span className="value">
+                  {numeral(scatterY.toString()).format(baseVal + dec)}
+                </span>
+                <span className="USD">{sign ? sign : "USD"}</span>
+              </div>
+            )}
 
             {scatterYBtc && (
               <div>
-                <span className={[styles.value]}>
+                <span className="value">
                   {numeral(scatterYBtc.toString()).format(base + decBtc)}
                 </span>
-                <span className={styles.BTC}>BTC</span>
+                <span className="BTC">BTC</span>
               </div>
             )}
             {scatterYEth && (
               <div>
-                <span className={[styles.value]}>
+                <span className="value">
                   {numeral(scatterYEth.toString()).format(base + decBtc)}
                 </span>
-                <span className={styles.ETH}>ETH</span>
+                <span className="ETH">ETH</span>
               </div>
             )}
           </div>

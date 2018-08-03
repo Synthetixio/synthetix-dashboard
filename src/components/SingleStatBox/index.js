@@ -1,10 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import numeral from "numeral";
-import { cx } from "emotion";
+import cx from "classnames";
 
-const SingleStatBox = ({ value, trend, label, desc, decimals }) => (
-  <div className="column is-half-tablet is-one-quarter-desktop">
+const SingleStatBox = ({ value, trend, label, desc, decimals, onClick }) => (
+  <div
+    className="column is-half-tablet is-one-quarter-desktop"
+    onClick={onClick}
+  >
     <div className="single-stat-box">
       <div
         className={cx(
@@ -28,7 +31,8 @@ SingleStatBox.propTypes = {
   trend: PropTypes.number,
   label: PropTypes.string,
   desc: PropTypes.string,
-  decimals: PropTypes.number
+  decimals: PropTypes.number,
+  onClick: PropTypes.func
 };
 
 SingleStatBox.defaultProps = {

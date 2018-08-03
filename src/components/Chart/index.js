@@ -236,7 +236,10 @@ export default class HavvenChart extends React.Component {
       minValueEth,
       maxValueEth
     } = this.state;
-    const { currencySwitch } = this.props;
+    const { currencySwitch, period } = this.props;
+    const dtFormat = period === "1D" ? "HH:00 a" : "DD/MM";
+    console.log("dtFormat", dtFormat);
+    console.log("period", period);
 
     return (
       <div>
@@ -320,7 +323,7 @@ export default class HavvenChart extends React.Component {
                       axis: { stroke: "transparent" }
                     }}
                     tickCount={5}
-                    tickFormat={t => `${format(t, "DD/MM")}`}
+                    tickFormat={t => `${format(t, dtFormat)}`}
                   />
 
                   <VictoryArea
@@ -366,7 +369,7 @@ export default class HavvenChart extends React.Component {
                       axis: { stroke: "transparent" }
                     }}
                     tickCount={5}
-                    tickFormat={t => `${format(t, "DD/MM")}`}
+                    tickFormat={t => `${format(t, dtFormat)}`}
                   />
 
                   <VictoryArea
@@ -412,7 +415,7 @@ export default class HavvenChart extends React.Component {
                     axis: { stroke: "transparent" }
                   }}
                   tickCount={5}
-                  tickFormat={t => `${format(t, "DD/MM")}`}
+                  tickFormat={t => `${format(t, dtFormat)}`}
                 />
 
                 <VictoryArea
@@ -501,7 +504,7 @@ export default class HavvenChart extends React.Component {
                   axis: { stroke: "transparent" }
                 }}
                 tickCount={5}
-                tickFormat={t => `${format(t, "DD/MM")}`}
+                tickFormat={t => `${format(t, dtFormat)}`}
               />
 
               <VictoryLine

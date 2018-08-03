@@ -9,7 +9,7 @@ export const parseChartData = (sourceData, key) => {
     if (i % modulo === 0) timeSeries.push(o);
   });
   let last = sourceData[sourceData.length - 1];
-  if (timeSeries[timeSeries.length - 1].createdUnix !== last.createdUnix) {
+  if (timeSeries[timeSeries.length - 1].created !== last.created) {
     timeSeries.push(last);
   }
   if (key === "LockedUpHavvenRatio") {

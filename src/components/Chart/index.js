@@ -29,14 +29,13 @@ export default class HavvenChart extends React.Component {
 
     const currencyIndex = props.currencyIndex || 0;
     const colorGradient = props.colorGradient || "green";
-    const periodSwitch = props.periodSwitch || "ALL";
+    //const periodSwitch = props.periodSwitch || "ALL";
 
     this.state = {
       timeSeries: [],
       timeSeriesX: [],
       showScatter: false,
       currencyIndex: currencyIndex,
-      periodSwitch: periodSwitch,
       showChart: false,
       tickerLabelPadding: 48,
       windowWidth: this.getWidth(),
@@ -151,6 +150,7 @@ export default class HavvenChart extends React.Component {
   }
 
   parseProps = props => {
+
     const { info, currencySwitch } = props;
     if (!info || !info.displayName) return;
     let timeSeriesBtc,
@@ -194,6 +194,10 @@ export default class HavvenChart extends React.Component {
         }));
       minValueEth = data && data["minValueEth"];
       maxValueEth = data && data["maxValueEth"];
+    }
+
+    if(this.props.info.displayName === "HavvenPrice"){
+     console.log(this.props.info);
     }
 
     this.setState(

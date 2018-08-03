@@ -1,7 +1,7 @@
 import React from "react";
 import Chart from "components/Chart";
 import { connect } from "react-redux";
-import { fetchCharts } from "./actions/charts";
+import { fetchCharts, parsePeriod } from "./actions/charts";
 import SingleStatBox from "components/SingleStatBox";
 import TopNavBar from "components/TopNavBar";
 import { switchTheme } from "actions/theme";
@@ -73,6 +73,11 @@ class App extends React.Component {
 
   setnUSDChart = chartName => {
     this.setState({ nUSDChartName: chartName });
+  };
+
+  setPeriod = (period, curr="HAV")=> {
+      this.props.parsePeriod(period, curr);
+      /*1D,1W,1M,1Y,ALL*/
   };
 
   componentWillUnmount() {
@@ -252,11 +257,11 @@ class App extends React.Component {
                     trend={currentHavStat.trend}
                   />
                   <div className="time-toggles is-hidden-mobile">
-                    <button>1D</button>
-                    <button>1W</button>
-                    <button>1M</button>
-                    <button>1Y</button>
-                    <button className="is-active">ALL</button>
+                    <button onClick={()=>this.setPeriod("1D")}>1D</button>
+                    <button onClick={()=>this.setPeriod("1W")}>1W</button>
+                    <button onClick={()=>this.setPeriod("1M")}>1M</button>
+                    <button onClick={()=>this.setPeriod("1Y")}>1Y</button>
+                    <button onClick={()=>this.setPeriod("ALL")} className="is-active">ALL</button>
                   </div>
                   <div>
                     <Chart
@@ -273,11 +278,11 @@ class App extends React.Component {
               </div>
             </div>
             <div className="time-toggles is-hidden-tablet">
-              <button>1D</button>
-              <button>1W</button>
-              <button>1M</button>
-              <button>1Y</button>
-              <button className="is-active">ALL</button>
+              <button onClick={()=>this.setPeriod("1D")}>1D</button>
+              <button onClick={()=>this.setPeriod("1W")}>1W</button>
+              <button onClick={()=>this.setPeriod("1M")}>1M</button>
+              <button onClick={()=>this.setPeriod("1Y")}>1Y</button>
+              <button onClick={()=>this.setPeriod("ALL")} className="is-active">ALL</button>
             </div>
             <div className="level is-mobile justified-content-center">
               <div className="level-left" />
@@ -547,7 +552,7 @@ const mapStateToProps = state => {
   };
 };
 
-const ConnectedApp = connect(mapStateToProps, { switchTheme, fetchCharts })(
+const ConnectedApp = connect(mapStateToProps, { switchTheme, fetchCharts, parsePeriod })(
   App
 );
 export default ConnectedApp;

@@ -1,4 +1,4 @@
-import { FETCH_CHARTS_SUCCESS } from "../actions/charts";
+import { FETCH_CHARTS_SUCCESS, PARSE_PERIOD_CHART } from "../actions/charts";
 import { parseChartData } from "../utils";
 
 const chartTypes = [
@@ -32,6 +32,7 @@ export default (state = initialState, action) => {
         let data = action.payload.data.body;
         return {
           ...chartData,
+          sourceData: data,
           lastUpdated:
             data.HavvenMarketCap.data[data.HavvenMarketCap.data.length - 1]
               .created,
@@ -79,6 +80,12 @@ export default (state = initialState, action) => {
         console.log("error", e);
         return state;
       }
+
+    case PARSE_PERIOD_CHART:
+      return {
+        ...state,
+        period: action.payload.period
+      };
 
     default:
       return state;

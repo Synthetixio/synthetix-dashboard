@@ -28,7 +28,7 @@ class GraphTooltip extends React.Component {
     const decBtc = decimals.Btc > 0 ? "." + "0".repeat(decimals.Btc) : "";
     const base = "0,0";
     const baseVal = sign ? base : "$" + base;
-    const dtFormat = period === "1D" ? "Do MMMM YYYY HH:00 a" : "Do MMMM YYYY";
+    const dtFormat = period === "1D" ? "Do MMMM YYYY HH:00" : "Do MMMM YYYY";
 
     if (!showScatter) return null;
 

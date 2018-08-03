@@ -142,7 +142,6 @@ export default class HavvenChart extends React.Component {
   }
 
   parseProps = props => {
-
     const { info, currencySwitch } = props;
     if (!info || !info.displayName) return;
     let timeSeriesBtc,
@@ -188,8 +187,8 @@ export default class HavvenChart extends React.Component {
       maxValueEth = data && data["maxValueEth"];
     }
 
-    if(this.props.info.displayName === "HavvenPrice"){
-     console.log(this.props.info);
+    if (this.props.info.displayName === "HavvenPrice") {
+      console.log(this.props.info);
     }
 
     this.setState(
@@ -214,14 +213,14 @@ export default class HavvenChart extends React.Component {
     );
   };
 
-  cursorOut = (event) => {
+  cursorOut = event => {
     event.stopPropagation();
-    this.setState({showScatter: false});
+    this.setState({ showScatter: false });
   };
 
-  cursorOver = (event) => {
+  cursorOver = event => {
     event.stopPropagation();
-    this.setState({showScatter: true});
+    this.setState({ showScatter: true });
   };
 
   render() {
@@ -237,7 +236,7 @@ export default class HavvenChart extends React.Component {
       maxValueEth
     } = this.state;
     const { currencySwitch, period } = this.props;
-    const dtFormat = period === "1D" ? "HH:00 a" : "DD/MM";
+    const dtFormat = period === "1D" ? "HH:00" : "DD/MM";
     console.log("dtFormat", dtFormat);
     console.log("period", period);
 
@@ -339,16 +338,17 @@ export default class HavvenChart extends React.Component {
                     }}
                   />
                   {this.state.showScatter && (
-                  <VictoryScatter
-                    data={[
-                      {
-                        x: this.state.scatterX,
-                        y: this.state.scatterYBtc,
-                        symbol: "circle",
-                        size: 3
-                      }
-                    ]}
-                  />)}
+                    <VictoryScatter
+                      data={[
+                        {
+                          x: this.state.scatterX,
+                          y: this.state.scatterYBtc,
+                          symbol: "circle",
+                          size: 3
+                        }
+                      ]}
+                    />
+                  )}
                 </VictoryChart>
               </div>
             )}
@@ -385,16 +385,17 @@ export default class HavvenChart extends React.Component {
                     }}
                   />
                   {this.state.showScatter && (
-                  <VictoryScatter
-                    data={[
-                      {
-                        x: this.state.scatterX,
-                        y: this.state.scatterYEth,
-                        symbol: "circle",
-                        size: 3
-                      }
-                    ]}
-                  />)}
+                    <VictoryScatter
+                      data={[
+                        {
+                          x: this.state.scatterX,
+                          y: this.state.scatterYEth,
+                          symbol: "circle",
+                          size: 3
+                        }
+                      ]}
+                    />
+                  )}
                 </VictoryChart>
               </div>
             )}

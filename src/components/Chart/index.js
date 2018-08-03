@@ -468,6 +468,7 @@ export default class HavvenChart extends React.Component {
                     <VictoryTooltip
                       flyoutComponent={
                         <GraphTooltip
+                          period={this.props.period}
                           showScatter={this.state.showScatter}
                           scatterY={
                             currencySwitch && !currencySwitch.Usd

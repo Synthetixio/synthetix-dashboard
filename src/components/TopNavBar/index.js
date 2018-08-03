@@ -105,10 +105,30 @@ export default class TopNavBar extends React.Component {
             })}
           >
             <div className="navbar-end">
-              <a className="navbar-item">Team</a>
-              <a className="navbar-item">Blog</a>
-              <a className="navbar-item">Whitepaper</a>
-              <a className="navbar-item is-active">Dashboard</a>
+              <a
+                className="navbar-item"
+                href="https://havven.io/team"
+                target="_blank"
+              >
+                Team
+              </a>
+              <a
+                className="navbar-item"
+                href="https://blog.havven.io/"
+                target="_blank"
+              >
+                Blog
+              </a>
+              <a
+                className="navbar-item"
+                href="https://havven.io/uploads/havven_whitepaper.pdf"
+                target="_blank"
+              >
+                Whitepaper
+              </a>
+              <a className="navbar-item is-active" href="/" target="_blank">
+                Dashboard
+              </a>
             </div>
           </div>
         </div>

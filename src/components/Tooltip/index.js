@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import numeral from "numeral";
-import styles from "./styles";
 import format from "date-fns/format";
 
 class GraphTooltip extends React.Component {

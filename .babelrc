@@ -16,7 +16,6 @@
     "@babel/react"
   ],
   "plugins": [
-    "emotion",
     ["@babel/plugin-proposal-decorators", { "legacy": true }],
     ["@babel/plugin-proposal-class-properties",{"loose":true}],
     "@babel/plugin-proposal-export-default-from",
@@ -26,13 +25,11 @@
   "env": {
     "development": {
       "plugins": [
-        ["emotion", { "sourceMap": true, "autoLabel": true }],
         "react-hot-loader/babel"
       ]
     },
     "production": {
       "plugins": [
-        ["emotion", { "hoist": true }],
         "transform-react-remove-prop-types"
       ]
     }

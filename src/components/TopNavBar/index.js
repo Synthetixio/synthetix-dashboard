@@ -1,5 +1,5 @@
 import React from "react";
-import { cx } from "emotion";
+import cx from "classnames";
 import PropTypes from "prop-types";
 import { Link } from "react-scroll";
 

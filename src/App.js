@@ -15,7 +15,8 @@ const HAV_CHART = {
   HavvenPrice: "HavvenPrice",
   HavvenMarketCap: "HavvenMarketCap",
   HavvenVolume24h: "HavvenVolume24h",
-  LockedUpHavven: "LockedUpHavven"
+  LockedUpHavven: "LockedUpHavven",
+  LockedUpHavvenRatio: "LockedUpHavvenRatio"
 };
 const nUSD_CHART = {
   NominPrice: "NominPrice",
@@ -29,6 +30,7 @@ const DECIMALS = {
   HavvenPrice: { Val: 3, Btc: 7 },
   HavvenVolume24h: { Val: 0, Btc: 0 },
   LockedUpHavven: { Val: 0 },
+  LockedUpHavvenRatio: { Val: 2 },
   HavvenVolume24h: { Val: 0 },
   NominMarketCap: { Val: 2 },
   NominPrice: { Val: 3 },
@@ -117,7 +119,8 @@ class App extends React.Component {
       HavvenMarketCap,
       HavvenVolume24h,
       HavvenPrice,
-      LockedUpHavven
+      LockedUpHavven,
+      LockedUpHavvenRatio
     } = HAV_CHART;
     const {
       NominMarketCap,
@@ -370,10 +373,11 @@ class App extends React.Component {
                     {numeral(stats.lockedUpHavvenRatio * 100).format("0.00")}%
                   </div>
                   <Chart
-                    info={charts.HavvenVolume24h}
-                    decimals={DECIMALS[HavvenVolume24h]}
+                    info={charts.LockedUpHavvenRatio}
+                    decimals={DECIMALS[LockedUpHavvenRatio]}
                     colorGradient="red"
                     lastUpdated={lastUpdated}
+                    sign="%"
                   />
                 </div>
               </div>

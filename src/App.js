@@ -127,7 +127,8 @@ class App extends React.Component {
       NominFeesCollected
     } = nUSD_CHART;
 
-    const minsAgo = differenceInMins(Date.now(), lastUpdated);
+    let minsAgo = differenceInMins(Date.now(), lastUpdated);
+    minsAgo = isNaN(minsAgo) ? "-" : minsAgo;
 
     const scrollToOptions = {
       duration: 500,

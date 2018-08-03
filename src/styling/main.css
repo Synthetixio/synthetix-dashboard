@@ -150,13 +150,13 @@ a.navbar-item {
       flex-direction: column;
       align-items: flex-end; }
       html .chart-section__heading .level-right button {
-        font-size: 18px;
+        font-size: 16px;
         margin-bottom: 0.3em; }
   html .chart-box--main {
     position: static; }
   html .chart-box__stat {
     position: absolute;
-    top: 2rem;
+    top: 1.3rem;
     left: 0; }
     html .chart-box__stat > div {
       display: table;
@@ -318,10 +318,13 @@ a.navbar-item {
     margin-right: -10px; }
     .chart-box .chart-box__number {
       top: 1.3rem;
-      right: 1.3rem; }
+      right: 1.3rem;
+      font-size: 30px; }
 
   .chart-box--main {
-    margin-top: -20px; } }
+    margin-top: -20px; }
+    .chart-box--main h2 {
+      font-size: 36px; } }
 .dashboard-root {
   position: relative; }
 

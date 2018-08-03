@@ -148,15 +148,18 @@ class App extends React.Component {
     const havStats = {
       [HAV_CHART.HavvenMarketCap]: {
         value: stats.havvenMarketCap,
-        trend: stats.havvenMarketCap24hDelta
+        trend: stats.havvenMarketCap24hDelta,
+        decimals: 0
       },
       [HAV_CHART.HavvenPrice]: {
         value: stats.havvenPriceCap,
-        trend: stats.havvenPriceCap24hDelta
+        trend: stats.havvenPriceCap24hDelta,
+        decimals: 3
       },
       [HAV_CHART.HavvenVolume24h]: {
         value: stats.havvenVolume24h,
-        trend: stats.havvenMarketCap24hDelta
+        trend: stats.havvenMarketCap24hDelta,
+        decimals: 0
       }
     };
     const currentHavStat = havStats[havChartName];
@@ -164,15 +167,18 @@ class App extends React.Component {
     const nominStats = {
       [nUSD_CHART.NominMarketCap]: {
         value: stats.nominMarketCap,
-        trend: stats.nominMarketCap24hDelta
+        trend: stats.nominMarketCap24hDelta,
+        decimals: 0
       },
       [nUSD_CHART.NominPrice]: {
         value: stats.nominPriceCap,
-        trend: stats.nominPriceCap24hDelta
+        trend: stats.nominPriceCap24hDelta,
+        decimals: 3
       },
       [nUSD_CHART.NominVolume24h]: {
         value: stats.nominVolume24h,
-        trend: stats.nominMarketCap24hDelta
+        trend: stats.nominMarketCap24hDelta,
+        decimals: 0
       }
     };
     const currentNominStat = nominStats[nUSDChartName];
@@ -195,6 +201,7 @@ class App extends React.Component {
                 this.setHavChart(HavvenMarketCap);
                 scroller.scrollTo("hav-main-chart", scrollToOptions);
               }}
+              decimals={0}
             />
             <SingleStatBox
               value={stats.havvenPriceCap}
@@ -216,6 +223,7 @@ class App extends React.Component {
                 this.setnUSDChart(NominMarketCap);
                 scroller.scrollTo("nomin-main-chart", scrollToOptions);
               }}
+              decimals={0}
             />
             <SingleStatBox
               value={stats.nominPriceCap}
@@ -281,10 +289,7 @@ class App extends React.Component {
             <div className="columns">
               <div className="column">
                 <div className="chart-box chart-box--main" id="hav-main-chart">
-                  <SingleStat
-                    value={currentHavStat.value}
-                    trend={currentHavStat.trend}
-                  />
+                  <SingleStat {...currentHavStat} />
                   <div className="time-toggles is-hidden-mobile">
                     <button
                       onClick={() => this.setPeriod("1D", "HAV")}
@@ -520,10 +525,7 @@ class App extends React.Component {
                   className="chart-box chart-box--main"
                   id="nomin-main-chart"
                 >
-                  <SingleStat
-                    value={currentNominStat.value}
-                    trend={currentNominStat.trend}
-                  />
+                  <SingleStat {...currentNominStat} />
                   <div className="time-toggles is-hidden-mobile">
                     <button
                       onClick={() => this.setPeriod("1D", "nUSD")}

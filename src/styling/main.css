@@ -194,6 +194,9 @@ a.navbar-item {
 @media screen and (max-width: 768px) {
   .chart-box__info {
     padding: 1.625rem 1.3rem 0.455rem 1.3rem; } }
+@media screen and (min-width: 769px), print {
+  .chart-box__info {
+    min-height: 140px; } }
 .single-stat-box {
   min-height: 300px;
   border-radius: 4px;

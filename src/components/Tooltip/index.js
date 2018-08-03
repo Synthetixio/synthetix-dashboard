@@ -21,12 +21,14 @@ class GraphTooltip extends React.Component {
       y,
       decimals = { Val: 2, Btc: 4 },
       sign,
-      showScatter
+      showScatter,
+      period
     } = this.props;
     const dec = decimals.Val > 0 ? "." + "0".repeat(decimals.Val) : "";
     const decBtc = decimals.Btc > 0 ? "." + "0".repeat(decimals.Btc) : "";
     const base = "0,0";
     const baseVal = sign ? base : "$" + base;
+    const dtFormat = period === "1D" ? "HH:00 a" : "Do MMMM YYYY";
 
     if (!showScatter) return null;
 
@@ -36,7 +38,7 @@ class GraphTooltip extends React.Component {
           <div className="chart-tooltip-box">
             <div>
               <span className="dateSm">
-                {format(scatterX, "Do MMMM YYYY").toUpperCase()}
+                {format(scatterX, dtFormat).toUpperCase()}
               </span>
             </div>
 

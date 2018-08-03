@@ -185,7 +185,7 @@ class App extends React.Component {
               value={stats.havvenMarketCap}
               trend={stats.havvenMarketCap24hDelta * 100}
               label="HAVVEN MARKET CAP"
-              desc="Price of Havven multipled by it’s curiculating supply."
+              desc="The total value of all circulating HAV, determined by multiplying the current price of 1 HAV by the circulating supply of HAV."
               onClick={() => {
                 this.setHavChart(HavvenMarketCap);
                 scroller.scrollTo("hav-main-chart", scrollToOptions);
@@ -195,7 +195,7 @@ class App extends React.Component {
               value={stats.havvenPriceCap}
               trend={stats.havvenPriceCap24hDelta * 100}
               label="HAVVEN PRICE"
-              desc="Price of Havven multipled by it’s curiculating supply."
+              desc="The average price of 1 HAV across all available exchanges."
               decimals={3}
               onClick={() => {
                 this.setHavChart(HavvenPrice);
@@ -206,7 +206,7 @@ class App extends React.Component {
               value={stats.nominMarketCap}
               trend={stats.nominMarketCap24hDelta * 100}
               label="nUSD MARKET CAP"
-              desc="Price of Havven multipled by it’s curiculating supply."
+              desc="The total value of all circulating nUSD, determined by multiplying the current price of 1 nUSD by the circulating supply of HAV."
               onClick={() => {
                 this.setnUSDChart(NominMarketCap);
                 scroller.scrollTo("nomin-main-chart", scrollToOptions);
@@ -216,7 +216,7 @@ class App extends React.Component {
               value={stats.nominPriceCap}
               trend={stats.nominPriceCap24hDelta * 100}
               label="nUSD PRICE"
-              desc="Price of Havven multipled by it’s curiculating supply."
+              desc="The average price of 1 nUSD across all available exchanges."
               decimals={3}
               onClick={() => {
                 this.setnUSDChart(NominPrice);
@@ -348,7 +348,10 @@ class App extends React.Component {
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <h3>LOCKED HAV VALUE</h3>
-                    <div>The total value of all locked Havven.</div>
+                    <div>
+                      The total value of all HAV locked as collateral to issue
+                      nUSD.
+                    </div>
                   </div>
                   <div className="chart-box__number">
                     {numeral(stats.lockedUpHavven).format(`$0,0.`)}
@@ -366,7 +369,8 @@ class App extends React.Component {
                   <div className="chart-box__info">
                     <h3>LOCKED HAV RATIO</h3>
                     <div>
-                      The ratio of nUSD market cap to locked HAV market cap.
+                      The ratio of total locked HAV against the total
+                      circulating HAV.
                     </div>
                   </div>
                   <div className="chart-box__number">
@@ -474,9 +478,7 @@ class App extends React.Component {
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <h3>TOTAL FEES</h3>
-                    <div>
-                      The cumulative USD value of fees collected over time.
-                    </div>
+                    <div>The cumulative total of nUSD fees collected.</div>
                   </div>
                   <div className="chart-box__number">
                     {numeral(stats.nominFeesCollected).format(`$0,0.`)}
@@ -494,7 +496,8 @@ class App extends React.Component {
                   <div className="chart-box__info">
                     <h3>COLLATERALIZATION RATIO</h3>
                     <div>
-                      The ratio of nUSD market cap to locked HAV market cap.
+                      The ratio of circulating nUSD against the value of all
+                      locked HAV.
                     </div>
                   </div>
                   <div className="chart-box__number">

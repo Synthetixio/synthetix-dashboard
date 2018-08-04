@@ -187,9 +187,9 @@ export default class HavvenChart extends React.Component {
       maxValueEth = data && data["maxValueEth"];
     }
 
-    if (this.props.info.displayName === "HavvenPrice") {
-      console.log(this.props.info);
-    }
+    // if (this.props.info.displayName === "HavvenPrice") {
+    //   console.log(this.props.info);
+    // }
 
     this.setState(
       {
@@ -237,8 +237,6 @@ export default class HavvenChart extends React.Component {
     } = this.state;
     const { currencySwitch, period } = this.props;
     const dtFormat = period === "1D" ? "HH:00" : "DD/MM";
-    console.log("dtFormat", dtFormat);
-    console.log("period", period);
 
     return (
       <div>

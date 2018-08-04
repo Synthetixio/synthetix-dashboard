@@ -20,8 +20,6 @@ let init = {
 function* fetchCharts() {
   const fetchUri = apiUri + "dataPoint/chartData";
   const data = yield call(doFetch, fetchUri);
-  console.log("fetched");
-  console.log("payload data: ", data);
   yield put({ type: FETCH_CHARTS_SUCCESS, payload: { data } });
 }
 

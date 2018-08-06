@@ -196,7 +196,7 @@ class App extends React.Component {
               value={stats.havvenMarketCap}
               trend={stats.havvenMarketCap24hDelta * 100}
               label="HAVVEN MARKET CAP"
-              desc="The total value of all circulating HAV, determined by multiplying the current price of 1 HAV by the circulating supply of HAV. "
+              desc="The total value of all circulating HAV, determined by multiplying the current price of 1 HAV by the circulating supply of HAV."
               onClick={() => {
                 this.setHavChart(HavvenMarketCap);
                 scroller.scrollTo("hav-main-chart", scrollToOptions);

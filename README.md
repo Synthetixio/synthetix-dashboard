@@ -4,8 +4,8 @@ This site uses Netlify for the hosting.
 
 ## Branches
 
-The `master` branch is the dev version which automatically deploys to https://dashboard-staging.havven.io.
-The `live` branch automatically deploys to https://dashboard.havven.io.
+The `staging` branch is the dev version which automatically deploys to https://staging.dashboard.havven.io.
+The `master` branch automatically deploys to https://dashboard.havven.io.
 
 ## Requirements
 

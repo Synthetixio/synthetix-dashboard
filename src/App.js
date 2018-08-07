@@ -47,16 +47,14 @@ class App extends React.Component {
   state = {
     activeSection: "stats",
     themeCss: "",
+    themeCssLoaded: false,
     havButtons: { Usd: true, Btc: true, Eth: false },
     havChartName: HAV_CHART.HavvenPrice,
     nUSDChartName: nUSD_CHART.NominPrice
   };
 
-  componentDidMount() {
-    this.switchTheme();
-  }
-
   componentWillMount() {
+    this.switchTheme();
     this.fetchCharts();
     this.setState({
       intervalId: setInterval(this.fetchCharts, 10 * 60 * 1000)
@@ -100,11 +98,19 @@ class App extends React.Component {
   switchTheme() {
     if (this.props.theme === "dark") {
       import(`styling/dark.css`).then(res => {
-        this.setState({ themeCss: res[0][1] });
+        this.setState({ themeCss: res[0][1] },()=>{
+          setTimeout(()=>{
+            this.setState({themeCssLoaded:true})
+          },1200);
+        });
       });
     } else {
       import(`styling/light.css`).then(res => {
-        this.setState({ themeCss: res[0][1] });
+        this.setState({ themeCss: res[0][1] },()=>{
+          setTimeout(()=>{
+            this.setState({themeCssLoaded:true})
+          },1200);
+        });
       });
     }
   }
@@ -117,7 +123,8 @@ class App extends React.Component {
       themeCss,
       havButtons,
       havChartName,
-      nUSDChartName
+      nUSDChartName,
+      themeCssLoaded
     } = this.state;
     const { stats, lastUpdated } = charts;
     const {
@@ -182,9 +189,11 @@ class App extends React.Component {
       }
     };
     const currentNominStat = nominStats[nUSDChartName];
+    const cssAfterLoad = "html {transition: all 1s ease}";
 
     return (
       <div className="dashboard-root">
+        <style>{themeCssLoaded ? cssAfterLoad : ""}</style>
         <style>{themeCss}</style>
         <div className="is-hidden-mobile last-updated-top">
           <label>LAST UPDATED</label> <span>{minsAgo} MINS AGO</span>{" "}

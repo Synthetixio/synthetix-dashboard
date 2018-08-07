@@ -39,7 +39,8 @@ export default class HavvenChart extends React.Component {
       windowWidth: this.getWidth(),
       gradientUrl: `url(#gradient-${colorGradient})`,
       colorGradient,
-      decimals: {}
+      decimals: {},
+      switchOnCount: this.countSwitchOn()
     };
   }
 
@@ -135,10 +136,26 @@ export default class HavvenChart extends React.Component {
 
     const { currencySwitch } = this.props;
     if (currencySwitch && prevProps.currencySwitch !== currencySwitch) {
-      const hideScatter =
-        !currencySwitch.Usd && !currencySwitch.Btc && !currencySwitch.Eth;
-      this.setState({ showScatter: !hideScatter });
+      const count = this.countSwitchOn();
+      const hideScatter = count === 0;
+      this.setState({
+        showScatter: !hideScatter,
+        switchOnCount: count
+      });
     }
+  }
+
+  countSwitchOn = () => {
+    let count = 0;
+    const { currencySwitch } = this.props;
+    if(currencySwitch){
+      for (let key in currencySwitch) {
+        if (currencySwitch.hasOwnProperty(key)) {
+          if(currencySwitch[key]===true)count++;
+        }
+      }
+    }
+    return count;
   }
 
   parseProps = props => {
@@ -205,7 +222,7 @@ export default class HavvenChart extends React.Component {
         timeSeriesEth,
         timeSeriesBtc,
         timeSeriesX,
-        currencyIndex
+        currencyIndex,
       },
       () => {
         this.setScatterToLast();
@@ -233,10 +250,16 @@ export default class HavvenChart extends React.Component {
       minValueBtc,
       maxValueBtc,
       minValueEth,
-      maxValueEth
+      maxValueEth,
+      switchOnCount
     } = this.state;
     const { currencySwitch, period } = this.props;
     const dtFormat = period === "1D" ? "HH:00" : "DD/MM";
+
+    let ttY = -100;
+    if(switchOnCount){
+      ttY -= switchOnCount*15;
+    }
 
     return (
       <div>
@@ -465,7 +488,7 @@ export default class HavvenChart extends React.Component {
                   cursorComponent={<Line style={{ stroke: "transparent" }} />}
                   onCursorChange={this.onCursorChange}
                   cursorLabel={() => ""}
-                  cursorLabelOffset={{ x: -85, y: 0 }}
+                  cursorLabelOffset={{ x: -85, y: ttY }}
                   cursorLabelComponent={
                     <VictoryTooltip
                       flyoutComponent={

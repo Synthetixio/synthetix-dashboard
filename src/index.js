@@ -8,6 +8,15 @@ import { store } from "./config/store";
 import "styling/bulma/bulma.sass";
 import "styling/main.sass";
 
+let storedThemeData = window.localStorage.getItem("havven-dashboard");
+let data = JSON.parse(storedThemeData);
+let theme = data?.theme?.theme || "dark";
+if (theme === "dark") {
+  require("styling/dark.sass");
+} else {
+  require("styling/light.sass");
+}
+
 const render = Component => {
   ReactDOM.render(
     <AppContainer>

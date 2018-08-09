@@ -148,15 +148,15 @@ export default class HavvenChart extends React.Component {
   countSwitchOn = () => {
     let count = 0;
     const { currencySwitch } = this.props;
-    if(currencySwitch){
+    if (currencySwitch) {
       for (let key in currencySwitch) {
         if (currencySwitch.hasOwnProperty(key)) {
-          if(currencySwitch[key]===true)count++;
+          if (currencySwitch[key] === true) count++;
         }
       }
     }
     return count;
-  }
+  };
 
   parseProps = props => {
     const { info, currencySwitch } = props;
@@ -222,7 +222,7 @@ export default class HavvenChart extends React.Component {
         timeSeriesEth,
         timeSeriesBtc,
         timeSeriesX,
-        currencyIndex,
+        currencyIndex
       },
       () => {
         this.setScatterToLast();
@@ -257,8 +257,8 @@ export default class HavvenChart extends React.Component {
     const dtFormat = period === "1D" ? "HH:00" : "DD/MM";
 
     let ttY = -100;
-    if(switchOnCount){
-      ttY -= switchOnCount*15;
+    if (switchOnCount) {
+      ttY -= switchOnCount * 15;
     }
 
     return (

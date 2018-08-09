@@ -429,12 +429,11 @@ class App extends React.Component {
                   <div className="chart-box__info">
                     <h3>LOCKED HAV VALUE</h3>
                     <div>
-                      The total value of all HAV locked as collateral to issue
-                      nUSD.
+                      The total USD value of all HAV locked as collateral to issue nUSD.
                     </div>
                   </div>
                   <div className="chart-box__number">
-                    {numeral(stats.lockedUpHavven).format(`$0,0.`)}
+                    {numeral(stats.lockedUpHavven * stats.havvenPriceCap).format(`$0,0.`)}
                   </div>
                   <Chart
                     period={havPeriod}
@@ -627,8 +626,8 @@ class App extends React.Component {
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
-                    <h3>TOTAL FEES</h3>
-                    <div>The cumulative total of nUSD fees collected.</div>
+                    <h3>FEE POOL</h3>
+                    <div>Transaction fees generated & available to claim within current 28-day fee period.</div>
                   </div>
                   <div className="chart-box__number">
                     {numeral(stats.nominFeesCollected).format(`$0,0.`)}
@@ -645,7 +644,7 @@ class App extends React.Component {
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
-                    <h3>COLLATERALIZATION RATIO</h3>
+                    <h3>NETWORK COLLATERALIZATION RATIO</h3>
                     <div>
                       The ratio of circulating nUSD against the value of all
                       locked HAV.

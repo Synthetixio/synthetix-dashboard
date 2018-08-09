@@ -1,5 +1,6 @@
 .single-stat-box
   min-height: 300px
+  height: 100%
   border-radius: 4px
   padding: $box-padding
   display: flex
@@ -10,6 +11,9 @@
     transform: scale(1.05)
 
 .single-stat-box__bottom
+  flex-grow: 1
+  +tablet
+    padding-top: 37px
   h3
     font-size: 14px
     padding-bottom: 0.5em
@@ -21,7 +25,6 @@
     max-width: 254px
 
 .single-stat-box__stats
-  flex-grow: 1
   h2
     font-size: 40px
     line-height: 40px

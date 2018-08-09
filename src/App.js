@@ -98,18 +98,18 @@ class App extends React.Component {
   switchTheme() {
     if (this.props.theme === "dark") {
       import(`styling/dark.css`).then(res => {
-        this.setState({ themeCss: res[0][1] },()=>{
-          setTimeout(()=>{
-            this.setState({themeCssLoaded:true})
-          },1200);
+        this.setState({ themeCss: res[0][1] }, () => {
+          setTimeout(() => {
+            this.setState({ themeCssLoaded: true });
+          }, 1200);
         });
       });
     } else {
       import(`styling/light.css`).then(res => {
-        this.setState({ themeCss: res[0][1] },()=>{
-          setTimeout(()=>{
-            this.setState({themeCssLoaded:true})
-          },1200);
+        this.setState({ themeCss: res[0][1] }, () => {
+          setTimeout(() => {
+            this.setState({ themeCssLoaded: true });
+          }, 1200);
         });
       });
     }
@@ -227,7 +227,7 @@ class App extends React.Component {
               value={stats.nominMarketCap}
               trend={stats.nominMarketCap24hDelta * 100}
               label="nUSD MARKET CAP"
-              desc="The total value of all circulating nUSD, determined by multiplying the current price of 1 nUSD by the circulating supply of HAV."
+              desc="The total value of all circulating nUSD, determined by multiplying the current price of 1 nUSD by the circulating supply of nUSD."
               onClick={() => {
                 this.setnUSDChart(NominMarketCap);
                 scroller.scrollTo("nomin-main-chart", scrollToOptions);
@@ -438,11 +438,14 @@ class App extends React.Component {
                   <div className="chart-box__info">
                     <h3>LOCKED HAV VALUE</h3>
                     <div>
-                      The total USD value of all HAV locked as collateral to issue nUSD.
+                      The total USD value of all HAV locked as collateral to
+                      issue nUSD.
                     </div>
                   </div>
                   <div className="chart-box__number">
-                    {numeral(stats.lockedUpHavven * stats.havvenPriceCap).format(`$0,0.`)}
+                    {numeral(
+                      stats.lockedUpHavven * stats.havvenPriceCap
+                    ).format(`$0,0.`)}
                   </div>
                   <Chart
                     period={havPeriod}
@@ -636,7 +639,10 @@ class App extends React.Component {
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <h3>FEE POOL</h3>
-                    <div>Transaction fees generated & available to claim within current 28-day fee period.</div>
+                    <div>
+                      Transaction fees generated & available to claim within
+                      current 28-day fee period.
+                    </div>
                   </div>
                   <div className="chart-box__number">
                     {numeral(stats.nominFeesCollected).format(`$0,0.`)}

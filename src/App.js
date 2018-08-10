@@ -627,8 +627,8 @@ class App extends React.Component {
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
-                    <h3>TOTAL FEES</h3>
-                    <div>The cumulative total of nUSD fees collected.</div>
+                    <h3>FEE POOL</h3>
+                    <div>Transaction fees generated & available to claim.</div>
                   </div>
                   <div className="chart-box__number">
                     {numeral(stats.nominFeesCollected).format(`$0,0.`)}
@@ -645,10 +645,9 @@ class App extends React.Component {
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
-                    <h3>COLLATERALIZATION RATIO</h3>
+                    <h3>NETWORK COLLATERALIZATION RATIO</h3>
                     <div>
-                      The ratio of circulating nUSD against the value of all
-                      locked HAV.
+                      The ratio of circulating nUSD against the value of all HAV.
                     </div>
                   </div>
                   <div className="chart-box__number">

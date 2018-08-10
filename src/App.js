@@ -444,7 +444,7 @@ class App extends React.Component {
                   </div>
                   <div className="chart-box__number">
                     {numeral(
-                      stats.lockedUpHavven * stats.havvenPriceCap
+                      stats.lockedUpHavven
                     ).format(`$0,0.`)}
                   </div>
                   <Chart

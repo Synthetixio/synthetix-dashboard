@@ -4,11 +4,7 @@ import { FETCH_CHARTS, FETCH_CHARTS_SUCCESS } from "../actions/charts";
 
 import { doFetch } from "./api";
 
-const API_URI = "https://api.havven.io/api/";
-const STAGING_API_URI = "https://staging-api.havven.io/api/";
-
-let useStagingApi = false; //false;
-let apiUri = useStagingApi ? STAGING_API_URI : API_URI;
+let apiUri = process.env.API_URL || "https://api.havven.io/api/";
 
 let headers = new Headers();
 headers.append("Accept", "application/json");

@@ -31,7 +31,6 @@ const DECIMALS = {
   HavvenVolume24h: { Val: 0, Btc: 0 },
   LockedUpHavven: { Val: 0 },
   LockedUpHavvenRatio: { Val: 2 },
-  HavvenVolume24h: { Val: 0 },
   NominMarketCap: { Val: 2 },
   NominPrice: { Val: 3 },
   NominVolume24h: { Val: 2 },
@@ -656,7 +655,8 @@ class App extends React.Component {
                   <div className="chart-box__info">
                     <h3>NETWORK COLLATERALIZATION RATIO</h3>
                     <div>
-                      The ratio of circulating nUSD against the value of all HAV.
+                      The ratio of circulating nUSD against the value of all
+                      HAV.
                     </div>
                   </div>
                   <div className="chart-box__number">

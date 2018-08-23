@@ -1,5 +1,5 @@
-[build]
+[build.environment]
   API_URL = "https://api.havven.io/api/"
 
-[context.branch-staging.environment]
+[context.staging.environment]
   API_URL = "https://staging-api.havven.io/api/"

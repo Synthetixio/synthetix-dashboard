@@ -8,10 +8,6 @@ let apiUri = process.env.API_URL || "https://api.havven.io/api/";
 
 let headers = new Headers();
 headers.append("Accept", "application/json");
-let init = {
-  method: "GET",
-  headers
-};
 
 function* fetchCharts() {
   const fetchUri = apiUri + "dataPoint/chartData";

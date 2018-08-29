@@ -15,7 +15,8 @@ const HAV_CHART = {
   HavvenPrice: "HavvenPrice",
   HavvenMarketCap: "HavvenMarketCap",
   HavvenVolume24h: "HavvenVolume24h",
-  LockedUpHavven: "LockedUpHavven",
+  // LockedUpHavven: "LockedUpHavven",
+  UnlockedHavBalance: "UnlockedHavBalance",
   LockedUpHavvenRatio: "LockedUpHavvenRatio"
 };
 const nUSD_CHART = {
@@ -29,7 +30,8 @@ const DECIMALS = {
   HavvenMarketCap: { Val: 0, Btc: 0 },
   HavvenPrice: { Val: 3, Btc: 7 },
   HavvenVolume24h: { Val: 0, Btc: 0 },
-  LockedUpHavven: { Val: 0 },
+  // LockedUpHavven: { Val: 0 },
+  UnlockedHavBalance: { Val: 0 },
   LockedUpHavvenRatio: { Val: 2 },
   NominMarketCap: { Val: 2 },
   NominPrice: { Val: 3 },
@@ -130,7 +132,8 @@ class App extends React.Component {
       HavvenMarketCap,
       HavvenVolume24h,
       HavvenPrice,
-      LockedUpHavven,
+      // LockedUpHavven,
+      UnlockedHavBalance,
       LockedUpHavvenRatio
     } = HAV_CHART;
     const {
@@ -435,19 +438,18 @@ class App extends React.Component {
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
-                    <h3>LOCKED HAV VALUE</h3>
+                    <h3>UNLOCKED HAV BALANCE</h3>
                     <div>
-                      The total USD value of all HAV locked as collateral to
-                      issue nUSD.
+
                     </div>
                   </div>
                   <div className="chart-box__number">
-                    {numeral(stats.lockedUpHavven).format(`$0,0.`)}
+                    {numeral(stats.UnlockedHavBalance).format(`$0,0.`)}
                   </div>
                   <Chart
                     period={havPeriod}
-                    info={charts.LockedUpHavven}
-                    decimals={DECIMALS[LockedUpHavven]}
+                    info={charts.UnlockedHavBalance}
+                    decimals={DECIMALS[UnlockedHavBalance]}
                     colorGradient="yellow"
                     lastUpdated={lastUpdated}
                   />

@@ -9,8 +9,9 @@ const chartTypes = [
   "HavvenVolume24h",
   "NominVolume24h",
   "NominFeesCollected",
-  "LockedUpHavven",
+  // "LockedUpHavven",
   "LockedUpHavvenRatio",
+  "UnlockedHavBalance",
   "CollateralizationRatio"
 ];
 
@@ -18,7 +19,8 @@ const chartTypesHAV = [
   "HavvenMarketCap",
   "HavvenPrice",
   "HavvenVolume24h",
-  "LockedUpHavven",
+  // "LockedUpHavven",
+  "UnlockedHavBalance",
   "LockedUpHavvenRatio",
 ];
 
@@ -70,8 +72,11 @@ export default (state = initialState, action) => {
             havvenVolume24h:
               data.HavvenVolume24h.data[data.HavvenVolume24h.data.length - 1]
                 .usdValue,
-            lockedUpHavven:
-              data.LockedUpHavven.data[data.LockedUpHavven.data.length - 1]
+            // lockedUpHavven:
+            //   data.LockedUpHavven.data[data.LockedUpHavven.data.length - 1]
+            //     .usdValue,
+            UnlockedHavBalance:
+              data.UnlockedHavBalance.data[data.UnlockedHavBalance.data.length - 1]
                 .usdValue,
             lockedUpHavvenRatio:
               data.LockedUpHavvenRatio.data[

@@ -26,7 +26,7 @@ export const parseChartData = (sourceData, key, period = "ALL") => {
   if (timeSeries[timeSeries.length - 1].created !== last.created) {
     timeSeries.push(last);
   }
-  if (key === "LockedUpHavvenRatio") {
+  if (key === "LockedHavRatio") {
     timeSeries = timeSeries.map(val => ({
       ...val,
       usdValue: val.usdValue * 100

@@ -17,6 +17,7 @@ const HAV_CHART = {
   HavvenVolume24h: "HavvenVolume24h",
   // LockedUpHavven: "LockedUpHavven",
   UnlockedHavBalance: "UnlockedHavBalance",
+  LockedHavBalance: "LockedHavBalance",
   LockedUpHavvenRatio: "LockedUpHavvenRatio"
 };
 const nUSD_CHART = {
@@ -32,6 +33,7 @@ const DECIMALS = {
   HavvenVolume24h: { Val: 0, Btc: 0 },
   // LockedUpHavven: { Val: 0 },
   UnlockedHavBalance: { Val: 0 },
+  LockedHavBalance: { Val: 0 },
   LockedUpHavvenRatio: { Val: 2 },
   NominMarketCap: { Val: 2 },
   NominPrice: { Val: 3 },
@@ -134,6 +136,7 @@ class App extends React.Component {
       HavvenPrice,
       // LockedUpHavven,
       UnlockedHavBalance,
+      LockedHavBalance,
       LockedUpHavvenRatio
     } = HAV_CHART;
     const {
@@ -476,6 +479,30 @@ class App extends React.Component {
                     sign="%"
                   />
                 </div>
+              </div>
+            </div>
+            <div className="columns">
+              <div className="column">
+                <div className="chart-box">
+                  <div className="chart-box__info">
+                    <h3>LOCKED HAV BALANCE</h3>
+                    <div>
+
+                    </div>
+                  </div>
+                  <div className="chart-box__number">
+                    {numeral(stats.LockedHavBalance).format(`$0,0.`)}
+                  </div>
+                  <Chart
+                    period={havPeriod}
+                    info={charts.LockedHavBalance}
+                    decimals={DECIMALS[LockedHavBalance]}
+                    colorGradient="green"
+                    lastUpdated={lastUpdated}
+                  />
+                </div>
+              </div>
+              <div className="column">
               </div>
             </div>
           </div>

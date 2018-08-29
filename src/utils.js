@@ -38,6 +38,12 @@ export const parseChartData = (sourceData, key, period = "ALL") => {
       usdValue: val.usdValue * 100
     }));
   }
+  if (key === "ActiveCollateralizationRatio") {
+    timeSeries = timeSeries.map(val => ({
+      ...val,
+      usdValue: val.usdValue * 100
+    }));
+  }
   last = timeSeries[timeSeries.length - 1];
 
   let minValueUsd = minBy(timeSeries, o => o.usdValue).usdValue;

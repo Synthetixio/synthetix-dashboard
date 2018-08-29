@@ -13,7 +13,8 @@ const chartTypes = [
   "LockedUpHavvenRatio",
   "UnlockedHavBalance",
   "LockedHavBalance",
-  "CollateralizationRatio"
+  "CollateralizationRatio",
+  "ActiveCollateralizationRatio"
 ];
 
 const chartTypesHAV = [
@@ -32,6 +33,7 @@ const chartTypesNomin = [
   "NominVolume24h",
   "NominFeesCollected",
   "CollateralizationRatio",
+  "ActiveCollateralizationRatio"
 ];
 
 const initialState = {
@@ -77,10 +79,10 @@ export default (state = initialState, action) => {
             // lockedUpHavven:
             //   data.LockedUpHavven.data[data.LockedUpHavven.data.length - 1]
             //     .usdValue,
-            UnlockedHavBalance:
+            unlockedHavBalance:
               data.UnlockedHavBalance.data[data.UnlockedHavBalance.data.length - 1]
                 .usdValue,
-            LockedHavBalance:
+            lockedHavBalance:
               data.LockedHavBalance.data[data.LockedHavBalance.data.length - 1]
                 .usdValue,
             lockedUpHavvenRatio:
@@ -102,7 +104,12 @@ export default (state = initialState, action) => {
             collateralizationRatio:
               data.CollateralizationRatio.data[
                 data.CollateralizationRatio.data.length - 1
-              ].usdValue
+              ].usdValue,
+            activeCollateralizationRatio:
+              data.ActiveCollateralizationRatio.data[
+                data.ActiveCollateralizationRatio.data.length - 1
+              ].usdValue,
+
           }
         };
       } catch (e) {

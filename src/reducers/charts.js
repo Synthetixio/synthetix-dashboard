@@ -9,7 +9,8 @@ const chartTypes = [
   "HavvenVolume24h",
   "NominVolume24h",
   "NominFeesCollected",
-  // "LockedUpHavven",
+  'UnlockedHavUsdBalance',
+  'LockedHavUsdBalance',
   "LockedHavRatio",
   "UnlockedHavBalance",
   "LockedHavBalance",
@@ -79,11 +80,11 @@ export default (state = initialState, action) => {
             // lockedUpHavven:
             //   data.LockedUpHavven.data[data.LockedUpHavven.data.length - 1]
             //     .usdValue,
-            unlockedHavBalance:
-              data.UnlockedHavBalance.data[data.UnlockedHavBalance.data.length - 1]
+            unlockedHavUsdBalance:
+              data.UnlockedHavUsdBalance.data[data.UnlockedHavUsdBalance.data.length - 1]
                 .usdValue,
-            lockedHavBalance:
-              data.LockedHavBalance.data[data.LockedHavBalance.data.length - 1]
+            lockedHavUsdBalance:
+              data.LockedHavUsdBalance.data[data.LockedHavUsdBalance.data.length - 1]
                 .usdValue,
             lockedHavRatio:
               data.LockedHavRatio.data[
@@ -121,7 +122,7 @@ export default (state = initialState, action) => {
 
       try {
         const { token, period } = action;
-        if(!token || !period)
+        if (!token || !period)
           throw 'Error: Set chart period parameter missing!';
         const types = token === "HAV" ? chartTypesHAV : chartTypesNomin;
         const havPeriod = token === "HAV" ? period : state.havPeriod;
@@ -133,12 +134,12 @@ export default (state = initialState, action) => {
           }))
           .reduce((acc, next) => ({ ...acc, ...next }), {});
 
-          return {
-            ...state,
-            ...chartData,
-            havPeriod,
-            nUSDPeriod,
-          };
+        return {
+          ...state,
+          ...chartData,
+          havPeriod,
+          nUSDPeriod,
+        };
       } catch (e) {
         console.log("error", e);
         return state;

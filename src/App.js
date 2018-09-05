@@ -441,48 +441,46 @@ class App extends React.Component {
               </div>
             </div>
             <div className="columns">
-              <div className="column">
+              {/* <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
-                    <h3>UNLOCKED HAV BALANCE</h3>
+                    <h3>UNLOCKED HAV VALUE</h3>
                     <div>
 
                     </div>
                   </div>
                   <div className="chart-box__number">
-                    {numeral(stats.unlockedHavBalance).format(`$0,0.`)}
+                    {numeral(stats.unlockedHavUsdBalance).format(`$0,0.`)}
                   </div>
                   <Chart
                     period={havPeriod}
-                    info={charts.UnlockedHavBalance}
+                    info={charts.UnlockedHavUsdBalance}
                     decimals={DECIMALS[UnlockedHavBalance]}
                     colorGradient="green"
                     lastUpdated={lastUpdated}
                   />
                 </div>
-              </div>
+              </div> */}
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
-                    <h3>LOCKED HAV BALANCE</h3>
+                    <h3>LOCKED HAV VALUE</h3>
                     <div>
 
                     </div>
                   </div>
                   <div className="chart-box__number">
-                    {numeral(stats.lockedHavBalance).format(`$0,0.`)}
+                    {numeral(stats.lockedHavUsdBalance).format(`$0,0.`)}
                   </div>
                   <Chart
                     period={havPeriod}
-                    info={charts.LockedHavBalance}
+                    info={charts.LockedHavUsdBalance}
                     decimals={DECIMALS[LockedHavBalance]}
                     colorGradient="red"
                     lastUpdated={lastUpdated}
                   />
                 </div>
               </div>
-            </div>
-            <div className="columns">
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
@@ -504,8 +502,6 @@ class App extends React.Component {
                     sign="%"
                   />
                 </div>
-              </div>
-              <div className="column">
               </div>
             </div>
           </div>
@@ -675,6 +671,7 @@ class App extends React.Component {
                   </div>
                   <Chart
                     period={nUSDPeriod}
+                    fullSize={true}
                     info={charts.NominFeesCollected}
                     decimals={DECIMALS[NominFeesCollected]}
                     colorGradient="green"
@@ -682,6 +679,8 @@ class App extends React.Component {
                   />
                 </div>
               </div>
+            </div>
+            <div className="columns">
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
@@ -704,8 +703,6 @@ class App extends React.Component {
                   />
                 </div>
               </div>
-            </div>
-            <div className="columns">
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
@@ -724,9 +721,6 @@ class App extends React.Component {
                     sign="%"
                   />
                 </div>
-              </div>
-              <div className="column">
-
               </div>
             </div>
           </div>

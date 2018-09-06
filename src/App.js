@@ -465,7 +465,7 @@ class App extends React.Component {
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <h3>LOCKED HAV VALUE</h3>
-                    <div />
+                    <div>The total value of all locked HAV.</div>
                   </div>
                   <div className="chart-box__number">
                     {numeral(stats.lockedHavUsdBalance).format(`$0,0.`)}

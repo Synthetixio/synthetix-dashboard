@@ -26,13 +26,19 @@ export const parseChartData = (sourceData, key, period = "ALL") => {
   if (timeSeries[timeSeries.length - 1].created !== last.created) {
     timeSeries.push(last);
   }
-  if (key === "LockedUpHavvenRatio") {
+  if (key === "LockedHavRatio") {
     timeSeries = timeSeries.map(val => ({
       ...val,
       usdValue: val.usdValue * 100
     }));
   }
   if (key === "CollateralizationRatio") {
+    timeSeries = timeSeries.map(val => ({
+      ...val,
+      usdValue: val.usdValue * 100
+    }));
+  }
+  if (key === "ActiveCollateralizationRatio") {
     timeSeries = timeSeries.map(val => ({
       ...val,
       usdValue: val.usdValue * 100

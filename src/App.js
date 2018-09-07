@@ -1,42 +1,47 @@
-import React from "react";
-import Chart from "components/Chart";
-import { connect } from "react-redux";
-import { fetchCharts, setPeriod } from "./actions/charts";
-import SingleStatBox from "components/SingleStatBox";
-import TopNavBar from "components/TopNavBar";
-import { switchTheme } from "actions/theme";
-import cx from "classnames";
-import differenceInMins from "date-fns/difference_in_minutes";
-import SingleStat from "components/SingleStat";
-import numeral from "numeral";
-import { scroller } from "react-scroll";
+import React from 'react';
+import Chart from 'components/Chart';
+import { connect } from 'react-redux';
+import { fetchCharts, setPeriod } from './actions/charts';
+import SingleStatBox from 'components/SingleStatBox';
+import TopNavBar from 'components/TopNavBar';
+import { switchTheme } from 'actions/theme';
+import cx from 'classnames';
+import differenceInMins from 'date-fns/difference_in_minutes';
+import SingleStat from 'components/SingleStat';
+import numeral from 'numeral';
+import { scroller } from 'react-scroll';
 
 const HAV_CHART = {
-  HavvenPrice: "HavvenPrice",
-  HavvenMarketCap: "HavvenMarketCap",
-  HavvenVolume24h: "HavvenVolume24h",
-  LockedUpHavven: "LockedUpHavven",
-  LockedUpHavvenRatio: "LockedUpHavvenRatio"
+  HavvenPrice: 'HavvenPrice',
+  HavvenMarketCap: 'HavvenMarketCap',
+  HavvenVolume24h: 'HavvenVolume24h',
+  // LockedUpHavven: "LockedUpHavven",
+  UnlockedHavBalance: 'UnlockedHavBalance',
+  LockedHavBalance: 'LockedHavBalance',
+  LockedHavRatio: 'LockedHavRatio',
 };
 const nUSD_CHART = {
-  NominPrice: "NominPrice",
-  NominMarketCap: "NominMarketCap",
-  NominVolume24h: "NominVolume24h",
-  NominFeesCollected: "NominFeesCollected",
-  CollateralizationRatio: "CollateralizationRatio"
+  NominPrice: 'NominPrice',
+  NominMarketCap: 'NominMarketCap',
+  NominVolume24h: 'NominVolume24h',
+  NominFeesCollected: 'NominFeesCollected',
+  CollateralizationRatio: 'CollateralizationRatio',
+  ActiveCollateralizationRatio: 'ActiveCollateralizationRatio',
 };
 const DECIMALS = {
   HavvenMarketCap: { Val: 0, Btc: 0 },
   HavvenPrice: { Val: 3, Btc: 7 },
   HavvenVolume24h: { Val: 0, Btc: 0 },
-  LockedUpHavven: { Val: 0 },
-  LockedUpHavvenRatio: { Val: 2 },
-  HavvenVolume24h: { Val: 0 },
+  // LockedUpHavven: { Val: 0 },
+  UnlockedHavBalance: { Val: 0 },
+  LockedHavBalance: { Val: 0 },
+  LockedHavRatio: { Val: 2 },
   NominMarketCap: { Val: 2 },
   NominPrice: { Val: 3 },
   NominVolume24h: { Val: 2 },
   NominFeesCollected: { Val: 2 },
-  CollateralizationRatio: { Val: 2 } //%
+  CollateralizationRatio: { Val: 2 }, //%
+  ActiveCollateralizationRatio: { Val: 2 }, //%
 };
 
 class App extends React.Component {
@@ -45,19 +50,19 @@ class App extends React.Component {
   }
 
   state = {
-    activeSection: "stats",
-    themeCss: "",
+    activeSection: 'stats',
+    themeCss: '',
     themeCssLoaded: false,
     havButtons: { Usd: true, Btc: true, Eth: false },
     havChartName: HAV_CHART.HavvenPrice,
-    nUSDChartName: nUSD_CHART.NominPrice
+    nUSDChartName: nUSD_CHART.NominPrice,
   };
 
   componentWillMount() {
     this.switchTheme();
     this.fetchCharts();
     this.setState({
-      intervalId: setInterval(this.fetchCharts, 10 * 60 * 1000)
+      intervalId: setInterval(this.fetchCharts, 10 * 60 * 1000),
     });
   }
 
@@ -65,7 +70,7 @@ class App extends React.Component {
     let havButtons = { ...this.state.havButtons };
     havButtons[val] = !havButtons[val];
     this.setState({
-      havButtons
+      havButtons,
     });
   };
 
@@ -96,7 +101,7 @@ class App extends React.Component {
   };
 
   switchTheme() {
-    if (this.props.theme === "dark") {
+    if (this.props.theme === 'dark') {
       import(`styling/dark.css`).then(res => {
         this.setState({ themeCss: res[0][1] }, () => {
           setTimeout(() => {
@@ -124,50 +129,53 @@ class App extends React.Component {
       havButtons,
       havChartName,
       nUSDChartName,
-      themeCssLoaded
+      themeCssLoaded,
     } = this.state;
     const { stats, lastUpdated } = charts;
     const {
       HavvenMarketCap,
       HavvenVolume24h,
       HavvenPrice,
-      LockedUpHavven,
-      LockedUpHavvenRatio
+      // LockedUpHavven,
+      UnlockedHavBalance,
+      LockedHavBalance,
+      LockedHavRatio,
     } = HAV_CHART;
     const {
       NominMarketCap,
       NominVolume24h,
       NominPrice,
       CollateralizationRatio,
-      NominFeesCollected
+      ActiveCollateralizationRatio,
+      NominFeesCollected,
     } = nUSD_CHART;
 
     let minsAgo = differenceInMins(Date.now(), lastUpdated);
-    minsAgo = isNaN(minsAgo) ? "-" : minsAgo;
+    minsAgo = isNaN(minsAgo) ? '-' : minsAgo;
 
     const scrollToOptions = {
       duration: 500,
       delay: 100,
-      smooth: "easeInOutQuint",
-      offset: -110
+      smooth: 'easeInOutQuint',
+      offset: -110,
     };
 
     const havStats = {
       [HAV_CHART.HavvenMarketCap]: {
         value: stats.havvenMarketCap,
         trend: stats.havvenMarketCap24hDelta,
-        decimals: 0
+        decimals: 0,
       },
       [HAV_CHART.HavvenPrice]: {
         value: stats.havvenPriceCap,
         trend: stats.havvenPriceCap24hDelta,
-        decimals: 3
+        decimals: 3,
       },
       [HAV_CHART.HavvenVolume24h]: {
         value: stats.havvenVolume24h,
         trend: stats.havvenMarketCap24hDelta,
-        decimals: 0
-      }
+        decimals: 0,
+      },
     };
     const currentHavStat = havStats[havChartName];
 
@@ -175,28 +183,28 @@ class App extends React.Component {
       [nUSD_CHART.NominMarketCap]: {
         value: stats.nominMarketCap,
         trend: stats.nominMarketCap24hDelta,
-        decimals: 0
+        decimals: 0,
       },
       [nUSD_CHART.NominPrice]: {
         value: stats.nominPriceCap,
         trend: stats.nominPriceCap24hDelta,
-        decimals: 3
+        decimals: 3,
       },
       [nUSD_CHART.NominVolume24h]: {
         value: stats.nominVolume24h,
         trend: stats.nominMarketCap24hDelta,
-        decimals: 0
-      }
+        decimals: 0,
+      },
     };
     const currentNominStat = nominStats[nUSDChartName];
-    const cssAfterLoad = "html {transition: all 1s ease}";
+    const cssAfterLoad = 'html {transition: all 1s ease}';
 
     return (
       <div className="dashboard-root">
-        <style>{themeCssLoaded ? cssAfterLoad : ""}</style>
+        <style>{themeCssLoaded ? cssAfterLoad : ''}</style>
         <style>{themeCss}</style>
         <div className="is-hidden-mobile last-updated-top">
-          <label>LAST UPDATED</label> <span>{minsAgo} MINS AGO</span>{" "}
+          <label>LAST UPDATED</label> <span>{minsAgo} MINS AGO</span>{' '}
         </div>
         <TopNavBar selectedSection={activeSection} />
         <div className="container main-content">
@@ -208,7 +216,7 @@ class App extends React.Component {
               desc="The total value of all circulating HAV, determined by multiplying the current price of 1 HAV by the circulating supply of HAV."
               onClick={() => {
                 this.setHavChart(HavvenMarketCap);
-                scroller.scrollTo("hav-main-chart", scrollToOptions);
+                scroller.scrollTo('hav-main-chart', scrollToOptions);
               }}
               decimals={0}
             />
@@ -220,7 +228,7 @@ class App extends React.Component {
               decimals={3}
               onClick={() => {
                 this.setHavChart(HavvenPrice);
-                scroller.scrollTo("hav-main-chart", scrollToOptions);
+                scroller.scrollTo('hav-main-chart', scrollToOptions);
               }}
             />
             <SingleStatBox
@@ -230,7 +238,7 @@ class App extends React.Component {
               desc="The total value of all circulating nUSD, determined by multiplying the current price of 1 nUSD by the circulating supply of nUSD."
               onClick={() => {
                 this.setnUSDChart(NominMarketCap);
-                scroller.scrollTo("nomin-main-chart", scrollToOptions);
+                scroller.scrollTo('nomin-main-chart', scrollToOptions);
               }}
               decimals={0}
             />
@@ -242,7 +250,7 @@ class App extends React.Component {
               decimals={3}
               onClick={() => {
                 this.setnUSDChart(NominPrice);
-                scroller.scrollTo("nomin-main-chart", scrollToOptions);
+                scroller.scrollTo('nomin-main-chart', scrollToOptions);
               }}
             />
           </div>
@@ -259,8 +267,8 @@ class App extends React.Component {
               <div className="level-right">
                 <div className="level-item">
                   <button
-                    className={cx("button", "is-link", {
-                      "is-active": havChartName === HavvenMarketCap
+                    className={cx('button', 'is-link', {
+                      'is-active': havChartName === HavvenMarketCap,
                     })}
                     onClick={() => {
                       this.setHavChart(HavvenMarketCap);
@@ -271,8 +279,8 @@ class App extends React.Component {
                 </div>
                 <div className="level-item">
                   <button
-                    className={cx("button", "is-link", {
-                      "is-active": havChartName === HavvenPrice
+                    className={cx('button', 'is-link', {
+                      'is-active': havChartName === HavvenPrice,
                     })}
                     onClick={() => {
                       this.setHavChart(HavvenPrice);
@@ -283,8 +291,8 @@ class App extends React.Component {
                 </div>
                 <div className="level-item">
                   <button
-                    className={cx("button", "is-link", {
-                      "is-active": havChartName === HavvenVolume24h
+                    className={cx('button', 'is-link', {
+                      'is-active': havChartName === HavvenVolume24h,
                     })}
                     onClick={() => {
                       this.setHavChart(HavvenVolume24h);
@@ -301,41 +309,41 @@ class App extends React.Component {
                   <SingleStat {...currentHavStat} />
                   <div className="time-toggles is-hidden-mobile">
                     <button
-                      onClick={() => this.setPeriod("1D", "HAV")}
+                      onClick={() => this.setPeriod('1D', 'HAV')}
                       className={cx({
-                        "is-active": havPeriod === "1D"
+                        'is-active': havPeriod === '1D',
                       })}
                     >
                       1D
                     </button>
                     <button
-                      onClick={() => this.setPeriod("1W", "HAV")}
+                      onClick={() => this.setPeriod('1W', 'HAV')}
                       className={cx({
-                        "is-active": havPeriod === "1W"
+                        'is-active': havPeriod === '1W',
                       })}
                     >
                       1W
                     </button>
                     <button
-                      onClick={() => this.setPeriod("1M", "HAV")}
+                      onClick={() => this.setPeriod('1M', 'HAV')}
                       className={cx({
-                        "is-active": havPeriod === "1M"
+                        'is-active': havPeriod === '1M',
                       })}
                     >
                       1M
                     </button>
                     <button
-                      onClick={() => this.setPeriod("1Y", "HAV")}
+                      onClick={() => this.setPeriod('1Y', 'HAV')}
                       className={cx({
-                        "is-active": havPeriod === "1Y"
+                        'is-active': havPeriod === '1Y',
                       })}
                     >
                       1Y
                     </button>
                     <button
-                      onClick={() => this.setPeriod("ALL", "HAV")}
+                      onClick={() => this.setPeriod('ALL', 'HAV')}
                       className={cx({
-                        "is-active": havPeriod === "ALL"
+                        'is-active': havPeriod === 'ALL',
                       })}
                     >
                       ALL
@@ -357,41 +365,41 @@ class App extends React.Component {
             </div>
             <div className="time-toggles is-hidden-tablet">
               <button
-                onClick={() => this.setPeriod("1D", "HAV")}
+                onClick={() => this.setPeriod('1D', 'HAV')}
                 className={cx({
-                  "is-active": havPeriod === "1D"
+                  'is-active': havPeriod === '1D',
                 })}
               >
                 1D
               </button>
               <button
-                onClick={() => this.setPeriod("1W", "HAV")}
+                onClick={() => this.setPeriod('1W', 'HAV')}
                 className={cx({
-                  "is-active": havPeriod === "1W"
+                  'is-active': havPeriod === '1W',
                 })}
               >
                 1W
               </button>
               <button
-                onClick={() => this.setPeriod("1M", "HAV")}
+                onClick={() => this.setPeriod('1M', 'HAV')}
                 className={cx({
-                  "is-active": havPeriod === "1M"
+                  'is-active': havPeriod === '1M',
                 })}
               >
                 1M
               </button>
               <button
-                onClick={() => this.setPeriod("1Y", "HAV")}
+                onClick={() => this.setPeriod('1Y', 'HAV')}
                 className={cx({
-                  "is-active": havPeriod === "1Y"
+                  'is-active': havPeriod === '1Y',
                 })}
               >
                 1Y
               </button>
               <button
-                onClick={() => this.setPeriod("ALL", "HAV")}
+                onClick={() => this.setPeriod('ALL', 'HAV')}
                 className={cx({
-                  "is-active": havPeriod === "ALL"
+                  'is-active': havPeriod === 'ALL',
                 })}
               >
                 ALL
@@ -402,37 +410,98 @@ class App extends React.Component {
               <div className="level-right currency-toggles">
                 <div className="level-item">
                   <button
-                    className={cx("button is-link usd", {
-                      "is-active": havButtons.Usd
+                    className={cx('button is-link usd', {
+                      'is-active': havButtons.Usd,
                     })}
-                    onClick={() => this.onCurrencyClick("Usd")}
+                    onClick={() => this.onCurrencyClick('Usd')}
                   >
                     USD
                   </button>
                 </div>
                 <div className="level-item">
                   <button
-                    className={cx("button is-link btc", {
-                      "is-active": havButtons.Btc
+                    className={cx('button is-link btc', {
+                      'is-active': havButtons.Btc,
                     })}
-                    onClick={() => this.onCurrencyClick("Btc")}
+                    onClick={() => this.onCurrencyClick('Btc')}
                   >
                     BTC
                   </button>
                 </div>
                 <div className="level-item">
                   <button
-                    className={cx("button is-link eth", {
-                      "is-active": havButtons.Eth
+                    className={cx('button is-link eth', {
+                      'is-active': havButtons.Eth,
                     })}
-                    onClick={() => this.onCurrencyClick("Eth")}
+                    onClick={() => this.onCurrencyClick('Eth')}
                   >
                     ETH
                   </button>
                 </div>
               </div>
             </div>
+            <div className="columns">
+              {/* <div className="column">
+                <div className="chart-box">
+                  <div className="chart-box__info">
+                    <h3>UNLOCKED HAV VALUE</h3>
+                    <div>
 
+                    </div>
+                  </div>
+                  <div className="chart-box__number">
+                    {numeral(stats.unlockedHavUsdBalance).format(`$0,0.`)}
+                  </div>
+                  <Chart
+                    period={havPeriod}
+                    info={charts.UnlockedHavUsdBalance}
+                    decimals={DECIMALS[UnlockedHavBalance]}
+                    colorGradient="green"
+                    lastUpdated={lastUpdated}
+                  />
+                </div>
+              </div> */}
+              <div className="column">
+                <div className="chart-box">
+                  <div className="chart-box__info">
+                    <h3>LOCKED HAV VALUE</h3>
+                    <div>The total value of all locked HAV.</div>
+                  </div>
+                  <div className="chart-box__number">
+                    {numeral(stats.lockedHavUsdBalance).format(`$0,0.`)}
+                  </div>
+                  <Chart
+                    period={havPeriod}
+                    info={charts.LockedHavUsdBalance}
+                    decimals={DECIMALS[LockedHavBalance]}
+                    colorGradient="red"
+                    lastUpdated={lastUpdated}
+                  />
+                </div>
+              </div>
+              <div className="column">
+                <div className="chart-box">
+                  <div className="chart-box__info">
+                    <h3>LOCKED HAV RATIO</h3>
+                    <div>
+                      The ratio of total locked HAV against the total
+                      circulating HAV.
+                    </div>
+                  </div>
+                  <div className="chart-box__number">
+                    {numeral(stats.lockedHavRatio * 100).format('0.00')}%
+                  </div>
+                  <Chart
+                    period={havPeriod}
+                    info={charts.LockedHavRatio}
+                    decimals={DECIMALS.LockedHavRatio}
+                    colorGradient="yellow"
+                    lastUpdated={lastUpdated}
+                    sign="%"
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div className="container chart-section" id="nusd">
@@ -447,8 +516,8 @@ class App extends React.Component {
               <div className="level-right">
                 <div className="level-item">
                   <button
-                    className={cx("button", "is-link", {
-                      "is-active": nUSDChartName === NominMarketCap
+                    className={cx('button', 'is-link', {
+                      'is-active': nUSDChartName === NominMarketCap,
                     })}
                     onClick={() => {
                       this.setnUSDChart(NominMarketCap);
@@ -459,8 +528,8 @@ class App extends React.Component {
                 </div>
                 <div className="level-item">
                   <button
-                    className={cx("button", "is-link", {
-                      "is-active": nUSDChartName === NominPrice
+                    className={cx('button', 'is-link', {
+                      'is-active': nUSDChartName === NominPrice,
                     })}
                     onClick={() => {
                       this.setnUSDChart(NominPrice);
@@ -471,8 +540,8 @@ class App extends React.Component {
                 </div>
                 <div className="level-item">
                   <button
-                    className={cx("button", "is-link", {
-                      "is-active": nUSDChartName === NominVolume24h
+                    className={cx('button', 'is-link', {
+                      'is-active': nUSDChartName === NominVolume24h,
                     })}
                     onClick={() => {
                       this.setnUSDChart(NominVolume24h);
@@ -493,41 +562,41 @@ class App extends React.Component {
                   <SingleStat {...currentNominStat} />
                   <div className="time-toggles is-hidden-mobile">
                     <button
-                      onClick={() => this.setPeriod("1D", "nUSD")}
+                      onClick={() => this.setPeriod('1D', 'nUSD')}
                       className={cx({
-                        "is-active": nUSDPeriod === "1D"
+                        'is-active': nUSDPeriod === '1D',
                       })}
                     >
                       1D
                     </button>
                     <button
-                      onClick={() => this.setPeriod("1W", "nUSD")}
+                      onClick={() => this.setPeriod('1W', 'nUSD')}
                       className={cx({
-                        "is-active": nUSDPeriod === "1W"
+                        'is-active': nUSDPeriod === '1W',
                       })}
                     >
                       1W
                     </button>
                     <button
-                      onClick={() => this.setPeriod("1M", "nUSD")}
+                      onClick={() => this.setPeriod('1M', 'nUSD')}
                       className={cx({
-                        "is-active": nUSDPeriod === "1M"
+                        'is-active': nUSDPeriod === '1M',
                       })}
                     >
                       1M
                     </button>
                     <button
-                      onClick={() => this.setPeriod("1Y", "nUSD")}
+                      onClick={() => this.setPeriod('1Y', 'nUSD')}
                       className={cx({
-                        "is-active": nUSDPeriod === "1Y"
+                        'is-active': nUSDPeriod === '1Y',
                       })}
                     >
                       1Y
                     </button>
                     <button
-                      onClick={() => this.setPeriod("ALL", "nUSD")}
+                      onClick={() => this.setPeriod('ALL', 'nUSD')}
                       className={cx({
-                        "is-active": nUSDPeriod === "ALL"
+                        'is-active': nUSDPeriod === 'ALL',
                       })}
                     >
                       ALL
@@ -548,41 +617,41 @@ class App extends React.Component {
             </div>
             <div className="time-toggles is-hidden-tablet">
               <button
-                onClick={() => this.setPeriod("1D", "nUSD")}
+                onClick={() => this.setPeriod('1D', 'nUSD')}
                 className={cx({
-                  "is-active": nUSDPeriod === "1D"
+                  'is-active': nUSDPeriod === '1D',
                 })}
               >
                 1D
               </button>
               <button
-                onClick={() => this.setPeriod("1W", "nUSD")}
+                onClick={() => this.setPeriod('1W', 'nUSD')}
                 className={cx({
-                  "is-active": nUSDPeriod === "1W"
+                  'is-active': nUSDPeriod === '1W',
                 })}
               >
                 1W
               </button>
               <button
-                onClick={() => this.setPeriod("1M", "nUSD")}
+                onClick={() => this.setPeriod('1M', 'nUSD')}
                 className={cx({
-                  "is-active": nUSDPeriod === "1M"
+                  'is-active': nUSDPeriod === '1M',
                 })}
               >
                 1M
               </button>
               <button
-                onClick={() => this.setPeriod("1Y", "nUSD")}
+                onClick={() => this.setPeriod('1Y', 'nUSD')}
                 className={cx({
-                  "is-active": nUSDPeriod === "1Y"
+                  'is-active': nUSDPeriod === '1Y',
                 })}
               >
                 1Y
               </button>
               <button
-                onClick={() => this.setPeriod("ALL", "nUSD")}
+                onClick={() => this.setPeriod('ALL', 'nUSD')}
                 className={cx({
-                  "is-active": nUSDPeriod === "ALL"
+                  'is-active': nUSDPeriod === 'ALL',
                 })}
               >
                 ALL
@@ -593,15 +662,14 @@ class App extends React.Component {
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <h3>FEE POOL</h3>
-                    <div>
-                      Transaction fees generated & available to claim.
-                    </div>
+                    <div>Transaction fees generated & available to claim.</div>
                   </div>
                   <div className="chart-box__number">
                     {numeral(stats.nominFeesCollected).format(`$0,0.`)}
                   </div>
                   <Chart
                     period={nUSDPeriod}
+                    fullSize={true}
                     info={charts.NominFeesCollected}
                     decimals={DECIMALS[NominFeesCollected]}
                     colorGradient="green"
@@ -609,22 +677,51 @@ class App extends React.Component {
                   />
                 </div>
               </div>
+            </div>
+            <div className="columns">
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <h3>NETWORK COLLATERALIZATION RATIO</h3>
                     <div>
-                      The ratio of circulating nUSD against the value of all HAV.
+                      The ratio of circulating nUSD against the value of all
+                      HAV.
                     </div>
                   </div>
                   <div className="chart-box__number">
-                    {numeral(stats.collateralizationRatio * 100).format("0.00")}%
+                    {numeral(stats.collateralizationRatio * 100).format('0.00')}
+                    %
                   </div>
                   <Chart
                     period={nUSDPeriod}
                     info={charts.CollateralizationRatio}
                     decimals={DECIMALS[CollateralizationRatio]}
                     colorGradient="red"
+                    lastUpdated={lastUpdated}
+                    sign="%"
+                  />
+                </div>
+              </div>
+              <div className="column">
+                <div className="chart-box">
+                  <div className="chart-box__info">
+                    <h3>ACTIVE COLLATERALIZATION RATIO</h3>
+                    <div>
+                      The ratio of circulating nUSD against the value of all
+                      locked HAV.
+                    </div>
+                  </div>
+                  <div className="chart-box__number">
+                    {numeral(stats.activeCollateralizationRatio * 100).format(
+                      '0.00'
+                    )}
+                    %
+                  </div>
+                  <Chart
+                    period={nUSDPeriod}
+                    info={charts.ActiveCollateralizationRatio}
+                    decimals={DECIMALS[ActiveCollateralizationRatio]}
+                    colorGradient="yellow"
                     lastUpdated={lastUpdated}
                     sign="%"
                   />
@@ -641,9 +738,9 @@ class App extends React.Component {
                   <label>LAST UPDATED</label> <span>{minsAgo} MINS AGO</span>
                 </div>
                 <div
-                  className={cx("theme-switcher", theme)}
+                  className={cx('theme-switcher', theme)}
                   onClick={() =>
-                    this.props.switchTheme(theme === "dark" ? "light" : "dark")
+                    this.props.switchTheme(theme === 'dark' ? 'light' : 'dark')
                   }
                 >
                   <label>{theme}</label>
@@ -662,13 +759,16 @@ const mapStateToProps = state => {
 
   return {
     charts,
-    theme: theme.theme
+    theme: theme.theme,
   };
 };
 
-const ConnectedApp = connect(mapStateToProps, {
-  switchTheme,
-  fetchCharts,
-  setPeriod
-})(App);
+const ConnectedApp = connect(
+  mapStateToProps,
+  {
+    switchTheme,
+    fetchCharts,
+    setPeriod,
+  }
+)(App);
 export default ConnectedApp;

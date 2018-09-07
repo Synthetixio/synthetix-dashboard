@@ -9,17 +9,23 @@ const chartTypes = [
   "HavvenVolume24h",
   "NominVolume24h",
   "NominFeesCollected",
-  "LockedUpHavven",
-  "LockedUpHavvenRatio",
-  "CollateralizationRatio"
+  'UnlockedHavUsdBalance',
+  'LockedHavUsdBalance',
+  "LockedHavRatio",
+  "UnlockedHavBalance",
+  "LockedHavBalance",
+  "CollateralizationRatio",
+  "ActiveCollateralizationRatio"
 ];
 
 const chartTypesHAV = [
   "HavvenMarketCap",
   "HavvenPrice",
   "HavvenVolume24h",
-  "LockedUpHavven",
-  "LockedUpHavvenRatio",
+  // "LockedUpHavven",
+  "UnlockedHavBalance",
+  "LockedHavBalance",
+  "LockedHavRatio",
 ];
 
 const chartTypesNomin = [
@@ -28,6 +34,7 @@ const chartTypesNomin = [
   "NominVolume24h",
   "NominFeesCollected",
   "CollateralizationRatio",
+  "ActiveCollateralizationRatio"
 ];
 
 const initialState = {
@@ -70,12 +77,18 @@ export default (state = initialState, action) => {
             havvenVolume24h:
               data.HavvenVolume24h.data[data.HavvenVolume24h.data.length - 1]
                 .usdValue,
-            lockedUpHavven:
-              data.LockedUpHavven.data[data.LockedUpHavven.data.length - 1]
+            // lockedUpHavven:
+            //   data.LockedUpHavven.data[data.LockedUpHavven.data.length - 1]
+            //     .usdValue,
+            unlockedHavUsdBalance:
+              data.UnlockedHavUsdBalance.data[data.UnlockedHavUsdBalance.data.length - 1]
                 .usdValue,
-            lockedUpHavvenRatio:
-              data.LockedUpHavvenRatio.data[
-                data.LockedUpHavvenRatio.data.length - 1
+            lockedHavUsdBalance:
+              data.LockedHavUsdBalance.data[data.LockedHavUsdBalance.data.length - 1]
+                .usdValue,
+            lockedHavRatio:
+              data.LockedHavRatio.data[
+                data.LockedHavRatio.data.length - 1
               ].usdValue,
             nominMarketCap:
               data.NominMarketCap.data[data.NominMarketCap.data.length - 1]
@@ -92,7 +105,12 @@ export default (state = initialState, action) => {
             collateralizationRatio:
               data.CollateralizationRatio.data[
                 data.CollateralizationRatio.data.length - 1
-              ].usdValue
+              ].usdValue,
+            activeCollateralizationRatio:
+              data.ActiveCollateralizationRatio.data[
+                data.ActiveCollateralizationRatio.data.length - 1
+              ].usdValue,
+
           }
         };
       } catch (e) {
@@ -104,7 +122,7 @@ export default (state = initialState, action) => {
 
       try {
         const { token, period } = action;
-        if(!token || !period)
+        if (!token || !period)
           throw 'Error: Set chart period parameter missing!';
         const types = token === "HAV" ? chartTypesHAV : chartTypesNomin;
         const havPeriod = token === "HAV" ? period : state.havPeriod;
@@ -116,12 +134,12 @@ export default (state = initialState, action) => {
           }))
           .reduce((acc, next) => ({ ...acc, ...next }), {});
 
-          return {
-            ...state,
-            ...chartData,
-            havPeriod,
-            nUSDPeriod,
-          };
+        return {
+          ...state,
+          ...chartData,
+          havPeriod,
+          nUSDPeriod,
+        };
       } catch (e) {
         console.log("error", e);
         return state;

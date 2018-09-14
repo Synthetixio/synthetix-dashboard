@@ -1,47 +1,57 @@
-import { FETCH_CHARTS_SUCCESS, SET_PERIOD_CHART } from "../actions/charts";
-import { parseChartData } from "../utils";
+import { FETCH_CHARTS_SUCCESS, SET_PERIOD_CHART } from '../actions/charts';
+import { parseChartData } from '../utils';
 
 const chartTypes = [
-  "HavvenMarketCap",
-  "NominMarketCap",
-  "HavvenPrice",
-  "NominPrice",
-  "HavvenVolume24h",
-  "NominVolume24h",
-  "NominFeesCollected",
+  'HavvenMarketCap',
+  'NominMarketCap',
+  'HavvenPrice',
+  'NominPrice',
+  'HavvenVolume24h',
+  'NominVolume24h',
+  'NominFeesCollected',
   'UnlockedHavUsdBalance',
   'LockedHavUsdBalance',
-  "LockedHavRatio",
-  "UnlockedHavBalance",
-  "LockedHavBalance",
-  "CollateralizationRatio",
-  "ActiveCollateralizationRatio"
+  'LockedHavRatio',
+  'UnlockedHavBalance',
+  'LockedHavBalance',
+  'CollateralizationRatio',
+  'ActiveCollateralizationRatio',
 ];
 
 const chartTypesHAV = [
-  "HavvenMarketCap",
-  "HavvenPrice",
-  "HavvenVolume24h",
+  'HavvenMarketCap',
+  'HavvenPrice',
+  'HavvenVolume24h',
   // "LockedUpHavven",
-  "UnlockedHavBalance",
-  "LockedHavBalance",
-  "LockedHavRatio",
+  'UnlockedHavBalance',
+  'LockedHavBalance',
+  'LockedHavUsdBalance',
+  'LockedHavRatio',
 ];
 
 const chartTypesNomin = [
-  "NominMarketCap",
-  "NominPrice",
-  "NominVolume24h",
-  "NominFeesCollected",
-  "CollateralizationRatio",
-  "ActiveCollateralizationRatio"
+  'NominMarketCap',
+  'NominPrice',
+  'NominVolume24h',
+  'NominFeesCollected',
+  'CollateralizationRatio',
+  'ActiveCollateralizationRatio',
 ];
 
 const initialState = {
   stats: {},
-  havPeriod: "ALL",
-  nUSDPeriod: "ALL"
+  havPeriod: '1W',
+  nUSDPeriod: 'ALL',
 };
+
+const getInitialPeriod = chartType => {
+  if (chartTypesHAV.indexOf(chartType) >= 0) {
+    return initialState.havPeriod;
+  } else if (chartTypesNomin.indexOf(chartType) >= 0) {
+    return initialState.nUSDPeriod;
+  } else return 'ALL';
+};
+
 chartTypes.forEach(type => (initialState[type] = {}));
 
 export default (state = initialState, action) => {
@@ -49,9 +59,16 @@ export default (state = initialState, action) => {
     case FETCH_CHARTS_SUCCESS:
       try {
         const chartData = chartTypes
-          .map(type => ({
-            [type]: parseChartData(action.payload.data.body[type].data, type)
-          }))
+          .map(type => {
+            const period = getInitialPeriod(type);
+            return {
+              [type]: parseChartData(
+                action.payload.data.body[type].data,
+                type,
+                period
+              ),
+            };
+          })
           .reduce((acc, next) => ({ ...acc, ...next }), {});
         let data = action.payload.data.body;
         return {
@@ -81,15 +98,16 @@ export default (state = initialState, action) => {
             //   data.LockedUpHavven.data[data.LockedUpHavven.data.length - 1]
             //     .usdValue,
             unlockedHavUsdBalance:
-              data.UnlockedHavUsdBalance.data[data.UnlockedHavUsdBalance.data.length - 1]
-                .usdValue,
-            lockedHavUsdBalance:
-              data.LockedHavUsdBalance.data[data.LockedHavUsdBalance.data.length - 1]
-                .usdValue,
-            lockedHavRatio:
-              data.LockedHavRatio.data[
-                data.LockedHavRatio.data.length - 1
+              data.UnlockedHavUsdBalance.data[
+                data.UnlockedHavUsdBalance.data.length - 1
               ].usdValue,
+            lockedHavUsdBalance:
+              data.LockedHavUsdBalance.data[
+                data.LockedHavUsdBalance.data.length - 1
+              ].usdValue,
+            lockedHavRatio:
+              data.LockedHavRatio.data[data.LockedHavRatio.data.length - 1]
+                .usdValue,
             nominMarketCap:
               data.NominMarketCap.data[data.NominMarketCap.data.length - 1]
                 .usdValue,
@@ -110,27 +128,25 @@ export default (state = initialState, action) => {
               data.ActiveCollateralizationRatio.data[
                 data.ActiveCollateralizationRatio.data.length - 1
               ].usdValue,
-
-          }
+          },
         };
       } catch (e) {
-        console.log("error", e);
+        console.log('error', e);
         return state;
       }
 
     case SET_PERIOD_CHART:
-
       try {
         const { token, period } = action;
         if (!token || !period)
           throw 'Error: Set chart period parameter missing!';
-        const types = token === "HAV" ? chartTypesHAV : chartTypesNomin;
-        const havPeriod = token === "HAV" ? period : state.havPeriod;
-        const nUSDPeriod = token === "nUSD" ? period : state.nUSDPeriod;
+        const types = token === 'HAV' ? chartTypesHAV : chartTypesNomin;
+        const havPeriod = token === 'HAV' ? period : state.havPeriod;
+        const nUSDPeriod = token === 'nUSD' ? period : state.nUSDPeriod;
 
         const chartData = types
           .map(type => ({
-            [type]: parseChartData(state.sourceData[type].data, type, period)
+            [type]: parseChartData(state.sourceData[type].data, type, period),
           }))
           .reduce((acc, next) => ({ ...acc, ...next }), {});
 
@@ -141,7 +157,7 @@ export default (state = initialState, action) => {
           nUSDPeriod,
         };
       } catch (e) {
-        console.log("error", e);
+        console.log('error', e);
         return state;
       }
 

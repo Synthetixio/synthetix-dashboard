@@ -3,14 +3,18 @@ import PropTypes from "prop-types";
 import numeral from "numeral";
 import cx from "classnames";
 
-const SingleStatBox = ({ value, trend, label, desc, decimals, onClick }) => {
+const SingleStatBox = ({ value, trend, label, desc, decimals, onClick, customClass }) => {
   let loaded = !isNaN(value);
+  let classes = cx({
+     'single-stat-box': true,
+     'single-stat-box--lt': customClass
+  });
   return (
     <div
       className="column is-half-tablet is-one-quarter-desktop"
       onClick={onClick}
     >
-      <div className="single-stat-box">
+      <div className={ classes }>
         <div
           className={cx(
             "single-stat-box__stats",
@@ -37,7 +41,8 @@ SingleStatBox.propTypes = {
   label: PropTypes.string,
   desc: PropTypes.string,
   decimals: PropTypes.number,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  customClass: PropTypes.bool
 };
 
 SingleStatBox.defaultProps = {

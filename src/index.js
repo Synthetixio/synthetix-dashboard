@@ -9,8 +9,8 @@ import { Provider } from "react-redux";
 import { store } from "./config/store";
 import "styling/bulma/bulma.sass";
 import "styling/main.sass";
-import HavMarketsComponent from "./components/Markets/HavMarkets"
 
+import HavMarketsComponent from "./components/Markets/HavMarkets"
 import NusdMarketsComponent from "./components/Markets/NusdMarkets"
 
 

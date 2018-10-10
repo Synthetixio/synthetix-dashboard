@@ -1,7 +1,4 @@
-export const FETCH_CHARTS = "FETCH_CHARTS";
-export const FETCH_CHARTS_SUCCESS = "FETCH_CHARTS_SUCCESS";
-export const SET_PERIOD_CHART = "SET_PERIOD_CHART";
-export const FETCH_CHARTS_ERROR = "FETCH_CHARTS_ERROR";
+import { FETCH_CHARTS, SET_PERIOD_CHART } from './actionTypes.js'
 
 export const fetchCharts = () => ({
   type: FETCH_CHARTS

@@ -1,4 +1,4 @@
-import { FETCH_CHARTS_SUCCESS, SET_PERIOD_CHART } from '../actions/charts';
+import { FETCH_CHARTS_SUCCESS, SET_PERIOD_CHART } from '../actions/actionTypes';
 import { parseChartData } from '../utils';
 
 const chartTypes = [

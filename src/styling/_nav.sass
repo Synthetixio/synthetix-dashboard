@@ -23,6 +23,9 @@
 a.navbar-item
   font-size: 14px
   transition: all 250ms ease
+  &.active
+    background-color: transparent
+    color: #fff
   &.is-active
     background-color: transparent
   &:hover
@@ -38,3 +41,20 @@ a.navbar-item
   .navbar
     padding-left: 2.1rem
     padding-right: 2.1rem
+
+
+.mobile-nav-section a
+  position: relative
+
+  &.active
+    color: #fff
+
+    &::after
+      content: ''
+      position: absolute
+      bottom: -1px
+      left: 0
+      right: 0
+      display: block
+      height: 2px
+      background-color: #fff

@@ -1,4 +1,4 @@
-export const SWITCH_THEME = "SWITCH_THEME";
+import { SWITCH_THEME } from '../actions/actionTypes';
 
 export const switchTheme = theme => {
   return {

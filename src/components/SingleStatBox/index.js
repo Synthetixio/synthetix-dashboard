@@ -3,14 +3,18 @@ import PropTypes from "prop-types";
 import numeral from "numeral";
 import cx from "classnames";
 
-const SingleStatBox = ({ value, trend, label, desc, decimals, onClick }) => {
+const SingleStatBox = ({ value, trend, label, desc, decimals, onClick, customClass, symbol }) => {
   let loaded = !isNaN(value);
+  let classes = cx({
+     'single-stat-box': true,
+     'markets-card': customClass
+  });
   return (
     <div
       className="column is-half-tablet is-one-quarter-desktop"
       onClick={onClick}
     >
-      <div className="single-stat-box">
+      <div className={ classes }>
         <div
           className={cx(
             "single-stat-box__stats",
@@ -19,6 +23,7 @@ const SingleStatBox = ({ value, trend, label, desc, decimals, onClick }) => {
         >
           <h2>
             {loaded && numeral(value).format(`$0,0.[${"0".repeat(decimals)}]`)}
+            <span className="symbol">{ symbol }</span>
           </h2>
           {!isNaN(trend) && <div>{numeral(trend).format("+0.00") + "%"}</div>}
         </div>
@@ -37,7 +42,9 @@ SingleStatBox.propTypes = {
   label: PropTypes.string,
   desc: PropTypes.string,
   decimals: PropTypes.number,
-  onClick: PropTypes.func
+  onClick: PropTypes.func,
+  customClass: PropTypes.bool,
+  symbol: PropTypes.string
 };
 
 SingleStatBox.defaultProps = {

@@ -11,6 +11,8 @@ import SingleStat from 'components/SingleStat';
 import numeral from 'numeral';
 import { scroller } from 'react-scroll';
 
+import { Link } from "react-router-dom";
+
 const HAV_CHART = {
   HavvenPrice: 'HavvenPrice',
   HavvenMarketCap: 'HavvenMarketCap',
@@ -209,50 +211,58 @@ class App extends React.Component {
         <TopNavBar selectedSection={activeSection} />
         <div className="container main-content">
           <div className="columns is-multiline" id="stats">
-            <SingleStatBox
-              value={stats.havvenMarketCap}
-              trend={stats.havvenMarketCap24hDelta * 100}
-              label="HAVVEN MARKET CAP"
-              desc="The total value of all circulating HAV, determined by multiplying the current price of 1 HAV by the circulating supply of HAV."
-              onClick={() => {
-                this.setHavChart(HavvenMarketCap);
-                scroller.scrollTo('hav-main-chart', scrollToOptions);
-              }}
-              decimals={0}
-            />
-            <SingleStatBox
-              value={stats.havvenPriceCap}
-              trend={stats.havvenPriceCap24hDelta * 100}
-              label="HAVVEN PRICE"
-              desc="The average price of 1 HAV across all available exchanges."
-              decimals={3}
-              onClick={() => {
-                this.setHavChart(HavvenPrice);
-                scroller.scrollTo('hav-main-chart', scrollToOptions);
-              }}
-            />
-            <SingleStatBox
-              value={stats.nominMarketCap}
-              trend={stats.nominMarketCap24hDelta * 100}
-              label="nUSD MARKET CAP"
-              desc="The total value of all circulating nUSD, determined by multiplying the current price of 1 nUSD by the circulating supply of nUSD."
-              onClick={() => {
-                this.setnUSDChart(NominMarketCap);
-                scroller.scrollTo('nomin-main-chart', scrollToOptions);
-              }}
-              decimals={0}
-            />
-            <SingleStatBox
-              value={stats.nominPriceCap}
-              trend={stats.nominPriceCap24hDelta * 100}
-              label="nUSD PRICE"
-              desc="The average price of 1 nUSD across all available exchanges."
-              decimals={3}
-              onClick={() => {
-                this.setnUSDChart(NominPrice);
-                scroller.scrollTo('nomin-main-chart', scrollToOptions);
-              }}
-            />
+            <Link to="/buy-hav" className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={stats.havvenMarketCap}
+                trend={stats.havvenMarketCap24hDelta * 100}
+                label="HAVVEN MARKET CAP"
+                desc="The total value of all circulating HAV, determined by multiplying the current price of 1 HAV by the circulating supply of HAV."
+                onClick={() => {
+                  this.setHavChart(HavvenMarketCap);
+                  scroller.scrollTo('hav-main-chart', scrollToOptions);
+                }}
+                decimals={0}
+              />
+            </Link>
+            <Link to="/buy-hav" className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={stats.havvenPriceCap}
+                trend={stats.havvenPriceCap24hDelta * 100}
+                label="HAVVEN PRICE"
+                desc="The average price of 1 HAV across all available exchanges."
+                decimals={3}
+                onClick={() => {
+                  this.setHavChart(HavvenPrice);
+                  scroller.scrollTo('hav-main-chart', scrollToOptions);
+                }}
+              />
+            </Link>
+             <Link to="/buy-nusd" className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={stats.nominMarketCap}
+                trend={stats.nominMarketCap24hDelta * 100}
+                label="nUSD MARKET CAP"
+                desc="The total value of all circulating nUSD, determined by multiplying the current price of 1 nUSD by the circulating supply of nUSD."
+                onClick={() => {
+                  this.setnUSDChart(NominMarketCap);
+                  scroller.scrollTo('nomin-main-chart', scrollToOptions);
+                }}
+                decimals={0}
+              />
+            </Link>
+            <Link to="/buy-nusd" className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={stats.nominPriceCap}
+                trend={stats.nominPriceCap24hDelta * 100}
+                label="nUSD PRICE"
+                desc="The average price of 1 nUSD across all available exchanges."
+                decimals={3}
+                onClick={() => {
+                  this.setnUSDChart(NominPrice);
+                  scroller.scrollTo('nomin-main-chart', scrollToOptions);
+                }}
+              />
+            </Link>
           </div>
         </div>
         <div className="container chart-section" id="hav">

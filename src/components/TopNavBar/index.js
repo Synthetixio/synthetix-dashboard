@@ -1,7 +1,7 @@
 import React from "react";
 import cx from "classnames";
 import PropTypes from "prop-types";
-import { Link } from "react-scroll";
+import { NavLink, Link } from "react-router-dom";
 
 export default class TopNavBar extends React.Component {
   static propTypes = {
@@ -58,44 +58,20 @@ export default class TopNavBar extends React.Component {
           <div className="is-hidden-tablet mobile-nav-section">
             <div className="level is-mobile">
               <div className="level-left">
-                <Link
+                <NavLink
                   href="javascript:void(0)"
-                  to="stats"
-                  className={cx({ "is-active": section === "stats" })}
-                  onSetActive={this.onSetActive}
-                  spy={true}
-                  smooth={true}
-                  duration={500}
-                  offset={-120}
+                  to="/buy-hav"
                 >
-                  STATS
-                </Link>
+                  HAV
+                </NavLink>
               </div>
-              <Link
-                href="javascript:void(0)"
-                to="hav"
-                className={cx({ "is-active": section === "hav" })}
-                onSetActive={this.onSetActive}
-                spy={true}
-                smooth={true}
-                duration={500}
-                offset={-70}
-              >
-                HAV
-              </Link>
               <div className="level-left">
-                <Link
+                <NavLink
                   href="javascript:void(0)"
-                  to="nusd"
-                  className={cx({ "is-active": section === "nusd" })}
-                  onSetActive={this.onSetActive}
-                  spy={true}
-                  smooth={true}
-                  duration={500}
-                  offset={-70}
+                  to="/buy-nusd"
                 >
                   nUSD
-                </Link>
+                </NavLink>
               </div>
             </div>
           </div>
@@ -105,30 +81,25 @@ export default class TopNavBar extends React.Component {
             })}
           >
             <div className="navbar-end">
-              <a
+              <NavLink
+                exact
+                to="/"
                 className="navbar-item"
-                href="https://havven.io/team"
-                target="_blank"
               >
-                Team
-              </a>
-              <a
-                className="navbar-item"
-                href="https://blog.havven.io/"
-                target="_blank"
-              >
-                Blog
-              </a>
-              <a
-                className="navbar-item"
-                href="https://havven.io/uploads/havven_whitepaper.pdf"
-                target="_blank"
-              >
-                Whitepaper
-              </a>
-              <a className="navbar-item is-active" href="/" target="_blank">
                 Dashboard
-              </a>
+              </NavLink>
+             <NavLink
+                  to="/buy-hav"
+                  className="navbar-item"
+                >
+                 Buy HAV
+              </NavLink>
+               <NavLink
+                  to="/buy-nusd"
+                  className="navbar-item"
+                >
+                 Buy nUSD
+              </NavLink>
             </div>
           </div>
         </div>

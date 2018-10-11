@@ -1,4 +1,4 @@
-import { SWITCH_THEME } from "../actions/theme";
+import { SWITCH_THEME } from "../actions/actionTypes";
 
 const initialState = {
   theme: "dark"

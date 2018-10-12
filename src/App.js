@@ -2,6 +2,7 @@ import React from 'react';
 import Chart from 'components/Chart';
 import { connect } from 'react-redux';
 import { fetchCharts, setPeriod } from './actions/charts';
+import { fetchHAV, fetchNUSD } from './actions/markets';
 import SingleStatBox from 'components/SingleStatBox';
 import TopNavBar from 'components/TopNavBar';
 import { switchTheme } from 'actions/theme';
@@ -11,7 +12,7 @@ import SingleStat from 'components/SingleStat';
 import numeral from 'numeral';
 import { scroller } from 'react-scroll';
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 const HAV_CHART = {
   HavvenPrice: 'HavvenPrice',
@@ -62,6 +63,8 @@ class App extends React.Component {
 
   componentWillMount() {
     this.switchTheme();
+    this.props.fetchHAV();
+    this.props.fetchNUSD();
     this.fetchCharts();
     this.setState({
       intervalId: setInterval(this.fetchCharts, 10 * 60 * 1000),
@@ -122,6 +125,21 @@ class App extends React.Component {
     }
   }
 
+  getMarketsData() {
+    const { markets } = this.props;
+    const data = { havMarketData: {}, nusdMarketData: {} };
+    ['hav', 'nusd'].forEach(currency => {
+      if (
+        markets[currency] &&
+        markets[currency].quotes &&
+        markets[currency].quotes.USD
+      ) {
+        data[`${currency}MarketData`] = { ...markets[currency].quotes.USD };
+      }
+    });
+    return data;
+  }
+
   render() {
     const { charts, theme } = this.props;
     const { havPeriod, nUSDPeriod } = charts;
@@ -154,7 +172,7 @@ class App extends React.Component {
 
     let minsAgo = differenceInMins(Date.now(), lastUpdated);
     minsAgo = isNaN(minsAgo) ? '-' : minsAgo;
-
+    const { havMarketData, nusdMarketData } = this.getMarketsData();
     const scrollToOptions = {
       duration: 500,
       delay: 100,
@@ -164,17 +182,17 @@ class App extends React.Component {
 
     const havStats = {
       [HAV_CHART.HavvenMarketCap]: {
-        value: stats.havvenMarketCap,
+        value: havMarketData.market_cap,
         trend: stats.havvenMarketCap24hDelta,
         decimals: 0,
       },
       [HAV_CHART.HavvenPrice]: {
-        value: stats.havvenPriceCap,
+        value: havMarketData.price,
         trend: stats.havvenPriceCap24hDelta,
         decimals: 3,
       },
       [HAV_CHART.HavvenVolume24h]: {
-        value: stats.havvenVolume24h,
+        value: havMarketData.volume_24h,
         trend: stats.havvenMarketCap24hDelta,
         decimals: 0,
       },
@@ -183,17 +201,17 @@ class App extends React.Component {
 
     const nominStats = {
       [nUSD_CHART.NominMarketCap]: {
-        value: stats.nominMarketCap,
+        value: nusdMarketData.market_cap,
         trend: stats.nominMarketCap24hDelta,
         decimals: 0,
       },
       [nUSD_CHART.NominPrice]: {
-        value: stats.nominPriceCap,
+        value: nusdMarketData.price,
         trend: stats.nominPriceCap24hDelta,
         decimals: 3,
       },
       [nUSD_CHART.NominVolume24h]: {
-        value: stats.nominVolume24h,
+        value: nusdMarketData.volume_24h,
         trend: stats.nominMarketCap24hDelta,
         decimals: 0,
       },
@@ -211,9 +229,12 @@ class App extends React.Component {
         <TopNavBar selectedSection={activeSection} />
         <div className="container main-content">
           <div className="columns is-multiline" id="stats">
-            <Link to="/buy-hav" className="column is-half-tablet is-one-quarter-desktop markets-link">
+            <Link
+              to="/buy-hav"
+              className="column is-half-tablet is-one-quarter-desktop markets-link"
+            >
               <SingleStatBox
-                value={stats.havvenMarketCap}
+                value={havMarketData ? havMarketData.market_cap : null}
                 trend={stats.havvenMarketCap24hDelta * 100}
                 label="HAVVEN MARKET CAP"
                 desc="The total value of all circulating HAV, determined by multiplying the current price of 1 HAV by the circulating supply of HAV."
@@ -224,9 +245,12 @@ class App extends React.Component {
                 decimals={0}
               />
             </Link>
-            <Link to="/buy-hav" className="column is-half-tablet is-one-quarter-desktop markets-link">
+            <Link
+              to="/buy-hav"
+              className="column is-half-tablet is-one-quarter-desktop markets-link"
+            >
               <SingleStatBox
-                value={stats.havvenPriceCap}
+                value={havMarketData ? havMarketData.price : null}
                 trend={stats.havvenPriceCap24hDelta * 100}
                 label="HAVVEN PRICE"
                 desc="The average price of 1 HAV across all available exchanges."
@@ -237,9 +261,12 @@ class App extends React.Component {
                 }}
               />
             </Link>
-             <Link to="/buy-nusd" className="column is-half-tablet is-one-quarter-desktop markets-link">
+            <Link
+              to="/buy-nusd"
+              className="column is-half-tablet is-one-quarter-desktop markets-link"
+            >
               <SingleStatBox
-                value={stats.nominMarketCap}
+                value={nusdMarketData ? nusdMarketData.market_cap : null}
                 trend={stats.nominMarketCap24hDelta * 100}
                 label="nUSD MARKET CAP"
                 desc="The total value of all circulating nUSD, determined by multiplying the current price of 1 nUSD by the circulating supply of nUSD."
@@ -250,9 +277,12 @@ class App extends React.Component {
                 decimals={0}
               />
             </Link>
-            <Link to="/buy-nusd" className="column is-half-tablet is-one-quarter-desktop markets-link">
+            <Link
+              to="/buy-nusd"
+              className="column is-half-tablet is-one-quarter-desktop markets-link"
+            >
               <SingleStatBox
-                value={stats.nominPriceCap}
+                value={nusdMarketData ? nusdMarketData.price : null}
                 trend={stats.nominPriceCap24hDelta * 100}
                 label="nUSD PRICE"
                 desc="The average price of 1 nUSD across all available exchanges."
@@ -451,26 +481,6 @@ class App extends React.Component {
               </div>
             </div>
             <div className="columns">
-              {/* <div className="column">
-                <div className="chart-box">
-                  <div className="chart-box__info">
-                    <h3>UNLOCKED HAV VALUE</h3>
-                    <div>
-
-                    </div>
-                  </div>
-                  <div className="chart-box__number">
-                    {numeral(stats.unlockedHavUsdBalance).format(`$0,0.`)}
-                  </div>
-                  <Chart
-                    period={havPeriod}
-                    info={charts.UnlockedHavUsdBalance}
-                    decimals={DECIMALS[UnlockedHavBalance]}
-                    colorGradient="green"
-                    lastUpdated={lastUpdated}
-                  />
-                </div>
-              </div> */}
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
@@ -765,11 +775,12 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { charts, theme } = state;
+  const { charts, theme, markets } = state;
 
   return {
     charts,
     theme: theme.theme,
+    markets,
   };
 };
 
@@ -778,6 +789,8 @@ const ConnectedApp = connect(
   {
     switchTheme,
     fetchCharts,
+    fetchHAV,
+    fetchNUSD,
     setPeriod,
   }
 )(App);

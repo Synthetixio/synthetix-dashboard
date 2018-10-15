@@ -188,7 +188,7 @@ class App extends React.Component {
       },
       [HAV_CHART.HavvenPrice]: {
         value: havMarketData.price,
-        trend: stats.havvenPriceCap24hDelta,
+        trend: havMarketData.percent_change_24h / 100,
         decimals: 3,
       },
       [HAV_CHART.HavvenVolume24h]: {
@@ -207,7 +207,7 @@ class App extends React.Component {
       },
       [nUSD_CHART.NominPrice]: {
         value: nusdMarketData.price,
-        trend: stats.nominPriceCap24hDelta,
+        trend: nusdMarketData.percent_change_24h / 100,
         decimals: 3,
       },
       [nUSD_CHART.NominVolume24h]: {
@@ -251,7 +251,7 @@ class App extends React.Component {
             >
               <SingleStatBox
                 value={havMarketData ? havMarketData.price : null}
-                trend={stats.havvenPriceCap24hDelta * 100}
+                trend={havMarketData ? havMarketData.percent_change_24h : null}
                 label="HAVVEN PRICE"
                 desc="The average price of 1 HAV across all available exchanges."
                 decimals={3}
@@ -283,7 +283,9 @@ class App extends React.Component {
             >
               <SingleStatBox
                 value={nusdMarketData ? nusdMarketData.price : null}
-                trend={stats.nominPriceCap24hDelta * 100}
+                trend={
+                  nusdMarketData ? nusdMarketData.percent_change_24h : null
+                }
                 label="nUSD PRICE"
                 desc="The average price of 1 nUSD across all available exchanges."
                 decimals={3}

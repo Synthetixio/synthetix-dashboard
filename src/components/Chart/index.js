@@ -255,7 +255,6 @@ export default class HavvenChart extends React.Component {
     } = this.state;
     const { currencySwitch, period } = this.props;
     const dtFormat = period === '1D' ? 'HH:00' : 'DD/MM';
-
     let ttY = -100;
     if (switchOnCount) {
       ttY -= switchOnCount * 15;
@@ -424,7 +423,11 @@ export default class HavvenChart extends React.Component {
             !this.props.currencySwitch) && (
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
               <VictoryChart
-                domain={{ y: [minValue * 0.9, maxValue * 1.1] }}
+                domain={
+                  this.props.customDomain
+                    ? this.props.customDomain
+                    : { y: [minValue * 0.9, maxValue * 1.1] }
+                }
                 scale={{ x: 'time' }}
                 padding={{ bottom: 40 }}
                 theme={havvenTheme}
@@ -498,9 +501,7 @@ export default class HavvenChart extends React.Component {
                           scatterY={
                             currencySwitch && !currencySwitch.Usd
                               ? undefined
-                              : this.props.formatTooltip
-                                ? this.props.formatTooltip(this.state.scatterY)
-                                : this.state.scatterY
+                              : this.state.scatterY
                           }
                           scatterX={this.state.scatterX}
                           scatterYBtc={

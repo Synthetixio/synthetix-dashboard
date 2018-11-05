@@ -47,6 +47,10 @@ const DECIMALS = {
   ActiveCollateralizationRatio: { Val: 2 }, //%
 };
 
+const formatCRatio = data => {
+  return data > 0 ? 10000 / data : 0;
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -709,12 +713,17 @@ class App extends React.Component {
                     </div>
                   </div>
                   <div className="chart-box__number">
-                    {numeral(stats.collateralizationRatio * 100).format('0.00')}
+                    {numeral(
+                      stats.collateralizationRatio > 0
+                        ? 100 / stats.collateralizationRatio
+                        : 0
+                    ).format('0.00')}
                     %
                   </div>
                   <Chart
                     period={nUSDPeriod}
                     info={charts.CollateralizationRatio}
+                    formatTooltip={formatCRatio}
                     decimals={DECIMALS[CollateralizationRatio]}
                     colorGradient="red"
                     lastUpdated={lastUpdated}
@@ -732,15 +741,18 @@ class App extends React.Component {
                     </div>
                   </div>
                   <div className="chart-box__number">
-                    {numeral(stats.activeCollateralizationRatio * 100).format(
-                      '0.00'
-                    )}
+                    {numeral(
+                      stats.activeCollateralizationRatio > 0
+                        ? 100 / stats.activeCollateralizationRatio
+                        : 0
+                    ).format('0.00')}
                     %
                   </div>
                   <Chart
                     period={nUSDPeriod}
                     info={charts.ActiveCollateralizationRatio}
                     decimals={DECIMALS[ActiveCollateralizationRatio]}
+                    formatTooltip={formatCRatio}
                     colorGradient="yellow"
                     lastUpdated={lastUpdated}
                     sign="%"

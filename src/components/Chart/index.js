@@ -1,5 +1,5 @@
-import React, { View, Text } from "react";
-import PropTypes from "prop-types";
+import React, { View, Text } from 'react';
+import PropTypes from 'prop-types';
 import {
   VictoryChart,
   VictoryCursorContainer,
@@ -8,17 +8,17 @@ import {
   VictoryScatter,
   VictoryLine,
   VictoryArea,
-  VictoryTooltip
-} from "victory";
-import GraphTooltip from "../Tooltip";
-import format from "date-fns/format";
-import havvenTheme from "../../config/theme";
-const CURRENCY_MAP = ["Usd", "Btc", "Eth"];
+  VictoryTooltip,
+} from 'victory';
+import GraphTooltip from '../Tooltip';
+import format from 'date-fns/format';
+import havvenTheme from '../../config/theme';
+const CURRENCY_MAP = ['Usd', 'Btc', 'Eth'];
 const LINE_COLOR = {
-  yellow: "#D9AB44",
-  red: "#F02D2D",
-  green: "#53B167",
-  purple: "#42217E"
+  yellow: '#D9AB44',
+  red: '#F02D2D',
+  green: '#53B167',
+  purple: '#42217E',
 };
 
 export default class HavvenChart extends React.Component {
@@ -26,7 +26,7 @@ export default class HavvenChart extends React.Component {
     super(props);
 
     const currencyIndex = props.currencyIndex || 0;
-    const colorGradient = props.colorGradient || "green";
+    const colorGradient = props.colorGradient || 'green';
     //const periodSwitch = props.periodSwitch || "ALL";
 
     this.state = {
@@ -40,7 +40,7 @@ export default class HavvenChart extends React.Component {
       gradientUrl: `url(#gradient-${colorGradient})`,
       colorGradient,
       decimals: {},
-      switchOnCount: this.countSwitchOn()
+      switchOnCount: this.countSwitchOn(),
     };
   }
 
@@ -56,7 +56,7 @@ export default class HavvenChart extends React.Component {
         timeSeries,
         timeSeriesX,
         timeSeriesBtc,
-        timeSeriesEth
+        timeSeriesEth,
       } = this.state;
       const index = this.findIndexByDate(timeSeriesX, value);
       if (index > -1) {
@@ -70,12 +70,12 @@ export default class HavvenChart extends React.Component {
             scatterX: value,
             scatterY,
             scatterYBtc,
-            scatterYEth
+            scatterYEth,
           });
         } else {
           this.setState({
             scatterX: value,
-            scatterY
+            scatterY,
           });
         }
       }
@@ -92,7 +92,7 @@ export default class HavvenChart extends React.Component {
         scatterX: timeSeries[index].x,
         scatterY: timeSeries[index].y,
         //showScatter: true,
-        showChart: true
+        showChart: true,
       });
       this.props.onCursorChange &&
         this.props.onCursorChange(timeSeries[index].y, timeSeries[index].x);
@@ -114,7 +114,7 @@ export default class HavvenChart extends React.Component {
   componentDidMount() {
     this.parseProps(this.props);
     this.updateDimensions();
-    window.addEventListener("resize", this.updateDimensions);
+    window.addEventListener('resize', this.updateDimensions);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -140,7 +140,7 @@ export default class HavvenChart extends React.Component {
       const hideScatter = count === 0;
       this.setState({
         showScatter: !hideScatter,
-        switchOnCount: count
+        switchOnCount: count,
       });
     }
   }
@@ -171,37 +171,37 @@ export default class HavvenChart extends React.Component {
     let { currencyIndex = 0 } = this.props;
     const currency = CURRENCY_MAP[currencyIndex];
     const data = info;
-    const minValue = data && data["minValue" + currency];
-    const maxValue = data && data["maxValue" + currency];
+    const minValue = data && data['minValue' + currency];
+    const maxValue = data && data['maxValue' + currency];
     const fromDate = data && new Date(data.fromDate);
     const toDate = data && new Date(data.toDate);
 
     const timeSeries =
       data &&
-      data["timeSeries" + currency].map(val => ({
+      data['timeSeries' + currency].map(val => ({
         x: new Date(val.x),
-        y: val.y
+        y: val.y,
       }));
     const timeSeriesX = data && data.timeSeriesX.map(val => new Date(val));
 
     if (currencySwitch) {
       timeSeriesBtc =
         data &&
-        data["timeSeriesBtc"].map(val => ({
+        data['timeSeriesBtc'].map(val => ({
           x: new Date(val.x),
-          y: val.y
+          y: val.y,
         }));
-      minValueBtc = data && data["minValueBtc"];
-      maxValueBtc = data && data["maxValueBtc"];
+      minValueBtc = data && data['minValueBtc'];
+      maxValueBtc = data && data['maxValueBtc'];
 
       timeSeriesEth =
         data &&
-        data["timeSeriesEth"].map(val => ({
+        data['timeSeriesEth'].map(val => ({
           x: new Date(val.x),
-          y: val.y
+          y: val.y,
         }));
-      minValueEth = data && data["minValueEth"];
-      maxValueEth = data && data["maxValueEth"];
+      minValueEth = data && data['minValueEth'];
+      maxValueEth = data && data['maxValueEth'];
     }
 
     // if (this.props.info.displayName === "HavvenPrice") {
@@ -222,7 +222,7 @@ export default class HavvenChart extends React.Component {
         timeSeriesEth,
         timeSeriesBtc,
         timeSeriesX,
-        currencyIndex
+        currencyIndex,
       },
       () => {
         this.setScatterToLast();
@@ -251,10 +251,10 @@ export default class HavvenChart extends React.Component {
       maxValueBtc,
       minValueEth,
       maxValueEth,
-      switchOnCount
+      switchOnCount,
     } = this.state;
     const { currencySwitch, period } = this.props;
-    const dtFormat = period === "1D" ? "HH:00" : "DD/MM";
+    const dtFormat = period === '1D' ? 'HH:00' : 'DD/MM';
 
     let ttY = -100;
     if (switchOnCount) {
@@ -325,13 +325,13 @@ export default class HavvenChart extends React.Component {
             </linearGradient>
           </defs>
         </svg>
-        <div style={{ position: "relative" }}>
+        <div style={{ position: 'relative' }}>
           {this.props.currencySwitch &&
-            this.props.currencySwitch["Btc"] && (
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
+            this.props.currencySwitch['Btc'] && (
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
                 <VictoryChart
                   domain={{ y: [minValueBtc * 0.9, maxValueBtc * 1.1] }}
-                  scale={{ x: "time" }}
+                  scale={{ x: 'time' }}
                   padding={{ bottom: 40 }}
                   theme={havvenTheme}
                   domainPadding={{ y: [0, 20] }}
@@ -339,8 +339,8 @@ export default class HavvenChart extends React.Component {
                 >
                   <VictoryAxis
                     style={{
-                      grid: { stroke: "transparent" },
-                      axis: { stroke: "transparent" }
+                      grid: { stroke: 'transparent' },
+                      axis: { stroke: 'transparent' },
                     }}
                     tickCount={5}
                     tickFormat={t => `${format(t, dtFormat)}`}
@@ -349,13 +349,13 @@ export default class HavvenChart extends React.Component {
                   <VictoryArea
                     data={timeSeriesBtc}
                     style={{
-                      data: { fill: "url(#gradient-yellow" }
+                      data: { fill: 'url(#gradient-yellow' },
                     }}
                   />
                   <VictoryLine
                     data={timeSeriesBtc}
                     style={{
-                      data: { stroke: "#D9AB44", strokeWidth: 2 }
+                      data: { stroke: '#D9AB44', strokeWidth: 2 },
                     }}
                   />
                   {this.state.showScatter && (
@@ -364,9 +364,9 @@ export default class HavvenChart extends React.Component {
                         {
                           x: this.state.scatterX,
                           y: this.state.scatterYBtc,
-                          symbol: "circle",
-                          size: 3
-                        }
+                          symbol: 'circle',
+                          size: 3,
+                        },
                       ]}
                     />
                   )}
@@ -374,11 +374,11 @@ export default class HavvenChart extends React.Component {
               </div>
             )}
           {this.props.currencySwitch &&
-            this.props.currencySwitch["Eth"] && (
-              <div style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
+            this.props.currencySwitch['Eth'] && (
+              <div style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
                 <VictoryChart
                   domain={{ y: [minValueEth * 0.9, maxValueEth * 1.1] }}
-                  scale={{ x: "time" }}
+                  scale={{ x: 'time' }}
                   padding={{ bottom: 40 }}
                   theme={havvenTheme}
                   domainPadding={{ y: [0, 20] }}
@@ -386,8 +386,8 @@ export default class HavvenChart extends React.Component {
                 >
                   <VictoryAxis
                     style={{
-                      grid: { stroke: "transparent" },
-                      axis: { stroke: "transparent" }
+                      grid: { stroke: 'transparent' },
+                      axis: { stroke: 'transparent' },
                     }}
                     tickCount={5}
                     tickFormat={t => `${format(t, dtFormat)}`}
@@ -396,13 +396,13 @@ export default class HavvenChart extends React.Component {
                   <VictoryArea
                     data={timeSeriesEth}
                     style={{
-                      data: { fill: "url(#gradient-purple" }
+                      data: { fill: 'url(#gradient-purple' },
                     }}
                   />
                   <VictoryLine
                     data={timeSeriesEth}
                     style={{
-                      data: { stroke: "#42217E", strokeWidth: 2 }
+                      data: { stroke: '#42217E', strokeWidth: 2 },
                     }}
                   />
                   {this.state.showScatter && (
@@ -411,21 +411,21 @@ export default class HavvenChart extends React.Component {
                         {
                           x: this.state.scatterX,
                           y: this.state.scatterYEth,
-                          symbol: "circle",
-                          size: 3
-                        }
+                          symbol: 'circle',
+                          size: 3,
+                        },
                       ]}
                     />
                   )}
                 </VictoryChart>
               </div>
             )}
-          {((this.props.currencySwitch && this.props.currencySwitch["Usd"]) ||
+          {((this.props.currencySwitch && this.props.currencySwitch['Usd']) ||
             !this.props.currencySwitch) && (
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
               <VictoryChart
                 domain={{ y: [minValue * 0.9, maxValue * 1.1] }}
-                scale={{ x: "time" }}
+                scale={{ x: 'time' }}
                 padding={{ bottom: 40 }}
                 theme={havvenTheme}
                 domainPadding={{ y: [0, 20] }}
@@ -433,8 +433,8 @@ export default class HavvenChart extends React.Component {
               >
                 <VictoryAxis
                   style={{
-                    grid: { stroke: "transparent" },
-                    axis: { stroke: "transparent" }
+                    grid: { stroke: 'transparent' },
+                    axis: { stroke: 'transparent' },
                   }}
                   tickCount={5}
                   tickFormat={t => `${format(t, dtFormat)}`}
@@ -443,7 +443,7 @@ export default class HavvenChart extends React.Component {
                 <VictoryArea
                   data={timeSeries}
                   style={{
-                    data: { fill: this.state.gradientUrl }
+                    data: { fill: this.state.gradientUrl },
                   }}
                 />
                 <VictoryLine
@@ -453,9 +453,9 @@ export default class HavvenChart extends React.Component {
                       stroke:
                         (this.props.colorGradient &&
                           LINE_COLOR[this.props.colorGradient]) ||
-                        LINE_COLOR["red"],
-                      strokeWidth: 2
-                    }
+                        LINE_COLOR['red'],
+                      strokeWidth: 2,
+                    },
                   }}
                 />
 
@@ -465,9 +465,9 @@ export default class HavvenChart extends React.Component {
                       {
                         x: this.state.scatterX,
                         y: this.state.scatterY,
-                        symbol: "circle",
-                        size: 5
-                      }
+                        symbol: 'circle',
+                        size: 5,
+                      },
                     ]}
                   />
                 )}
@@ -477,17 +477,17 @@ export default class HavvenChart extends React.Component {
           <div onMouseOut={this.cursorOut} onMouseOver={this.cursorOver}>
             <VictoryChart
               domain={{ y: [minValue * 0.9, maxValue * 1.1] }}
-              scale={{ x: "time" }}
+              scale={{ x: 'time' }}
               padding={{ bottom: 40 }}
               theme={havvenTheme}
               domainPadding={{ y: [0, 20] }}
               width={this.state.windowWidth}
               containerComponent={
                 <VictoryCursorContainer
-                  cursorDimension={"x"}
-                  cursorComponent={<Line style={{ stroke: "transparent" }} />}
+                  cursorDimension={'x'}
+                  cursorComponent={<Line style={{ stroke: 'transparent' }} />}
                   onCursorChange={this.onCursorChange}
-                  cursorLabel={() => ""}
+                  cursorLabel={() => ''}
                   cursorLabelOffset={{ x: -85, y: ttY }}
                   cursorLabelComponent={
                     <VictoryTooltip
@@ -498,7 +498,9 @@ export default class HavvenChart extends React.Component {
                           scatterY={
                             currencySwitch && !currencySwitch.Usd
                               ? undefined
-                              : this.state.scatterY
+                              : this.props.formatTooltip
+                                ? this.props.formatTooltip(this.state.scatterY)
+                                : this.state.scatterY
                           }
                           scatterX={this.state.scatterX}
                           scatterYBtc={
@@ -522,8 +524,8 @@ export default class HavvenChart extends React.Component {
             >
               <VictoryAxis
                 style={{
-                  grid: { stroke: "transparent" },
-                  axis: { stroke: "transparent" }
+                  grid: { stroke: 'transparent' },
+                  axis: { stroke: 'transparent' },
                 }}
                 tickCount={5}
                 tickFormat={t => `${format(t, dtFormat)}`}
@@ -533,20 +535,20 @@ export default class HavvenChart extends React.Component {
                 data={timeSeries}
                 style={{
                   data: {
-                    stroke: "transparent",
-                    strokeWidth: 2
-                  }
+                    stroke: 'transparent',
+                    strokeWidth: 2,
+                  },
                 }}
               />
 
               {this.state.showScatter && (
                 <VictoryLine
                   style={{
-                    data: { stroke: "rgba(255,255,255,0.15)" }
+                    data: { stroke: 'rgba(255,255,255,0.15)' },
                   }}
                   data={[
                     { x: this.state.scatterX, y: minValue * 0.9 },
-                    { x: this.state.scatterX, y: maxValue * 1.1 }
+                    { x: this.state.scatterX, y: maxValue * 1.1 },
                   ]}
                 />
               )}
@@ -559,5 +561,5 @@ export default class HavvenChart extends React.Component {
 }
 
 HavvenChart.propTypes = {
-  charts: PropTypes.object
+  charts: PropTypes.object,
 };

@@ -524,8 +524,7 @@ class App extends React.Component {
                   <div className="chart-box__info">
                     <h3>LOCKED HAV RATIO</h3>
                     <div>
-                      The ratio of total locked HAV against the total
-                      circulating HAV.
+                      The ratio of total locked HAV against the total HAV.
                     </div>
                   </div>
                   <div className="chart-box__number">

@@ -47,6 +47,26 @@ const DECIMALS = {
   ActiveCollateralizationRatio: { Val: 2 }, //%
 };
 
+const formatCRatio = data => {
+  if (!data || !data.timeSeriesUsd) return;
+  const timeSeriesUsd = data.timeSeriesUsd.map(d => {
+    return { ...d, y: 10000 / d.y };
+  });
+
+  return {
+    ...data,
+    minValueUsd: 10000 / data.minValueUsd,
+    maxValueUsd: 10000 / data.maxValueUsd,
+    timeSeriesUsd,
+  };
+};
+
+const getCRatioDomain = data => {
+  return {
+    y: [10000 / data.minValueUsd, (10000 / data.maxValueUsd) * 0.9],
+  };
+};
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -506,8 +526,7 @@ class App extends React.Component {
                   <div className="chart-box__info">
                     <h3>LOCKED HAV RATIO</h3>
                     <div>
-                      The ratio of total locked HAV against the total
-                      circulating HAV.
+                      The ratio of total locked HAV against the total HAV.
                     </div>
                   </div>
                   <div className="chart-box__number">
@@ -706,17 +725,24 @@ class App extends React.Component {
                   <div className="chart-box__info">
                     <h3>NETWORK COLLATERALIZATION RATIO</h3>
                     <div>
-                      The ratio of circulating nUSD against the value of all
-                      HAV.
+                      The ratio of the value of all HAV against circulating
+                      nUSD.
                     </div>
                   </div>
                   <div className="chart-box__number">
-                    {numeral(stats.collateralizationRatio * 100).format('0.00')}
+                    {numeral(
+                      stats.collateralizationRatio > 0
+                        ? 100 / stats.collateralizationRatio
+                        : 0
+                    ).format('0.00')}
                     %
                   </div>
                   <Chart
                     period={nUSDPeriod}
-                    info={charts.CollateralizationRatio}
+                    customDomain={getCRatioDomain(
+                      charts.CollateralizationRatio
+                    )}
+                    info={formatCRatio(charts.CollateralizationRatio)}
                     decimals={DECIMALS[CollateralizationRatio]}
                     colorGradient="red"
                     lastUpdated={lastUpdated}
@@ -729,19 +755,24 @@ class App extends React.Component {
                   <div className="chart-box__info">
                     <h3>ACTIVE COLLATERALIZATION RATIO</h3>
                     <div>
-                      The ratio of circulating nUSD against the value of all
-                      locked HAV.
+                      The ratio of the value of all locked HAV against
+                      circulating nUSD.
                     </div>
                   </div>
                   <div className="chart-box__number">
-                    {numeral(stats.activeCollateralizationRatio * 100).format(
-                      '0.00'
-                    )}
+                    {numeral(
+                      stats.activeCollateralizationRatio > 0
+                        ? 100 / stats.activeCollateralizationRatio
+                        : 0
+                    ).format('0.00')}
                     %
                   </div>
                   <Chart
                     period={nUSDPeriod}
-                    info={charts.ActiveCollateralizationRatio}
+                    info={formatCRatio(charts.ActiveCollateralizationRatio)}
+                    customDomain={getCRatioDomain(
+                      charts.ActiveCollateralizationRatio
+                    )}
                     decimals={DECIMALS[ActiveCollateralizationRatio]}
                     colorGradient="yellow"
                     lastUpdated={lastUpdated}

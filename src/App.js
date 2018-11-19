@@ -506,7 +506,7 @@ class App extends React.Component {
                   <div className="chart-box__info">
                     <div className="chart-box-title">
                       <h3>LOCKED HAV VALUE</h3>
-                      <span>
+                      <span className="chart-box__number">
                         {numeral(stats.lockedHavUsdBalance).format(`$0,0.`)}
                       </span>
                     </div>
@@ -529,7 +529,7 @@ class App extends React.Component {
                   <div className="chart-box__info">
                     <div className="chart-box-title">
                       <h3>LOCKED HAV RATIO</h3>
-                      <span>
+                      <span className="chart-box__number">
                         {numeral(stats.lockedHavRatio * 100).format('0.00')}%
                       </span>
                     </div>
@@ -710,7 +710,7 @@ class App extends React.Component {
                   <div className="chart-box__info">
                     <div className="chart-box-title">
                       <h3>FEE POOL</h3>
-                      <span>
+                      <span className="chart-box__number">
                         {numeral(stats.nominFeesCollected).format(`$0,0.`)}
                       </span>
                     </div>
@@ -735,7 +735,7 @@ class App extends React.Component {
                   <div className="chart-box__info">
                     <div className="chart-box-title">
                       <h3>NETWORK COLLATERALIZATION RATIO</h3>
-                      <span>
+                      <span className="chart-box__number">
                         {numeral(
                           stats.collateralizationRatio > 0
                             ? 100 / stats.collateralizationRatio

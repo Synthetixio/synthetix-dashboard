@@ -14,7 +14,7 @@ const chartTypes = [
   'LockedHavRatio',
   'UnlockedHavBalance',
   'LockedHavBalance',
-  'CollateralizationRatio',
+  'NetworkCollateralizationRatio',
   'ActiveCollateralizationRatio',
 ];
 
@@ -22,7 +22,6 @@ const chartTypesHAV = [
   'HavvenMarketCap',
   'HavvenPrice',
   'HavvenVolume24h',
-  // "LockedUpHavven",
   'UnlockedHavBalance',
   'LockedHavBalance',
   'LockedHavUsdBalance',
@@ -34,7 +33,7 @@ const chartTypesNomin = [
   'NominPrice',
   'NominVolume24h',
   'NominFeesCollected',
-  'CollateralizationRatio',
+  'NetworkCollateralizationRatio',
   'ActiveCollateralizationRatio',
 ];
 
@@ -94,9 +93,6 @@ export default (state = initialState, action) => {
             havvenVolume24h:
               data.HavvenVolume24h.data[data.HavvenVolume24h.data.length - 1]
                 .usdValue,
-            // lockedUpHavven:
-            //   data.LockedUpHavven.data[data.LockedUpHavven.data.length - 1]
-            //     .usdValue,
             unlockedHavUsdBalance:
               data.UnlockedHavUsdBalance.data[
                 data.UnlockedHavUsdBalance.data.length - 1
@@ -120,9 +116,9 @@ export default (state = initialState, action) => {
               data.NominFeesCollected.data[
                 data.NominFeesCollected.data.length - 1
               ].usdValue,
-            collateralizationRatio:
-              data.CollateralizationRatio.data[
-                data.CollateralizationRatio.data.length - 1
+            networkCollateralizationRatio:
+              data.NetworkCollateralizationRatio.data[
+                data.NetworkCollateralizationRatio.data.length - 1
               ].usdValue,
             activeCollateralizationRatio:
               data.ActiveCollateralizationRatio.data[

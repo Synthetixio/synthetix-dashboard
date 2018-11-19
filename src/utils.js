@@ -1,19 +1,19 @@
-import minBy from "lodash/minBy";
-import maxBy from "lodash/maxBy";
+import minBy from 'lodash/minBy';
+import maxBy from 'lodash/maxBy';
 const TICKS = {
-  "1D":-24,
-  "1W":-168,//24*7,
-  "1M":-744,//24*7*31
-  "1Y":-8760,//365*24
-  "ALL":0
-}
+  '1D': -24,
+  '1W': -168, //24*7,
+  '1M': -744, //24*7*31
+  '1Y': -8760, //365*24
+  ALL: 0,
+};
 
 const selectPeriod = (sourceData, period) => {
   let data = sourceData.slice(TICKS[period]);
   return data;
-}
+};
 
-export const parseChartData = (sourceData, key, period = "ALL") => {
+export const parseChartData = (sourceData, key, period = 'ALL') => {
   const dataSelected = selectPeriod(sourceData, period);
   let timeSeries = [];
   let modulo = Math.floor(dataSelected.length / 100);
@@ -26,22 +26,22 @@ export const parseChartData = (sourceData, key, period = "ALL") => {
   if (timeSeries[timeSeries.length - 1].created !== last.created) {
     timeSeries.push(last);
   }
-  if (key === "LockedHavRatio") {
+  if (key === 'LockedHavRatio') {
     timeSeries = timeSeries.map(val => ({
       ...val,
-      usdValue: val.usdValue * 100
+      usdValue: val.usdValue * 100,
     }));
   }
-  if (key === "CollateralizationRatio") {
+  if (key === 'NetworkCollateralizationRatio') {
     timeSeries = timeSeries.map(val => ({
       ...val,
-      usdValue: val.usdValue * 100
+      usdValue: val.usdValue * 100,
     }));
   }
-  if (key === "ActiveCollateralizationRatio") {
+  if (key === 'ActiveCollateralizationRatio') {
     timeSeries = timeSeries.map(val => ({
       ...val,
-      usdValue: val.usdValue * 100
+      usdValue: val.usdValue * 100,
     }));
   }
   last = timeSeries[timeSeries.length - 1];
@@ -74,7 +74,7 @@ export const parseChartData = (sourceData, key, period = "ALL") => {
     displayName: key,
     currentUsd: last.usdValue,
     currentBtc: last.btcValue,
-    currentEth: last.ethValue
+    currentEth: last.ethValue,
   };
   return data;
 };

@@ -28,7 +28,7 @@ const nUSD_CHART = {
   NominMarketCap: 'NominMarketCap',
   NominVolume24h: 'NominVolume24h',
   NominFeesCollected: 'NominFeesCollected',
-  CollateralizationRatio: 'CollateralizationRatio',
+  NetworkCollateralizationRatio: 'NetworkCollateralizationRatio',
   ActiveCollateralizationRatio: 'ActiveCollateralizationRatio',
 };
 const DECIMALS = {
@@ -43,7 +43,7 @@ const DECIMALS = {
   NominPrice: { Val: 3 },
   NominVolume24h: { Val: 2 },
   NominFeesCollected: { Val: 2 },
-  CollateralizationRatio: { Val: 2 }, //%
+  NetworkCollateralizationRatio: { Val: 2 }, //%
   ActiveCollateralizationRatio: { Val: 2 }, //%
 };
 
@@ -185,7 +185,7 @@ class App extends React.Component {
       NominMarketCap,
       NominVolume24h,
       NominPrice,
-      CollateralizationRatio,
+      NetworkCollateralizationRatio,
       ActiveCollateralizationRatio,
       NominFeesCollected,
     } = nUSD_CHART;
@@ -737,8 +737,8 @@ class App extends React.Component {
                       <h3>NETWORK COLLATERALIZATION RATIO</h3>
                       <span className="chart-box__number">
                         {numeral(
-                          stats.collateralizationRatio > 0
-                            ? 100 / stats.collateralizationRatio
+                          stats.networkCollateralizationRatio > 0
+                            ? 100 / stats.networkCollateralizationRatio
                             : 0
                         ).format('0.00')}
                         %
@@ -753,10 +753,10 @@ class App extends React.Component {
                   <Chart
                     period={nUSDPeriod}
                     customDomain={getCRatioDomain(
-                      charts.CollateralizationRatio
+                      charts.NetworkCollateralizationRatio
                     )}
-                    info={formatCRatio(charts.CollateralizationRatio)}
-                    decimals={DECIMALS[CollateralizationRatio]}
+                    info={formatCRatio(charts.NetworkCollateralizationRatio)}
+                    decimals={DECIMALS[NetworkCollateralizationRatio]}
                     colorGradient="red"
                     lastUpdated={lastUpdated}
                     sign="%"

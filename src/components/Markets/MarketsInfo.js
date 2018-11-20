@@ -18,6 +18,7 @@ export const MarketsInfo = props => {
     const percent = percent_change_1h > 0 
     ? <span className="percent">(+{percent_change_1h}%)</span>
     : <span className="percent">({percent_change_1h}%)</span>;
+    const marketCapLabel = (props.currencyType === "nUSD" ? "nUSD" : "HAVVEN") + " MARKET CAP";
 
     return (
         <div className="dashboard-root markets">
@@ -35,7 +36,7 @@ export const MarketsInfo = props => {
                 <div className="columns is-multiline" id="stats">
                     <SingleStatBox
                         value={ market_cap }
-                        label="HAVVEN MARKET CAP"
+                        label={marketCapLabel}
                         decimals={0}
                         customClass={ true }
                         symbol="USD"

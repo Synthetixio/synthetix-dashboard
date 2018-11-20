@@ -19,14 +19,6 @@
 .chart-box
   border-radius: 4px
   position: relative
-  .chart-box__number
-    font-size: 36px
-    font-weight: 600
-    letter-spacing: -0.5px
-    line-height: 34px
-    right: $box-padding
-    top: $box-padding
-    position: absolute
 
 .chart-box__stat
   padding: 2rem
@@ -53,7 +45,7 @@
       background-color: #D42351
 
 .chart-box__info
-  padding: ($box-padding + 0.5rem) $box-padding ($box-padding - 1.3rem) $box-padding
+  padding: $box-padding $box-padding ($box-padding - 1.3rem) $box-padding
   h3
     font-size: 14px
     font-weight: 600
@@ -64,7 +56,26 @@
     font-size: 14px
     width: 195px
     line-height: 20px
-
+  .chart-box-title
+    display: flex
+    flex: 1
+    width: 100%
+    justify-content: space-between
+    padding-top: 0
+    h3
+      flex: 1
+      padding-bottom: 10px
+      padding-top: 5px
+      padding-right: 20px
+      line-height: 20px
+    .chart-box__number
+      font-size: 36px
+      font-weight: 600
+      letter-spacing: -0.5px
+      line-height: 34px
+      align-self: flex-start
+  .chart-box-desc
+    padding-top: 0px
 .time-toggles
   &.is-hidden-mobile
     position: absolute

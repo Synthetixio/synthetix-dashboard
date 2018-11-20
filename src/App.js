@@ -28,7 +28,7 @@ const nUSD_CHART = {
   NominMarketCap: 'NominMarketCap',
   NominVolume24h: 'NominVolume24h',
   NominFeesCollected: 'NominFeesCollected',
-  CollateralizationRatio: 'CollateralizationRatio',
+  NetworkCollateralizationRatio: 'NetworkCollateralizationRatio',
   ActiveCollateralizationRatio: 'ActiveCollateralizationRatio',
 };
 const DECIMALS = {
@@ -43,7 +43,7 @@ const DECIMALS = {
   NominPrice: { Val: 3 },
   NominVolume24h: { Val: 2 },
   NominFeesCollected: { Val: 2 },
-  CollateralizationRatio: { Val: 2 }, //%
+  NetworkCollateralizationRatio: { Val: 2 }, //%
   ActiveCollateralizationRatio: { Val: 2 }, //%
 };
 
@@ -185,7 +185,7 @@ class App extends React.Component {
       NominMarketCap,
       NominVolume24h,
       NominPrice,
-      CollateralizationRatio,
+      NetworkCollateralizationRatio,
       ActiveCollateralizationRatio,
       NominFeesCollected,
     } = nUSD_CHART;
@@ -506,12 +506,17 @@ class App extends React.Component {
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
-                    <h3>LOCKED HAV VALUE</h3>
-                    <div>The total value of all locked HAV.</div>
+                    <div className="chart-box-title">
+                      <h3>LOCKED HAV VALUE</h3>
+                      <span className="chart-box__number">
+                        {numeral(stats.lockedHavUsdBalance).format(`$0,0.`)}
+                      </span>
+                    </div>
+                    <div className="chart-box-desc">
+                      The total value of all locked HAV.
+                    </div>
                   </div>
-                  <div className="chart-box__number">
-                    {numeral(stats.lockedHavUsdBalance).format(`$0,0.`)}
-                  </div>
+
                   <Chart
                     period={havPeriod}
                     info={charts.LockedHavUsdBalance}
@@ -524,14 +529,17 @@ class App extends React.Component {
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
-                    <h3>LOCKED HAV RATIO</h3>
-                    <div>
+                    <div className="chart-box-title">
+                      <h3>LOCKED HAV RATIO</h3>
+                      <span className="chart-box__number">
+                        {numeral(stats.lockedHavRatio * 100).format('0.00')}%
+                      </span>
+                    </div>
+                    <div className="chart-box-desc">
                       The ratio of total locked HAV against the total HAV.
                     </div>
                   </div>
-                  <div className="chart-box__number">
-                    {numeral(stats.lockedHavRatio * 100).format('0.00')}%
-                  </div>
+
                   <Chart
                     period={havPeriod}
                     info={charts.LockedHavRatio}
@@ -702,11 +710,15 @@ class App extends React.Component {
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
-                    <h3>FEE POOL</h3>
-                    <div>Transaction fees generated & available to claim.</div>
-                  </div>
-                  <div className="chart-box__number">
-                    {numeral(stats.nominFeesCollected).format(`$0,0.`)}
+                    <div className="chart-box-title">
+                      <h3>FEE POOL</h3>
+                      <span className="chart-box__number">
+                        {numeral(stats.nominFeesCollected).format(`$0,0.`)}
+                      </span>
+                    </div>
+                    <div className="chart-box-desc">
+                      Transaction fees generated & available to claim.
+                    </div>
                   </div>
                   <Chart
                     period={nUSDPeriod}
@@ -723,27 +735,30 @@ class App extends React.Component {
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
-                    <h3>NETWORK COLLATERALIZATION RATIO</h3>
-                    <div>
+                    <div className="chart-box-title">
+                      <h3>NETWORK COLLATERALIZATION RATIO</h3>
+                      <span className="chart-box__number">
+                        {numeral(
+                          stats.networkCollateralizationRatio > 0
+                            ? 100 / stats.networkCollateralizationRatio
+                            : 0
+                        ).format('0.00')}
+                        %
+                      </span>
+                    </div>
+                    <div className="chart-box-desc">
                       The ratio of the value of all HAV against circulating
                       nUSD.
                     </div>
                   </div>
-                  <div className="chart-box__number">
-                    {numeral(
-                      stats.collateralizationRatio > 0
-                        ? 100 / stats.collateralizationRatio
-                        : 0
-                    ).format('0.00')}
-                    %
-                  </div>
+
                   <Chart
                     period={nUSDPeriod}
                     customDomain={getCRatioDomain(
-                      charts.CollateralizationRatio
+                      charts.NetworkCollateralizationRatio
                     )}
-                    info={formatCRatio(charts.CollateralizationRatio)}
-                    decimals={DECIMALS[CollateralizationRatio]}
+                    info={formatCRatio(charts.NetworkCollateralizationRatio)}
+                    decimals={DECIMALS[NetworkCollateralizationRatio]}
                     colorGradient="red"
                     lastUpdated={lastUpdated}
                     sign="%"
@@ -753,19 +768,21 @@ class App extends React.Component {
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
-                    <h3>ACTIVE COLLATERALIZATION RATIO</h3>
-                    <div>
+                    <div className="chart-box-title">
+                      <h3>ACTIVE COLLATERALIZATION RATIO</h3>
+                      <span className="chart-box__number">
+                        {numeral(
+                          stats.activeCollateralizationRatio > 0
+                            ? 100 / stats.activeCollateralizationRatio
+                            : 0
+                        ).format('0.00')}
+                        %
+                      </span>
+                    </div>
+                    <div className="chart-box-desc">
                       The ratio of the value of all locked HAV against
                       circulating nUSD.
                     </div>
-                  </div>
-                  <div className="chart-box__number">
-                    {numeral(
-                      stats.activeCollateralizationRatio > 0
-                        ? 100 / stats.activeCollateralizationRatio
-                        : 0
-                    ).format('0.00')}
-                    %
                   </div>
                   <Chart
                     period={nUSDPeriod}

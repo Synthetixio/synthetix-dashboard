@@ -501,8 +501,8 @@ class App extends React.Component {
               </div>
             </div>
             <div className="columns">
-              <div className="column">
-                <div className="chart-box">
+              {/* <div className="column"> */}
+              {/* <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
                       <h3>LOCKED HAV VALUE</h3>
@@ -522,9 +522,9 @@ class App extends React.Component {
                     colorGradient="red"
                     lastUpdated={lastUpdated}
                   />
-                </div>
-              </div>
-              <div className="column">
+                </div> */}
+              {/* </div> */}
+              {/* <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
@@ -547,7 +547,7 @@ class App extends React.Component {
                     sign="%"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -755,6 +755,7 @@ class App extends React.Component {
                     customDomain={getCRatioDomain(
                       charts.NetworkCollateralizationRatio
                     )}
+                    fullSize={true}
                     info={formatCRatio(charts.NetworkCollateralizationRatio)}
                     decimals={DECIMALS[NetworkCollateralizationRatio]}
                     colorGradient="red"
@@ -763,7 +764,7 @@ class App extends React.Component {
                   />
                 </div>
               </div>
-              <div className="column">
+              {/* <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
@@ -794,7 +795,7 @@ class App extends React.Component {
                     sign="%"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

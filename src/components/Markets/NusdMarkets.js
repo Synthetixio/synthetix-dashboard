@@ -27,7 +27,7 @@ export class NusdMarketsComponent extends Component {
     const charts_info = isEmptyObj(charts.stats) ? charts : null;
     if (susd_info === null || charts_info === null) return null;
     return (
-      <div id="hav-markets">
+      <div>
         <MarketsInfo
           currency={susd_info}
           lastUpdated={charts_info.lastUpdated}

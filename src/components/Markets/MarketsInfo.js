@@ -12,19 +12,11 @@ export const MarketsInfo = props => {
   const cssAfterLoad = 'html {transition: all 1s ease}';
   const {
     market_cap,
-    percent_change_1h,
+    percent_change_24h,
     volume_24h,
     price,
   } = props.currency.quotes.USD;
   const { circulating_supply, total_supply } = props.currency;
-  const percent =
-    percent_change_1h > 0 ? (
-      <span className="percent">(+{percent_change_1h}%)</span>
-    ) : (
-      <span className="percent">({percent_change_1h}%)</span>
-    );
-  const marketCapLabel =
-    (props.currencyType === 'sUSD' ? 'sUSD' : 'SNX') + ' MARKET CAP';
 
   return (
     <div className="dashboard-root markets">
@@ -36,7 +28,25 @@ export const MarketsInfo = props => {
         <h2 className="markets__ttl">
           {props.currencyType}
           <div className="markets-price">
-            ${price} <sub>USD</sub> <div>{percent}</div>{' '}
+            <span
+              className={`markets-price-value ${
+                percent_change_24h < 0 ? 'is-negative' : ''
+              }`}
+            >
+              ${price}
+            </span>
+            <sub>USD</sub>{' '}
+            <div>
+              {' '}
+              <span
+                className={`percent ${
+                  percent_change_24h < 0 ? 'is-negative' : ''
+                }`}
+              >
+                {percent_change_24h >= 0 ? '+' : ''}
+                {percent_change_24h}%
+              </span>
+            </div>
           </div>
         </h2>
         <button type="button" className="markets-btn">
@@ -45,7 +55,7 @@ export const MarketsInfo = props => {
         <div className="columns is-multiline" id="stats">
           <SingleStatBox
             value={market_cap}
-            label={marketCapLabel}
+            label={`${props.currencyType} MARKET CAP`}
             decimals={0}
             customClass={true}
             symbol="USD"
@@ -62,14 +72,16 @@ export const MarketsInfo = props => {
             value={circulating_supply}
             label="Circulating Supply"
             customClass={true}
-            symbol="sUSD"
+            symbol={props.currencyType}
+            isUSD={false}
           />
 
           <SingleStatBox
             value={total_supply}
             label="Total Supply"
             customClass={true}
-            symbol="sUSD"
+            symbol={props.currencyType}
+            isUSD={false}
           />
         </div>
       </div>

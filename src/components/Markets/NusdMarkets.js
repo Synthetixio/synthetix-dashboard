@@ -22,18 +22,18 @@ export class NusdMarketsComponent extends Component {
 
   render() {
     const charts = this.props.charts;
-    const nusd = this.props.markets.nusd;
-    const nusd_info = isEmptyObj(nusd) ? nusd : null;
+    const susd = this.props.markets.susd;
+    const susd_info = isEmptyObj(susd) ? susd : null;
     const charts_info = isEmptyObj(charts.stats) ? charts : null;
-    if (nusd_info === null || charts_info === null) return null;
+    if (susd_info === null || charts_info === null) return null;
     return (
       <div>
         <MarketsInfo
-          currency={nusd_info}
+          currency={susd_info}
           lastUpdated={charts_info.lastUpdated}
-          toggleCurrencyType={'View HAV'}
-          currencyType={'nUSD'}
-          toggleCurrencyUrl={'/buy-hav'}
+          toggleCurrencyType={'View SNX'}
+          currencyType={'sUSD'}
+          toggleCurrencyUrl={'/buy-snx'}
         />
         <div className="markets__holder">
           <div className="table-container container">
@@ -41,7 +41,7 @@ export class NusdMarketsComponent extends Component {
               <thead>
                 <tr>
                   <th className="table_ttl">
-                    <span className="desktop">Havven Markets</span>
+                    <span className="desktop">sUSD Markets</span>
                     <span className="mobile">Exchange</span>
                   </th>
                   <th>Pair</th>
@@ -56,7 +56,7 @@ export class NusdMarketsComponent extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.props.markets.coinHAV.map(
+                {this.props.markets.coinSUSD.map(
                   ({ source, pair, volume24, volume, price, updated }, idx) => (
                     <tr key={`t_row_${idx}`}>
                       <td>

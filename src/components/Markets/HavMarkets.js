@@ -22,18 +22,18 @@ export class HavMarketsComponent extends Component {
 
   render() {
     const charts = this.props.charts;
-    const hav = this.props.markets.hav;
-    const hav_info = isEmptyObj(hav) ? hav : null;
+    const snx = this.props.markets.snx;
+    const snx_info = isEmptyObj(snx) ? snx : null;
     const charts_info = isEmptyObj(charts.stats) ? charts : null;
-    if (hav_info === null || charts_info === null) return null;
+    if (snx_info === null || charts_info === null) return null;
     return (
       <div>
         <MarketsInfo
-          currency={hav_info}
+          currency={snx_info}
           lastUpdated={charts_info.lastUpdated}
-          toggleCurrencyType={'View nUSD'}
-          currencyType={'HAV'}
-          toggleCurrencyUrl={'/buy-nusd'}
+          toggleCurrencyType={'View sUSD'}
+          currencyType={'SNX'}
+          toggleCurrencyUrl={'/buy-susd'}
         />
         <div className="markets__holder">
           <div className="table-container container">
@@ -41,7 +41,7 @@ export class HavMarketsComponent extends Component {
               <thead>
                 <tr>
                   <th className="table_ttl">
-                    <span className="desktop">Havven Markets</span>
+                    <span className="desktop">SNX Markets</span>
                     <span className="mobile">Exchange</span>
                   </th>
                   <th>Pair</th>
@@ -56,7 +56,7 @@ export class HavMarketsComponent extends Component {
                 </tr>
               </thead>
               <tbody>
-                {this.props.markets.coinHAV.map(
+                {this.props.markets.coinSNX.map(
                   ({ source, pair, volume24, volume, price, updated }, idx) => (
                     <tr key={`t_row_${idx}`}>
                       <td>

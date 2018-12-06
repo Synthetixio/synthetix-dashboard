@@ -219,7 +219,7 @@ tr td
 tr td:nth-child(4),
 tr th:nth-child(4)
   width: auto
-  padding: 0
+  // padding: 0
   font-size: 0
 
 .table_ttl
@@ -247,11 +247,16 @@ tr th:nth-child(1)
     background-color: #53B167;
     font-size: 18px;
     color: #fff;
+    &.is-negative
+      background-color: #D42351;
 
 +tablet
   .markets-price
     flex-wrap: nowrap
     margin-left: 20px
+    .markets-price-value
+      &.is-negative
+        color: #D42351;
 
   .markets-price
     div
@@ -278,7 +283,7 @@ tr th:nth-child(1)
   tr td:nth-child(4),
   tr th:nth-child(4)
     width: auto
-    padding: 10px
+    // padding: 10px
     font-size: 14px
 
   tr td:nth-child(4)
@@ -290,7 +295,7 @@ tr th:nth-child(1)
     padding-left: 10px
 
   tr th:nth-child(4)
-    padding-top: 30px
+    // padding-top: 30px
 
   .table_ttl
     color: #fff

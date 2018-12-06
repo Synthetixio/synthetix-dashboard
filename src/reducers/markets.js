@@ -6,15 +6,15 @@ import {
   FETCH_COINMARKETCAP_HAV_SUCCESS,
   FETCH_COINMARKETCAP_HAV_ERROR,
   FETCH_COINMARKETCAP_NUSD_SUCCESS,
-  FETCH_COINMARKETCAP_NUSD_ERROR
+  FETCH_COINMARKETCAP_NUSD_ERROR,
 } from '../actions/actionTypes';
 
 const initialState = {
-  hav: {},
-  nusd: {},
-  coinHAV: [],
-  coinNUSD: [],
-  errors: {}
+  snx: {},
+  susd: {},
+  coinSNX: [],
+  coinSUSD: [],
+  errors: {},
 };
 
 export default (state = initialState, action) => {
@@ -22,51 +22,48 @@ export default (state = initialState, action) => {
     case FETCH_HAV_CURRENCY_SUCCESS:
       return {
         ...state,
-        hav: action.data.body.data
-      }
+        snx: action.data.body.data,
+      };
     case FETCH_HAV_CURRENCY_ERROR:
       return {
         ...state,
-        errors: action.error
-      }
-/////////////////////////////////////////
+        errors: action.error,
+      };
+    /////////////////////////////////////////
     case FETCH_NUSD_CURRENCY_SUCCESS:
       return {
         ...state,
-        nusd: action.data.body.data
-      }
+        susd: action.data.body.data,
+      };
     case FETCH_NUSD_CURRENCY_ERROR:
       return {
         ...state,
-        errors: action.error
-      }
-/////////////////////////////////////////
+        errors: action.error,
+      };
+    /////////////////////////////////////////
     case FETCH_COINMARKETCAP_HAV_SUCCESS:
       return {
         ...state,
-        coinHAV: action.data.body
-      }
+        coinSNX: action.data.body,
+      };
     case FETCH_COINMARKETCAP_HAV_ERROR:
       return {
         ...state,
-        errors: action.error
-      }
-/////////////////////////////////////////
+        errors: action.error,
+      };
+    /////////////////////////////////////////
     case FETCH_COINMARKETCAP_NUSD_SUCCESS:
       return {
         ...state,
-        coinHAV: action.data.body
-      }
+        coinSUSD: action.data.body,
+      };
     case FETCH_COINMARKETCAP_NUSD_ERROR:
       return {
         ...state,
-        errors: action.error
-      }
+        errors: action.error,
+      };
 
     default:
       return state;
   }
 };
-
-
-

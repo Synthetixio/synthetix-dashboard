@@ -147,8 +147,9 @@ class App extends React.Component {
 
   getMarketsData() {
     const { markets } = this.props;
-    const data = { havMarketData: {}, nusdMarketData: {} };
-    ['hav', 'nusd'].forEach(currency => {
+    console.log('shshshs', markets);
+    const data = { snxMarketData: {}, susdMarketData: {} };
+    ['snx', 'susd'].forEach(currency => {
       if (
         markets[currency] &&
         markets[currency].quotes &&
@@ -157,6 +158,7 @@ class App extends React.Component {
         data[`${currency}MarketData`] = { ...markets[currency].quotes.USD };
       }
     });
+    console.log(data);
     return data;
   }
 
@@ -192,7 +194,7 @@ class App extends React.Component {
 
     let minsAgo = differenceInMins(Date.now(), lastUpdated);
     minsAgo = isNaN(minsAgo) ? '-' : minsAgo;
-    const { havMarketData, nusdMarketData } = this.getMarketsData();
+    const { snxMarketData, susdMarketData } = this.getMarketsData();
     const scrollToOptions = {
       duration: 500,
       delay: 100,
@@ -202,17 +204,17 @@ class App extends React.Component {
 
     const havStats = {
       [HAV_CHART.HavvenMarketCap]: {
-        value: havMarketData.market_cap,
+        value: snxMarketData.market_cap,
         trend: stats.havvenMarketCap24hDelta,
         decimals: 0,
       },
       [HAV_CHART.HavvenPrice]: {
-        value: havMarketData.price,
+        value: snxMarketData.price,
         trend: stats.havvenPriceCap24hDelta,
         decimals: 3,
       },
       [HAV_CHART.HavvenVolume24h]: {
-        value: havMarketData.volume_24h,
+        value: snxMarketData.volume_24h,
         trend: stats.havvenMarketCap24hDelta,
         decimals: 0,
       },
@@ -221,17 +223,17 @@ class App extends React.Component {
 
     const nominStats = {
       [nUSD_CHART.NominMarketCap]: {
-        value: nusdMarketData.market_cap,
+        value: susdMarketData.market_cap,
         trend: stats.nominMarketCap24hDelta,
         decimals: 0,
       },
       [nUSD_CHART.NominPrice]: {
-        value: nusdMarketData.price,
+        value: susdMarketData.price,
         trend: stats.nominPriceCap24hDelta,
         decimals: 3,
       },
       [nUSD_CHART.NominVolume24h]: {
-        value: nusdMarketData.volume_24h,
+        value: susdMarketData.volume_24h,
         trend: stats.nominMarketCap24hDelta,
         decimals: 0,
       },
@@ -250,14 +252,14 @@ class App extends React.Component {
         <div className="container main-content">
           <div className="columns is-multiline" id="stats">
             <Link
-              to="/buy-hav"
+              to="/buy-snx"
               className="column is-half-tablet is-one-quarter-desktop markets-link"
             >
               <SingleStatBox
-                value={havMarketData ? havMarketData.market_cap : null}
+                value={snxMarketData ? snxMarketData.market_cap : null}
                 trend={stats.havvenMarketCap24hDelta * 100}
-                label="HAVVEN MARKET CAP"
-                desc="The total value of all circulating HAV, determined by multiplying the current price of 1 HAV by the circulating supply of HAV."
+                label="SNX MARKET CAP"
+                desc="The total value of all circulating SNX, determined by multiplying the current price of 1 SNX by the circulating supply of SNX."
                 onClick={() => {
                   this.setHavChart(HavvenMarketCap);
                   scroller.scrollTo('hav-main-chart', scrollToOptions);
@@ -266,14 +268,14 @@ class App extends React.Component {
               />
             </Link>
             <Link
-              to="/buy-hav"
+              to="/buy-snx"
               className="column is-half-tablet is-one-quarter-desktop markets-link"
             >
               <SingleStatBox
-                value={havMarketData ? havMarketData.price : null}
+                value={snxMarketData ? snxMarketData.price : null}
                 trend={stats.havvenPriceCap24hDelta * 100}
-                label="HAVVEN PRICE"
-                desc="The average price of 1 HAV across all available exchanges."
+                label="SNX PRICE"
+                desc="The average price of 1 SNX across all available exchanges."
                 decimals={3}
                 onClick={() => {
                   this.setHavChart(HavvenPrice);
@@ -282,14 +284,14 @@ class App extends React.Component {
               />
             </Link>
             <Link
-              to="/buy-nusd"
+              to="/buy-susd"
               className="column is-half-tablet is-one-quarter-desktop markets-link"
             >
               <SingleStatBox
-                value={nusdMarketData ? nusdMarketData.market_cap : null}
+                value={susdMarketData ? susdMarketData.market_cap : null}
                 trend={stats.nominMarketCap24hDelta * 100}
-                label="nUSD MARKET CAP"
-                desc="The total value of all circulating nUSD, determined by multiplying the current price of 1 nUSD by the circulating supply of nUSD."
+                label="sUSD MARKET CAP"
+                desc="The total value of all circulating sUSD, determined by multiplying the current price of 1 sUSD by the circulating supply of sUSD."
                 onClick={() => {
                   this.setnUSDChart(NominMarketCap);
                   scroller.scrollTo('nomin-main-chart', scrollToOptions);
@@ -298,14 +300,14 @@ class App extends React.Component {
               />
             </Link>
             <Link
-              to="/buy-nusd"
+              to="/buy-susd"
               className="column is-half-tablet is-one-quarter-desktop markets-link"
             >
               <SingleStatBox
-                value={nusdMarketData ? nusdMarketData.price : null}
+                value={susdMarketData ? susdMarketData.price : null}
                 trend={stats.nominPriceCap24hDelta * 100}
-                label="nUSD PRICE"
-                desc="The average price of 1 nUSD across all available exchanges."
+                label="sUSD PRICE"
+                desc="The average price of 1 sUSD across all available exchanges."
                 decimals={3}
                 onClick={() => {
                   this.setnUSDChart(NominPrice);
@@ -320,8 +322,8 @@ class App extends React.Component {
             <div className="level is-mobile chart-section__heading">
               <div className="level-left is-hidden-mobile">
                 <div className="level-item title">
-                  <h2>HAV</h2>
-                  <span>(HAVVEN)</span>
+                  <h2>SNX</h2>
+                  <span>(SYNTHETIX)</span>
                 </div>
               </div>
               <div className="level-right">
@@ -505,13 +507,13 @@ class App extends React.Component {
               {/* <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
-                      <h3>LOCKED HAV VALUE</h3>
+                      <h3>LOCKED SNX VALUE</h3>
                       <span className="chart-box__number">
                         {numeral(stats.lockedHavUsdBalance).format(`$0,0.`)}
                       </span>
                     </div>
                     <div className="chart-box-desc">
-                      The total value of all locked HAV.
+                      The total value of all locked SNX.
                     </div>
                   </div>
 
@@ -528,13 +530,13 @@ class App extends React.Component {
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
-                      <h3>LOCKED HAV RATIO</h3>
+                      <h3>LOCKED SNX RATIO</h3>
                       <span className="chart-box__number">
                         {numeral(stats.lockedHavRatio * 100).format('0.00')}%
                       </span>
                     </div>
                     <div className="chart-box-desc">
-                      The ratio of total locked HAV against the total HAV.
+                      The ratio of total locked SNX against the total HAV.
                     </div>
                   </div>
 
@@ -556,8 +558,8 @@ class App extends React.Component {
             <div className="level is-mobile chart-section__heading">
               <div className="level-left is-hidden-mobile">
                 <div className="level-item title">
-                  <h2>nUSD</h2>
-                  <span>(NOMINS)</span>
+                  <h2>sUSD</h2>
+                  <span>(SYNTHS)</span>
                 </div>
               </div>
               <div className="level-right">
@@ -745,8 +747,8 @@ class App extends React.Component {
                       </span>
                     </div>
                     <div className="chart-box-desc">
-                      The ratio of the value of all HAV against circulating
-                      nUSD.
+                      The ratio of the value of all SNX against circulating
+                      sUSD.
                     </div>
                   </div>
 
@@ -779,8 +781,8 @@ class App extends React.Component {
                       </span>
                     </div>
                     <div className="chart-box-desc">
-                      The ratio of the value of all locked HAV against
-                      circulating nUSD.
+                      The ratio of the value of all locked SNX against
+                      circulating sUSD.
                     </div>
                   </div>
                   <Chart

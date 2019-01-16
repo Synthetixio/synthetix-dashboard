@@ -59,7 +59,7 @@ export const handleFetchNUSDError = error => {
 /////////////////////////////////////////////
 export const fetchCoinmarketcapHAV = data => ({
   type: FETCH_COINMARKETCAP_HAV,
-  url: 'http://api.havven.io/api/markets/snx',
+  url: 'https://api.havven.io/api/markets/snx',
   success: handleFetchCoinmarketcapHAVSuccess,
   error: handleFetchCoinmarketcapHAVError,
 });
@@ -81,7 +81,7 @@ export const handleFetchCoinmarketcapHAVError = error => {
 /////////////////////////////////////////////
 export const fetchCoinmarketcapNUSD = data => ({
   type: FETCH_COINMARKETCAP_NUSD,
-  url: 'http://api.havven.io/api/markets/susd',
+  url: 'https://api.havven.io/api/markets/susd',
   success: handleFetchCoinmarketcapNUSDSuccess,
   error: handleFetchCoinmarketcapNUSDError,
 });

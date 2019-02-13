@@ -22,7 +22,7 @@ export default (state = initialState, action) => {
     case FETCH_HAV_CURRENCY_SUCCESS:
       return {
         ...state,
-        snx: action.data.body.data,
+        snx: action.data.body.data.SNX,
       };
     case FETCH_HAV_CURRENCY_ERROR:
       return {
@@ -33,7 +33,7 @@ export default (state = initialState, action) => {
     case FETCH_NUSD_CURRENCY_SUCCESS:
       return {
         ...state,
-        susd: action.data.body.data,
+        susd: action.data.body.data.SUSD,
       };
     case FETCH_NUSD_CURRENCY_ERROR:
       return {

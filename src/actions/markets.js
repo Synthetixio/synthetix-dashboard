@@ -15,7 +15,7 @@ import {
 
 export const fetchHAV = () => ({
   type: FETCH_HAV_CURRENCY,
-  url: 'https://api.coinmarketcap.com/v2/ticker/2586/',
+  url: 'https://coinmarketcap-api.synthetix.io/public/prices?symbols=SNX',
   success: handleFetchHAVSuccess,
   error: handleFetchHAVError,
 });
@@ -37,7 +37,7 @@ export const handleFetchHAVError = error => {
 /////////////////////////////////////////////
 export const fetchNUSD = data => ({
   type: FETCH_NUSD_CURRENCY,
-  url: 'https://api.coinmarketcap.com/v2/ticker/2927/',
+  url: 'https://coinmarketcap-api.synthetix.io/public/prices?symbols=sUSD',
   success: handleFetchNUSDSuccess,
   error: handleFetchNUSDError,
 });

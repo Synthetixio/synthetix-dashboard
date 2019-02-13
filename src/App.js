@@ -147,15 +147,14 @@ class App extends React.Component {
 
   getMarketsData() {
     const { markets } = this.props;
-    console.log('shshshs', markets);
     const data = { snxMarketData: {}, susdMarketData: {} };
     ['snx', 'susd'].forEach(currency => {
       if (
         markets[currency] &&
-        markets[currency].quotes &&
-        markets[currency].quotes.USD
+        markets[currency].quote &&
+        markets[currency].quote.USD
       ) {
-        data[`${currency}MarketData`] = { ...markets[currency].quotes.USD };
+        data[`${currency}MarketData`] = { ...markets[currency].quote.USD };
       }
     });
     console.log(data);

@@ -15,7 +15,7 @@ export const MarketsInfo = props => {
     percent_change_24h,
     volume_24h,
     price,
-  } = props.currency.quotes.USD;
+  } = props.currency.quote.USD;
   const { circulating_supply, total_supply } = props.currency;
 
   return (

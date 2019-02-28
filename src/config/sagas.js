@@ -1,22 +1,21 @@
-import { takeEvery, call, put, all } from "redux-saga/effects";
+import { takeEvery, call, put, all } from 'redux-saga/effects';
 
 import {
-    FETCH_CHARTS,
-    FETCH_CHARTS_SUCCESS,
-    FETCH_HAV_CURRENCY,
-    FETCH_NUSD_CURRENCY,
-    FETCH_COINMARKETCAP_HAV,
-    FETCH_COINMARKETCAP_NUSD
-} from "../actions/actionTypes";
+  FETCH_CHARTS,
+  FETCH_CHARTS_SUCCESS,
+  FETCH_HAV_CURRENCY,
+  FETCH_NUSD_CURRENCY,
+  FETCH_COINMARKETCAP_HAV,
+  FETCH_COINMARKETCAP_NUSD,
+} from '../actions/actionTypes';
 
-import { doFetch } from "./api";
+import { doFetch } from './api';
 
-let apiUri = process.env.API_URL || "https://api.havven.io/api/";
-
+let apiUri = process.env.API_URL || 'https://api.synthetix.io/api/';
 
 //CHARTS
 function* fetchCharts() {
-  const fetchUri = apiUri + "dataPoint/chartData";
+  const fetchUri = apiUri + 'dataPoint/chartData';
   const data = yield call(doFetch, fetchUri);
   yield put({ type: FETCH_CHARTS_SUCCESS, payload: { data } });
 }
@@ -29,9 +28,9 @@ function* fetchChartsCall() {
 function* fetchCurrency(action) {
   try {
     const data = yield call(doFetch, action.url);
-    yield put( action.success( data ) );
-  } catch ( e ) {
-    yield put( action.error( e.body ) )
+    yield put(action.success(data));
+  } catch (e) {
+    yield put(action.error(e.body));
   }
 }
 
@@ -57,7 +56,7 @@ const rootSaga = function*() {
     fetchHAVCurrencyCall(),
     fetchNUSDCurrencyCall(),
     fetchCoinmarketcapHAVCall(),
-    fetchCoinmarketcapNUSDCall()
+    fetchCoinmarketcapNUSDCall(),
   ]);
 };
 

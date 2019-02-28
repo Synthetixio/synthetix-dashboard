@@ -1,5 +1,5 @@
 [build.environment]
-  API_URL = "https://api.havven.io/api/"
+  API_URL = "https://api.synthetix.io/api/"
 
 [context.staging.environment]
-  API_URL = "https://staging-api.havven.io/api/"
+  API_URL = "https://staging.api.synthetix.io/api/"

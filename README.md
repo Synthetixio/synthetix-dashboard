@@ -1,4 +1,4 @@
-# Havven Dashboard website
+# Synthetix Dashboard website
 
 This site uses Netlify for the hosting.
 

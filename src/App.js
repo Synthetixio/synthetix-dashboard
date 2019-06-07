@@ -316,6 +316,36 @@ class App extends React.Component {
                 }}
               />
             </Link>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  stats.networkCollateralizationRatio &&
+                  stats.networkCollateralizationRatio > 0
+                    ? 100 / stats.networkCollateralizationRatio
+                    : 0
+                }
+                type="percentage"
+                label="NETWORK COLLATERALIZATION RATIO"
+                desc="The ratio of the value of all SNX against circulating sUSD."
+                onClick={() => {}}
+                decimals={2}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  stats.activeCollateralizationRatio &&
+                  stats.activeCollateralizationRatio > 0
+                    ? 100 / stats.activeCollateralizationRatio
+                    : 0
+                }
+                type="percentage"
+                label="ACTIVE COLLATERALIZATION RATIO"
+                desc="The ratio of the value of all locked SNX against circulating sUSD."
+                onClick={() => {}}
+                decimals={2}
+              />
+            </div>
           </div>
         </div>
         <div className="container chart-section" id="hav">
@@ -733,7 +763,7 @@ class App extends React.Component {
               </div>
             </div>
             <div className="columns">
-              <div className="column">
+              {/* <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
@@ -766,8 +796,8 @@ class App extends React.Component {
                     sign="%"
                   />
                 </div>
-              </div>
-              <div className="column">
+              </div> */}
+              {/* <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
@@ -798,7 +828,7 @@ class App extends React.Component {
                     sign="%"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

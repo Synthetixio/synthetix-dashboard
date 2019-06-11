@@ -346,6 +346,33 @@ class App extends React.Component {
                 decimals={2}
               />
             </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  stats.lockedHavUsdBalance && stats.lockedHavUsdBalance > 0
+                    ? stats.lockedHavUsdBalance
+                    : 0
+                }
+                label="LOCKED SNX VALUE"
+                desc="The total value of all locked SNX."
+                onClick={() => {}}
+                decimals={0}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  stats.lockedHavRatio && stats.lockedHavRatio > 0
+                    ? stats.lockedHavRatio * 100
+                    : 0
+                }
+                type="percentage"
+                label="LOCKED SNX RATIO"
+                desc="The ratio of total locked SNX against the total SNX"
+                onClick={() => {}}
+                decimals={2}
+              />
+            </div>
           </div>
         </div>
         <div className="container chart-section" id="hav">
@@ -534,7 +561,7 @@ class App extends React.Component {
               </div>
             </div>
             <div className="columns">
-              <div className="column">
+              {/* <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
@@ -556,8 +583,8 @@ class App extends React.Component {
                     lastUpdated={lastUpdated}
                   />
                 </div>
-              </div>
-              <div className="column">
+              </div> */}
+              {/* <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
@@ -580,7 +607,7 @@ class App extends React.Component {
                     sign="%"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

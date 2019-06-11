@@ -322,7 +322,7 @@ class App extends React.Component {
                   stats.networkCollateralizationRatio &&
                   stats.networkCollateralizationRatio > 0
                     ? 100 / stats.networkCollateralizationRatio
-                    : 0
+                    : null
                 }
                 type="percentage"
                 label="NETWORK COLLATERALIZATION RATIO"
@@ -337,7 +337,7 @@ class App extends React.Component {
                   stats.activeCollateralizationRatio &&
                   stats.activeCollateralizationRatio > 0
                     ? 100 / stats.activeCollateralizationRatio
-                    : 0
+                    : null
                 }
                 type="percentage"
                 label="ACTIVE COLLATERALIZATION RATIO"
@@ -351,7 +351,7 @@ class App extends React.Component {
                 value={
                   stats.lockedHavUsdBalance && stats.lockedHavUsdBalance > 0
                     ? stats.lockedHavUsdBalance
-                    : 0
+                    : null
                 }
                 label="LOCKED SNX VALUE"
                 desc="The total value of all locked SNX."
@@ -364,7 +364,7 @@ class App extends React.Component {
                 value={
                   stats.lockedHavRatio && stats.lockedHavRatio > 0
                     ? stats.lockedHavRatio * 100
-                    : 0
+                    : null
                 }
                 type="percentage"
                 label="LOCKED SNX RATIO"

@@ -316,6 +316,63 @@ class App extends React.Component {
                 }}
               />
             </Link>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  stats.networkCollateralizationRatio &&
+                  stats.networkCollateralizationRatio > 0
+                    ? 100 / stats.networkCollateralizationRatio
+                    : null
+                }
+                type="percentage"
+                label="NETWORK COLLATERALIZATION RATIO"
+                desc="The ratio of the value of all SNX against circulating synths."
+                onClick={() => {}}
+                decimals={2}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  stats.activeCollateralizationRatio &&
+                  stats.activeCollateralizationRatio > 0
+                    ? 100 / stats.activeCollateralizationRatio
+                    : null
+                }
+                type="percentage"
+                label="ACTIVE COLLATERALIZATION RATIO"
+                desc="The ratio of the value of all locked SNX against circulating synths."
+                onClick={() => {}}
+                decimals={2}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  stats.lockedHavUsdBalance && stats.lockedHavUsdBalance > 0
+                    ? stats.lockedHavUsdBalance
+                    : null
+                }
+                label="LOCKED SNX VALUE"
+                desc="The total value of all locked SNX."
+                onClick={() => {}}
+                decimals={0}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  stats.lockedHavRatio && stats.lockedHavRatio > 0
+                    ? stats.lockedHavRatio * 100
+                    : null
+                }
+                type="percentage"
+                label="LOCKED SNX RATIO"
+                desc="The ratio of total locked SNX against the total SNX"
+                onClick={() => {}}
+                decimals={2}
+              />
+            </div>
           </div>
         </div>
         <div className="container chart-section" id="hav">
@@ -504,7 +561,7 @@ class App extends React.Component {
               </div>
             </div>
             <div className="columns">
-              <div className="column">
+              {/* <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
@@ -526,8 +583,8 @@ class App extends React.Component {
                     lastUpdated={lastUpdated}
                   />
                 </div>
-              </div>
-              <div className="column">
+              </div> */}
+              {/* <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
@@ -550,7 +607,7 @@ class App extends React.Component {
                     sign="%"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -733,7 +790,7 @@ class App extends React.Component {
               </div>
             </div>
             <div className="columns">
-              <div className="column">
+              {/* <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
@@ -766,8 +823,8 @@ class App extends React.Component {
                     sign="%"
                   />
                 </div>
-              </div>
-              <div className="column">
+              </div> */}
+              {/* <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
@@ -798,7 +855,7 @@ class App extends React.Component {
                     sign="%"
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

@@ -4,9 +4,7 @@ import numeral from 'numeral';
 import cx from 'classnames';
 
 const renderFormattedValue = (type, value, decimals) => {
-  console.log('hahahaha', type);
   if (type && type === 'percentage') {
-    console.log(value);
     return `${numeral(value).format(`0,0.[${'0'.repeat(decimals)}]`)}%`;
     return numeral(value).format(`$0,0.[${'0'.repeat(decimals)}]`);
   } else return numeral(value).format(`$0,0.[${'0'.repeat(decimals)}]`);

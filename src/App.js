@@ -326,7 +326,7 @@ class App extends React.Component {
                 }
                 type="percentage"
                 label="NETWORK COLLATERALIZATION RATIO"
-                desc="The ratio of the value of all SNX against circulating synths."
+                desc="The value of all SNX tokens against the circulating supply of Synths."
                 onClick={() => {}}
                 decimals={2}
               />
@@ -341,7 +341,7 @@ class App extends React.Component {
                 }
                 type="percentage"
                 label="ACTIVE COLLATERALIZATION RATIO"
-                desc="The ratio of the value of all locked SNX against circulating synths."
+                desc="The value of SNX in active wallets against the circulating supply of Synths."
                 onClick={() => {}}
                 decimals={2}
               />

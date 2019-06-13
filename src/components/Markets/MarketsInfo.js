@@ -73,7 +73,8 @@ export const MarketsInfo = props => {
             label="Circulating Supply"
             customClass={true}
             symbol={props.currencyType}
-            isUSD={false}
+            type="number"
+            decimals={0}
           />
 
           <SingleStatBox
@@ -81,7 +82,8 @@ export const MarketsInfo = props => {
             label="Total Supply"
             customClass={true}
             symbol={props.currencyType}
-            isUSD={false}
+            type="number"
+            decimals={0}
           />
         </div>
       </div>

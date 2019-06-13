@@ -4,10 +4,15 @@ import numeral from 'numeral';
 import cx from 'classnames';
 
 const renderFormattedValue = (type, value, decimals) => {
-  if (type && type === 'percentage') {
-    return `${numeral(value).format(`0,0.[${'0'.repeat(decimals)}]`)}%`;
-    return numeral(value).format(`$0,0.[${'0'.repeat(decimals)}]`);
-  } else return numeral(value).format(`$0,0.[${'0'.repeat(decimals)}]`);
+  switch (type) {
+    case 'percentage':
+      return `${numeral(value).format(`0,0.[${'0'.repeat(decimals)}]`)}%`;
+    case 'number':
+      return `${numeral(value).format(`0,0.[${'0'.repeat(decimals)}]`)}`;
+    case 'currency':
+    default:
+      return numeral(value).format(`$0,0.[${'0'.repeat(decimals)}]`);
+  }
 };
 
 const SingleStatBox = ({

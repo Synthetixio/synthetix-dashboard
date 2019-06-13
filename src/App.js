@@ -368,7 +368,7 @@ class App extends React.Component {
                 }
                 type="percentage"
                 label="LOCKED SNX RATIO"
-                desc="The ratio of total locked SNX against the total SNX"
+                desc="The ratio of total locked SNX against the total SNX."
                 onClick={() => {}}
                 decimals={2}
               />

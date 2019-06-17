@@ -373,6 +373,32 @@ class App extends React.Component {
                 decimals={2}
               />
             </div>
+            {/* <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  stats.nominFeesCollected && stats.nominFeesCollected > 0
+                    ? stats.nominFeesCollected
+                    : null
+                }
+                label="TOTAL FEES GENERATED"
+                desc="Total transaction fees generated."
+                onClick={() => {}}
+                decimals={2}
+              />
+            </div> */}
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  stats.nominFeesCollected && stats.nominFeesCollected > 0
+                    ? stats.nominFeesCollected
+                    : null
+                }
+                label="CURRENT FEE POOL"
+                desc="Transaction fees generated & available to claim."
+                onClick={() => {}}
+                decimals={2}
+              />
+            </div>
           </div>
         </div>
         <div className="container chart-section" id="hav">
@@ -764,7 +790,7 @@ class App extends React.Component {
                 ALL
               </button>
             </div>
-            <div className="columns">
+            {/* <div className="columns">
               <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
@@ -788,9 +814,9 @@ class App extends React.Component {
                   />
                 </div>
               </div>
-            </div>
-            <div className="columns">
-              {/* <div className="column">
+            </div> */}
+            {/* <div className="columns"> */}
+            {/* <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
@@ -824,7 +850,7 @@ class App extends React.Component {
                   />
                 </div>
               </div> */}
-              {/* <div className="column">
+            {/* <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
@@ -856,7 +882,7 @@ class App extends React.Component {
                   />
                 </div>
               </div> */}
-            </div>
+            {/* </div> */}
           </div>
         </div>
         <div className="container main-content">

@@ -18,24 +18,30 @@ class HorizontalBarChart extends Component {
         <div className="verticalSeparator" />
         {data.map(synth => {
           return (
-            <div className="barWrapper">
-              <div
-                style={{
-                  left: `calc(100% - ${(100 * synth.y) / max}% + 1px)`,
-                }}
-                className="bar"
-              >
-                <div className="synthLabel">{`${synth.label} (${numeral(
-                  synth.z
-                ).format('$0,(0)')} total)`}</div>
+            <div className="barRow">
+              <div className="synthLabel inverse">{`i${synth.label} (${numeral(
+                synth.z - synth.x
+              ).format('$0,(0)')})`}</div>
+
+              <div className="synthLabel">{`s${synth.label} (${numeral(
+                synth.x
+              ).format('$0,(0)')})`}</div>
+              <div className="barWrapper">
                 <div
-                  style={{ width: (100 * synth.y) / max + '%' }}
-                  className="inverseSynthBar"
-                />
-                <div
-                  style={{ width: (100 * synth.x) / max + '%' }}
-                  className="synthBar"
-                />
+                  style={{
+                    left: `calc(100% - ${(100 * synth.y) / max}% + 1px)`,
+                  }}
+                  className="bar"
+                >
+                  <div
+                    style={{ width: (100 * synth.y) / max + '%' }}
+                    className="inverseSynthBar"
+                  />
+                  <div
+                    style={{ width: (100 * synth.x) / max + '%' }}
+                    className="synthBar"
+                  />
+                </div>
               </div>
             </div>
           );

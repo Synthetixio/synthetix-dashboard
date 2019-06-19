@@ -929,6 +929,16 @@ class App extends React.Component {
                       })}
                     />
                   ) : null}
+                  <div
+                    style={{
+                      width: '100%',
+                      textAlign: 'center',
+                      marginBottom: '20px',
+                    }}
+                  >
+                    Total Synth supply:{' '}
+                    {numeral(totalDistribution).format('$0,(0)')}
+                  </div>
                 </div>
               </div>
             </div>

@@ -17,33 +17,40 @@
 		height: 100%
 		background-color: #25244b
 		left: 50%
-	.barWrapper
+	.barRow
+		width: 100%
 		position: relative
-		width: 50%
-		height: 30px
+		border-bottom: 1px solid  #25244b
 		margin-bottom: 80px
-		.bar
-			width: 100%
-			left: 0
+		padding-bottom: 5px
+		.synthLabel
 			position: absolute
+			right: 0
+			top: -8px
+			transform: translateY(-100%)
+			font-size: 14px
+			&.inverse
+				left: 0
+		.barWrapper
+			position: relative
+			width: 50%
 			height: 30px
-			display: flex
-			.synthLabel
+			.bar
+				width: 100%
+				left: 0
 				position: absolute
-				right: 0
-				top: -8px
-				transform: translateY(-100%)
-				font-size: 14px
-			.synthBar
-				width: 50%
-				height: 100%
-				background-color: #53B167
-				border-bottom-right-radius: 2px
-				border-top-right-radius: 2px
-			.inverseSynthBar
-				width: 50%
-				height: 100%
-				background-color: #D42351
-				border-bottom-left-radius: 2px
-				border-top-left-radius: 2px
+				height: 30px
+				display: flex
+				.synthBar
+					width: 50%
+					height: 100%
+					background-color: #53B167
+					border-bottom-right-radius: 2px
+					border-top-right-radius: 2px
+				.inverseSynthBar
+					width: 50%
+					height: 100%
+					background-color: #D42351
+					border-bottom-left-radius: 2px
+					border-top-left-radius: 2px
 

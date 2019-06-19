@@ -57,7 +57,7 @@ const SingleStatBox = ({
             {!isNaN(trend) && <div>{numeral(trend).format('+0.00') + '%'}</div>}
           </div>
         </div>
-        <p>{desc}</p>
+        {desc ? <p>{desc}</p> : null}
       </div>
     </div>
   );

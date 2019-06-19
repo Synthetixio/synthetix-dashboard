@@ -429,7 +429,7 @@ class App extends React.Component {
                     ? exchange.volume.total
                     : null
                 }
-                label="SYNTHETIX.EXCHANGE TOTAL VOLUME"
+                label="SYNTHETIX.EXCHANGE TOTAL VOL."
                 desc="Synthetix.Exchange all time volume."
                 onClick={() => {}}
                 decimals={0}

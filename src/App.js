@@ -296,6 +296,7 @@ class App extends React.Component {
                   scroller.scrollTo('hav-main-chart', scrollToOptions);
                 }}
                 decimals={0}
+                isClickable={true}
               />
             </Link>
             <Link
@@ -312,6 +313,7 @@ class App extends React.Component {
                   this.setHavChart(HavvenPrice);
                   scroller.scrollTo('hav-main-chart', scrollToOptions);
                 }}
+                isClickable={true}
               />
             </Link>
             <Link
@@ -328,6 +330,7 @@ class App extends React.Component {
                   scroller.scrollTo('nomin-main-chart', scrollToOptions);
                 }}
                 decimals={0}
+                isClickable={true}
               />
             </Link>
             <Link
@@ -346,6 +349,7 @@ class App extends React.Component {
                   this.setnUSDChart(NominPrice);
                   scroller.scrollTo('nomin-main-chart', scrollToOptions);
                 }}
+                isClickable={true}
               />
             </Link>
             <div className="column is-half-tablet is-one-quarter-desktop markets-link">

@@ -7,7 +7,9 @@
   flex-direction: column
   transition: all 200ms ease
   cursor: pointer
-  &:hover
+  &.single-stat-box-small
+    min-height: auto
+  &.isClickable:hover
     transform: scale(1.05)
 
 .single-stat-box__bottom
@@ -23,6 +25,11 @@
     font-size: 14px
     line-height: 20px
     max-width: 254px
+  &.single-stat-box-small_bottom
+    +tablet
+      padding-top: 0
+    h2
+      padding-bottom: 0
 
 .single-stat-box__stats
   h2

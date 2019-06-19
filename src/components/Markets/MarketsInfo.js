@@ -56,6 +56,7 @@ export const MarketsInfo = props => {
             decimals={0}
             customClass={true}
             symbol="USD"
+            isSmall={true}
           />
 
           <SingleStatBox
@@ -63,6 +64,7 @@ export const MarketsInfo = props => {
             label="VOLUME (24h)"
             customClass={true}
             symbol="USD"
+            isSmall={true}
           />
 
           <SingleStatBox
@@ -72,6 +74,7 @@ export const MarketsInfo = props => {
             symbol={props.currencyType}
             type="number"
             decimals={0}
+            isSmall={true}
           />
 
           <SingleStatBox
@@ -81,6 +84,7 @@ export const MarketsInfo = props => {
             symbol={props.currencyType}
             type="number"
             decimals={0}
+            isSmall={true}
           />
         </div>
       </div>

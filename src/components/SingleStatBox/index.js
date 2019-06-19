@@ -31,6 +31,10 @@ const SingleStatBox = ({
       onClick={onClick}
     >
       <div className="single-stat-box">
+        <div className="single-stat-box__bottom">
+          <h3>{label}</h3>
+          <p>{desc}</p>
+        </div>
         <div
           className={cx(
             'single-stat-box__stats',
@@ -39,10 +43,6 @@ const SingleStatBox = ({
         >
           <h2>{loaded && renderFormattedValue(type, value, decimals)}</h2>
           {!isNaN(trend) && <div>{numeral(trend).format('+0.00') + '%'}</div>}
-        </div>
-        <div className="single-stat-box__bottom">
-          <h3>{label}</h3>
-          <p>{desc}</p>
         </div>
       </div>
     </div>

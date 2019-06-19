@@ -1,8 +1,11 @@
 import React from 'react';
 import Chart from 'components/Chart';
+import PieChart from 'components/PieChart';
+import HorizontalBarChart from 'components/HorizontalBarChart';
 import { connect } from 'react-redux';
 import { fetchCharts, setPeriod } from './actions/charts';
 import { fetchHAV, fetchNUSD } from './actions/markets';
+import { fetchOpenInterest, fetchTradingVolume } from './actions/exchange';
 import SingleStatBox from 'components/SingleStatBox';
 import TopNavBar from 'components/TopNavBar';
 import { switchTheme } from 'actions/theme';
@@ -85,6 +88,8 @@ class App extends React.Component {
     this.switchTheme();
     this.props.fetchHAV();
     this.props.fetchNUSD();
+    this.props.fetchOpenInterest();
+    this.props.fetchTradingVolume();
     this.fetchCharts();
     this.setState({
       intervalId: setInterval(this.fetchCharts, 10 * 60 * 1000),
@@ -157,12 +162,11 @@ class App extends React.Component {
         data[`${currency}MarketData`] = { ...markets[currency].quote.USD };
       }
     });
-    console.log(data);
     return data;
   }
 
   render() {
-    const { charts, theme } = this.props;
+    const { charts, theme, exchange } = this.props;
     const { havPeriod, nUSDPeriod } = charts;
     const {
       activeSection,
@@ -200,6 +204,37 @@ class App extends React.Component {
       smooth: 'easeInOutQuint',
       offset: -110,
     };
+
+    let formattedDistribution = [];
+    let totalDistribution = 0;
+
+    if (exchange.distribution) {
+      totalDistribution = exchange.distribution.reduce(
+        (acc, val) => acc + val.value,
+        0
+      );
+      let cumulativeDistributionValue = 0;
+      let otherDistributionValue = 0;
+      let hasReached = false;
+      exchange.distribution
+        .sort((a, b) => b.value - a.value)
+        .forEach(synth => {
+          if (
+            !hasReached &&
+            cumulativeDistributionValue / totalDistribution < 0.9
+          ) {
+            formattedDistribution.push(synth);
+            cumulativeDistributionValue += synth.value;
+          } else {
+            hasReached = true;
+            otherDistributionValue += synth.value;
+          }
+        });
+      formattedDistribution.push({
+        name: 'Others',
+        value: otherDistributionValue,
+      });
+    }
 
     const havStats = {
       [HAV_CHART.HavvenMarketCap]: {
@@ -373,19 +408,32 @@ class App extends React.Component {
                 decimals={2}
               />
             </div>
-            {/* <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
               <SingleStatBox
                 value={
-                  stats.nominFeesCollected && stats.nominFeesCollected > 0
-                    ? stats.nominFeesCollected
+                  exchange.volume && exchange.volume.last24Hours > 0
+                    ? exchange.volume.last24Hours
                     : null
                 }
-                label="TOTAL FEES GENERATED"
-                desc="Total transaction fees generated."
+                label="SYNTHETIX.EXCHANGE VOLUME"
+                desc="Last 24h volume on Synthetix.Exchange"
                 onClick={() => {}}
-                decimals={2}
+                decimals={0}
               />
-            </div> */}
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  exchange.volume && exchange.volume.total > 0
+                    ? exchange.volume.total
+                    : null
+                }
+                label="SYNTHETIX.EXCHANGE TOTAL VOLUME"
+                desc="Total volume on Synthetix.Exchange"
+                onClick={() => {}}
+                decimals={0}
+              />
+            </div>
             <div className="column is-half-tablet is-one-quarter-desktop markets-link">
               <SingleStatBox
                 value={
@@ -395,6 +443,19 @@ class App extends React.Component {
                 }
                 label="CURRENT FEE POOL"
                 desc="Transaction fees generated & available to claim."
+                onClick={() => {}}
+                decimals={2}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  exchange.totalFeesGenerated > 0
+                    ? exchange.totalFeesGenerated
+                    : null
+                }
+                label="TOTAL FEES GENERATED"
+                desc="Total transaction fees generated."
                 onClick={() => {}}
                 decimals={2}
               />
@@ -815,74 +876,57 @@ class App extends React.Component {
                 </div>
               </div>
             </div> */}
-            {/* <div className="columns"> */}
-            {/* <div className="column">
-                <div className="chart-box">
+            <div className="columns">
+              <div className="column">
+                <div style={{ height: '100%' }} className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
-                      <h3>NETWORK COLLATERALIZATION RATIO</h3>
-                      <span className="chart-box__number">
-                        {numeral(
-                          stats.networkCollateralizationRatio > 0
-                            ? 100 / stats.networkCollateralizationRatio
-                            : 0
-                        ).format('0.00')}
-                        %
-                      </span>
+                      <h3>OPEN INTEREST</h3>
+                      <span className="chart-box__number" />
                     </div>
-                    <div className="chart-box-desc">
-                      The ratio of the value of all SNX against circulating
-                      sUSD.
-                    </div>
+                    <div className="chart-box-desc">text text text</div>
                   </div>
 
-                  <Chart
-                    period={nUSDPeriod}
-                    customDomain={getCRatioDomain(
-                      charts.NetworkCollateralizationRatio
-                    )}
-                    fullSize={false}
-                    info={formatCRatio(charts.NetworkCollateralizationRatio)}
-                    decimals={DECIMALS[NetworkCollateralizationRatio]}
-                    colorGradient="red"
-                    lastUpdated={lastUpdated}
-                    sign="%"
-                  />
+                  {exchange.openInterest ? (
+                    <HorizontalBarChart
+                      data={exchange.openInterest.map(synth => {
+                        return {
+                          x: synth.longs,
+                          y: synth.total - synth.longs,
+                          z: synth.total,
+                          label: synth.name,
+                        };
+                      })}
+                    />
+                  ) : null}
                 </div>
-              </div> */}
-            {/* <div className="column">
+              </div>
+              <div className="column">
                 <div className="chart-box">
                   <div className="chart-box__info">
                     <div className="chart-box-title">
-                      <h3>ACTIVE COLLATERALIZATION RATIO</h3>
-                      <span className="chart-box__number">
-                        {numeral(
-                          stats.activeCollateralizationRatio > 0
-                            ? 100 / stats.activeCollateralizationRatio
-                            : 0
-                        ).format('0.00')}
-                        %
-                      </span>
+                      <h3>SYNTHS DISTRIBUTION</h3>
+                      <span className="chart-box__number" />
                     </div>
-                    <div className="chart-box-desc">
-                      The ratio of the value of all locked SNX against
-                      circulating sUSD.
-                    </div>
+                    <div className="chart-box-desc">text text text</div>
                   </div>
-                  <Chart
-                    period={nUSDPeriod}
-                    info={formatCRatio(charts.ActiveCollateralizationRatio)}
-                    customDomain={getCRatioDomain(
-                      charts.ActiveCollateralizationRatio
-                    )}
-                    decimals={DECIMALS[ActiveCollateralizationRatio]}
-                    colorGradient="yellow"
-                    lastUpdated={lastUpdated}
-                    sign="%"
-                  />
+                  {formattedDistribution && totalDistribution ? (
+                    <PieChart
+                      data={formattedDistribution.map(v => {
+                        return {
+                          x: v.name,
+                          y: v.value,
+                          label: `${v.name} (${(
+                            (100 * v.value) /
+                            totalDistribution
+                          ).toFixed(1)}%)`,
+                        };
+                      })}
+                    />
+                  ) : null}
                 </div>
-              </div> */}
-            {/* </div> */}
+              </div>
+            </div>
           </div>
         </div>
         <div className="container main-content">
@@ -910,12 +954,13 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => {
-  const { charts, theme, markets } = state;
+  const { charts, theme, markets, exchange } = state;
 
   return {
     charts,
     theme: theme.theme,
     markets,
+    exchange,
   };
 };
 
@@ -924,6 +969,8 @@ const ConnectedApp = connect(
   {
     switchTheme,
     fetchCharts,
+    fetchOpenInterest,
+    fetchTradingVolume,
     fetchHAV,
     fetchNUSD,
     setPeriod,

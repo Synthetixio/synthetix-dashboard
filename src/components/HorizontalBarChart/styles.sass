@@ -1,0 +1,50 @@
+.horizontalBarChart
+	position: relative
+	padding: 0 32px 20px 32px
+	.legend
+		width: 100%
+		margin-bottom: 40px
+		display: flex
+		justify-content: space-between
+		color: #FFFFFF
+		div
+			flex: 1
+			text-align: center
+	.verticalSeparator
+		position: absolute
+		top: 0
+		width: 1px
+		height: 100%
+		background-color: #25244b
+		left: 50%
+	.barWrapper
+		position: relative
+		width: 50%
+		height: 30px
+		margin-bottom: 50px
+		.bar
+			width: 100%
+			left: 0
+			position: absolute
+			height: 30px
+			display: flex
+			.synthLabel
+				position: absolute
+				left: 0
+				top: 0
+				transform: translateY(-100%)
+				font-style: italic
+				font-size: 14px
+			.synthBar
+				width: 50%
+				height: 100%
+				background-color: #53B167
+				border-bottom-left-radius: 2px
+				border-top-left-radius: 2px
+			.inverseSynthBar
+				width: 50%
+				height: 100%
+				background-color: #D42351
+				border-bottom-right-radius: 2px
+				border-top-right-radius: 2px
+

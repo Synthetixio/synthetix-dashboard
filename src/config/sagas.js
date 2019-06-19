@@ -7,11 +7,15 @@ import {
   FETCH_NUSD_CURRENCY,
   FETCH_COINMARKETCAP_HAV,
   FETCH_COINMARKETCAP_NUSD,
+  FETCH_OPEN_INTEREST,
+  FETCH_OPEN_INTEREST_SUCCESS,
+  FETCH_TRADING_VOLUME,
+  FETCH_TRADING_VOLUME_SUCCESS,
 } from '../actions/actionTypes';
 
 import { doFetch } from './api';
 
-let apiUri = process.env.API_URL || 'https://api.synthetix.io/api/';
+let apiUri = process.env.API_URL || 'http://localhost:3000/api/';
 
 //CHARTS
 function* fetchCharts() {
@@ -22,6 +26,19 @@ function* fetchCharts() {
 
 function* fetchChartsCall() {
   yield takeEvery(FETCH_CHARTS, fetchCharts);
+}
+
+// EXCHANGE
+function* fetchExchangeOpenInterest() {
+  const fetchUri = apiUri + 'exchange/openInterest';
+  const data = yield call(doFetch, fetchUri);
+  yield put({ type: FETCH_OPEN_INTEREST_SUCCESS, payload: { data } });
+}
+
+function* fetchExchangeTradingVolume() {
+  const fetchUri = apiUri + 'exchange/volume';
+  const data = yield call(doFetch, fetchUri);
+  yield put({ type: FETCH_TRADING_VOLUME_SUCCESS, payload: { data } });
 }
 
 // MARKETS
@@ -50,6 +67,14 @@ function* fetchCoinmarketcapNUSDCall() {
   yield takeEvery(FETCH_COINMARKETCAP_NUSD, fetchCurrency);
 }
 
+function* fetchOpenInterest() {
+  yield takeEvery(FETCH_OPEN_INTEREST, fetchExchangeOpenInterest);
+}
+
+function* fetchTradingVolume() {
+  yield takeEvery(FETCH_TRADING_VOLUME, fetchExchangeTradingVolume);
+}
+
 const rootSaga = function*() {
   yield all([
     fetchChartsCall(),
@@ -57,6 +82,8 @@ const rootSaga = function*() {
     fetchNUSDCurrencyCall(),
     fetchCoinmarketcapHAVCall(),
     fetchCoinmarketcapNUSDCall(),
+    fetchOpenInterest(),
+    fetchTradingVolume(),
   ]);
 };
 

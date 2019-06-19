@@ -7,8 +7,8 @@ class HorizontalBarChart extends Component {
     return (
       <div className="horizontalBarChart">
         <div className="legend">
-          <div>Longs</div>
           <div>Shorts</div>
+          <div>Longs</div>
         </div>
         <div className="verticalSeparator" />
         {data.map(synth => {
@@ -16,18 +16,18 @@ class HorizontalBarChart extends Component {
             <div className="barWrapper">
               <div
                 style={{
-                  left: `calc(100% - ${(100 * synth.x) / synth.z}% + 1px)`,
+                  left: `calc(100% - ${(100 * synth.y) / synth.z}% + 1px)`,
                 }}
                 className="bar"
               >
                 <div className="synthLabel">{synth.label}</div>
                 <div
-                  style={{ width: (100 * synth.x) / synth.z + '%' }}
-                  className="synthBar"
-                />
-                <div
                   style={{ width: (100 * synth.y) / synth.z + '%' }}
                   className="inverseSynthBar"
+                />
+                <div
+                  style={{ width: (100 * synth.x) / synth.z + '%' }}
+                  className="synthBar"
                 />
               </div>
             </div>

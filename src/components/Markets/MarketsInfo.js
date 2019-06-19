@@ -20,9 +20,6 @@ export const MarketsInfo = props => {
 
   return (
     <div className="dashboard-root markets">
-      <div className="is-hidden-mobile last-updated-top">
-        <label>LAST UPDATED</label> <span>{minsAgo} MINS AGO</span>{' '}
-      </div>
       <TopNavBar />
       <div className="container main-content markets">
         <h2 className="markets__ttl">

@@ -279,9 +279,6 @@ class App extends React.Component {
       <div className="dashboard-root">
         <style>{themeCssLoaded ? cssAfterLoad : ''}</style>
         <style>{themeCss}</style>
-        <div className="is-hidden-mobile last-updated-top">
-          <label>LAST UPDATED</label> <span>{minsAgo} MINS AGO</span>{' '}
-        </div>
         <TopNavBar selectedSection={activeSection} />
         <div className="container main-content">
           <div className="columns is-multiline" id="stats">
@@ -937,9 +934,6 @@ class App extends React.Component {
           <div className="columns">
             <div className="column">
               <div className="footer-info">
-                <div className="last-updated-bottom">
-                  <label>LAST UPDATED</label> <span>{minsAgo} MINS AGO</span>
-                </div>
                 <div
                   className={cx('theme-switcher', theme)}
                   onClick={() =>

@@ -293,7 +293,7 @@ class App extends React.Component {
                 value={snxMarketData ? snxMarketData.market_cap : null}
                 trend={stats.havvenMarketCap24hDelta * 100}
                 label="SNX MARKET CAP"
-                desc="The total value of all circulating SNX, determined by multiplying the current price of 1 SNX by the circulating supply of SNX."
+                desc="The total value of all circulating SNX."
                 onClick={() => {
                   this.setHavChart(HavvenMarketCap);
                   scroller.scrollTo('hav-main-chart', scrollToOptions);
@@ -309,7 +309,7 @@ class App extends React.Component {
                 value={snxMarketData ? snxMarketData.price : null}
                 trend={snxMarketData ? snxMarketData.percent_change_24h : null}
                 label="SNX PRICE"
-                desc="The average price of 1 SNX across all available exchanges."
+                desc="The average price of SNX across exchanges."
                 decimals={3}
                 onClick={() => {
                   this.setHavChart(HavvenPrice);
@@ -325,7 +325,7 @@ class App extends React.Component {
                 value={susdMarketData ? susdMarketData.market_cap : null}
                 trend={stats.nominMarketCap24hDelta * 100}
                 label="sUSD MARKET CAP"
-                desc="The total value of all circulating sUSD, determined by multiplying the current price of 1 sUSD by the circulating supply of sUSD."
+                desc="The total value of all circulating sUSD."
                 onClick={() => {
                   this.setnUSDChart(NominMarketCap);
                   scroller.scrollTo('nomin-main-chart', scrollToOptions);
@@ -343,7 +343,7 @@ class App extends React.Component {
                   susdMarketData ? susdMarketData.percent_change_24h : null
                 }
                 label="sUSD PRICE"
-                desc="The average price of 1 sUSD across all available exchanges."
+                desc="The average price of sUSD across exchanges."
                 decimals={3}
                 onClick={() => {
                   this.setnUSDChart(NominPrice);
@@ -361,7 +361,7 @@ class App extends React.Component {
                 }
                 type="percentage"
                 label="NETWORK COLLATERALIZATION RATIO"
-                desc="The value of all SNX tokens against the circulating supply of Synths."
+                desc="The aggregate collateralisation ratio of all SNX wallets."
                 onClick={() => {}}
                 decimals={2}
               />
@@ -376,7 +376,7 @@ class App extends React.Component {
                 }
                 type="percentage"
                 label="ACTIVE COLLATERALIZATION RATIO"
-                desc="The value of SNX in active wallets against the circulating supply of Synths."
+                desc="The aggregate collateralisation ratio of SNX wallets that are currently staking."
                 onClick={() => {}}
                 decimals={2}
               />
@@ -389,7 +389,7 @@ class App extends React.Component {
                     : null
                 }
                 label="LOCKED SNX VALUE"
-                desc="The total value of all locked SNX."
+                desc="The total value of all staked SNX."
                 onClick={() => {}}
                 decimals={0}
               />
@@ -403,7 +403,7 @@ class App extends React.Component {
                 }
                 type="percentage"
                 label="LOCKED SNX RATIO"
-                desc="The ratio of total locked SNX against the total SNX."
+                desc="The percentage of SNX tokens that are staked."
                 onClick={() => {}}
                 decimals={2}
               />
@@ -416,7 +416,7 @@ class App extends React.Component {
                     : null
                 }
                 label="SYNTHETIX.EXCHANGE VOLUME"
-                desc="Last 24h volume on Synthetix.Exchange"
+                desc="Synthetix.Exchange 24h trading volume."
                 onClick={() => {}}
                 decimals={0}
               />
@@ -429,7 +429,7 @@ class App extends React.Component {
                     : null
                 }
                 label="SYNTHETIX.EXCHANGE TOTAL VOLUME"
-                desc="Total volume on Synthetix.Exchange"
+                desc="Synthetix.Exchange all time volume."
                 onClick={() => {}}
                 decimals={0}
               />
@@ -442,7 +442,7 @@ class App extends React.Component {
                     : null
                 }
                 label="CURRENT FEE POOL"
-                desc="Transaction fees generated & available to claim."
+                desc="Fees currently claimable in the pool."
                 onClick={() => {}}
                 decimals={2}
               />
@@ -455,7 +455,7 @@ class App extends React.Component {
                     : null
                 }
                 label="TOTAL FEES GENERATED"
-                desc="Total transaction fees generated."
+                desc="Fees generated since launch (Dec 2018)."
                 onClick={() => {}}
                 decimals={2}
               />
@@ -884,7 +884,9 @@ class App extends React.Component {
                       <h3>OPEN INTEREST</h3>
                       <span className="chart-box__number" />
                     </div>
-                    <div className="chart-box-desc">text text text</div>
+                    <div className="chart-box-desc">
+                      Long/short interest on cryptoassets
+                    </div>
                   </div>
 
                   {exchange.openInterest ? (
@@ -908,7 +910,9 @@ class App extends React.Component {
                       <h3>SYNTHS DISTRIBUTION</h3>
                       <span className="chart-box__number" />
                     </div>
-                    <div className="chart-box-desc">text text text</div>
+                    <div className="chart-box-desc">
+                      Distribution of synths within the network
+                    </div>
                   </div>
                   {formattedDistribution && totalDistribution ? (
                     <PieChart

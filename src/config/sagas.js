@@ -15,7 +15,7 @@ import {
 
 import { doFetch } from './api';
 
-let apiUri = process.env.API_URL || 'http://localhost:3000/api/';
+let apiUri = process.env.API_URL || 'https://api.synthetix.io/api/';
 
 //CHARTS
 function* fetchCharts() {

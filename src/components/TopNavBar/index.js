@@ -23,11 +23,12 @@ export default class TopNavBar extends React.Component {
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="container">
           <div className="navbar-brand">
-            <a className="navbar-item" href="https://havven.io">
+            <a className="navbar-item" href="https://synthetix.io">
               <img
-                src={'/images/synthetix-logo.png'}
+                style={{ maxHeight: 'none' }}
+                src={'/images/synthetix-logo.svg'}
                 alt="Havven"
-                width="250"
+                width="180"
               />
             </a>
 

@@ -23,6 +23,8 @@ const SingleStatBox = ({
   desc,
   decimals,
   onClick,
+  isSmall,
+  isClickable,
 }) => {
   let loaded = !isNaN(value);
   return (
@@ -30,20 +32,32 @@ const SingleStatBox = ({
       className="column is-half-tablet is-one-quarter-desktop"
       onClick={onClick}
     >
-      <div className="single-stat-box">
+      <div
+        className={`single-stat-box ${isSmall ? 'single-stat-box-small' : ''} ${
+          isClickable ? 'isClickable' : ''
+        }`}
+      >
         <div
-          className={cx(
-            'single-stat-box__stats',
-            loaded ? (trend >= 0 || !trend ? 'is-positive' : 'is-negative') : ''
-          )}
+          className={`single-stat-box__bottom ${
+            isSmall ? 'single-stat-box-small_bottom' : ''
+          }`}
         >
-          <h2>{loaded && renderFormattedValue(type, value, decimals)}</h2>
-          {!isNaN(trend) && <div>{numeral(trend).format('+0.00') + '%'}</div>}
-        </div>
-        <div className="single-stat-box__bottom">
           <h3>{label}</h3>
-          <p>{desc}</p>
+          <div
+            className={cx(
+              'single-stat-box__stats',
+              loaded
+                ? trend >= 0 || !trend
+                  ? 'is-positive'
+                  : 'is-negative'
+                : ''
+            )}
+          >
+            <h2>{loaded && renderFormattedValue(type, value, decimals)}</h2>
+            {!isNaN(trend) && <div>{numeral(trend).format('+0.00') + '%'}</div>}
+          </div>
         </div>
+        {desc ? <p>{desc}</p> : null}
       </div>
     </div>
   );

@@ -1,35 +1,57 @@
 @keyframes spinAround {
   from {
-    transform: rotate(0deg); }
+    transform: rotate(0deg);
+  }
   to {
-    transform: rotate(359deg); } }
+    transform: rotate(359deg);
+  }
+}
 html {
-  background-color: #0E0B23; }
+  background-color: #0e0b23;
+}
 
 body {
-  color: #6f6e98; }
+  color: #6f6e98;
+}
 
 a {
-  color: #6f6e98; }
-  a:hover {
-    color: #fff; }
+  color: #6f6e98;
+}
+a:hover {
+  color: #fff;
+}
 
 #logo {
-  fill: #fff; }
+  fill: #fff;
+}
 
 @media screen and (max-width: 768px) {
   .navbar {
-    background-color: rgba(14, 11, 35, 0.95) !important; } }
-.rounded-box, .theme-switcher, .last-updated-top, .last-updated-bottom {
-  border: 1px solid #25244b; }
-  .rounded-box label, .theme-switcher label, .last-updated-top label, .last-updated-bottom label {
-    color: #6f6e98; }
-  .rounded-box span, .theme-switcher span, .last-updated-top span, .last-updated-bottom span {
-    color: #fff; }
+    background-color: rgba(14, 11, 35, 0.95) !important;
+  }
+}
+.rounded-box,
+.theme-switcher,
+.last-updated-top,
+.last-updated-bottom {
+  border: 1px solid #25244b;
+}
+.rounded-box label,
+.theme-switcher label,
+.last-updated-top label,
+.last-updated-bottom label {
+  color: #6f6e98;
+}
+.rounded-box span,
+.theme-switcher span,
+.last-updated-top span,
+.last-updated-bottom span {
+  color: #fff;
+}
 
 .theme-switcher:after {
-  background-color: #6F6E98;
-  content: " ";
+  background-color: #6f6e98;
+  content: ' ';
   display: block;
   position: absolute;
   width: 16px;
@@ -37,99 +59,137 @@ a {
   border-radius: 100%;
   right: 7px;
   top: 50%;
-  transform: translateY(-50%); }
+  transform: translateY(-50%);
+}
 
 .single-stat-box {
   border: 1px solid #25244b;
-  background-color: #100c28; }
-  .single-stat-box:hover {
-    background-color: #11112f; }
-  .single-stat-box .single-stat-box__bottom h3 {
-    color: #fff; }
-  .single-stat-box .single-stat-box__bottom p {
-    color: #6f6e98; }
+  background-color: #100c28;
+}
+.single-stat-box.isClickable:hover {
+  background-color: #11112f;
+}
+.single-stat-box .single-stat-box__bottom h3 {
+  color: #fff;
+}
+.single-stat-box .single-stat-box__bottom p {
+  color: #6f6e98;
+}
 
 .mobile-nav-section a.is-active {
   color: #fff;
-  border-bottom: 2px solid #fff; }
+  border-bottom: 2px solid #fff;
+}
 .mobile-nav-section:after {
-  background-color: #25244b; }
+  background-color: #25244b;
+}
 
 a.navbar-item {
-  color: #6f6e98; }
-  a.navbar-item.is-active {
-    color: #fff; }
-  a.navbar-item:hover {
-    color: #fff; }
+  color: #6f6e98;
+}
+a.navbar-item.is-active {
+  color: #fff;
+}
+a.navbar-item:hover {
+  color: #fff;
+}
 
 .button.is-link {
-  color: #6f6e98; }
-  .button.is-link.is-active {
-    background: #5460FF; }
+  color: #6f6e98;
+}
+.button.is-link.is-active {
+  background: #5460ff;
+}
 
 .chart-section > div {
   border-top: 1px solid #25244b;
   border-bottom: 1px solid #25244b;
-  background-color: #100c28; }
+  background-color: #100c28;
+}
 .chart-section .title h2 {
-  color: #fff; }
+  color: #fff;
+}
 .chart-section .title span {
-  color: #6f6e98; }
+  color: #6f6e98;
+}
 
 .chart-box {
-  border: 1px solid #25244b; }
+  border: 1px solid #25244b;
+}
 
 .currency-toggles button.is-link {
   border: 1px solid #25244b;
-  color: #6f6e98 !important; }
-  .currency-toggles button.is-link.is-active {
-    color: #fff !important; }
-  .currency-toggles button.is-link:before {
-    background-color: #fff; }
-  .currency-toggles button.is-link.usd:before {
-    background-color: #53B167; }
-  .currency-toggles button.is-link.usd.is-active {
-    background-color: #53B167; }
-    .currency-toggles button.is-link.usd.is-active:before {
-      background-color: #fff !important; }
-  .currency-toggles button.is-link.btc:before {
-    background-color: #D9AB44; }
-  .currency-toggles button.is-link.btc.is-active {
-    background-color: #D9AB44; }
-    .currency-toggles button.is-link.btc.is-active:before {
-      background-color: #fff !important; }
-  .currency-toggles button.is-link.eth:before {
-    background-color: #42217E; }
-  .currency-toggles button.is-link.eth.is-active {
-    background-color: #42217E; }
-    .currency-toggles button.is-link.eth.is-active:before {
-      background-color: #fff !important; }
+  color: #6f6e98 !important;
+}
+.currency-toggles button.is-link.is-active {
+  color: #fff !important;
+}
+.currency-toggles button.is-link:before {
+  background-color: #fff;
+}
+.currency-toggles button.is-link.usd:before {
+  background-color: #53b167;
+}
+.currency-toggles button.is-link.usd.is-active {
+  background-color: #53b167;
+}
+.currency-toggles button.is-link.usd.is-active:before {
+  background-color: #fff !important;
+}
+.currency-toggles button.is-link.btc:before {
+  background-color: #d9ab44;
+}
+.currency-toggles button.is-link.btc.is-active {
+  background-color: #d9ab44;
+}
+.currency-toggles button.is-link.btc.is-active:before {
+  background-color: #fff !important;
+}
+.currency-toggles button.is-link.eth:before {
+  background-color: #42217e;
+}
+.currency-toggles button.is-link.eth.is-active {
+  background-color: #42217e;
+}
+.currency-toggles button.is-link.eth.is-active:before {
+  background-color: #fff !important;
+}
 
 .chart-box__stat h2 {
-  color: #fff; }
+  color: #fff;
+}
 
 .chart-box__info h3 {
-  color: #fff; }
+  color: #fff;
+}
 .chart-box__info div {
-  color: #6f6e98; }
+  color: #6f6e98;
+}
 
 .chart-box__number {
-  color: #fff; }
+  color: #fff;
+}
 
 .time-toggles button {
-  color: #6f6e98; }
-  .time-toggles button:hover {
-    background-color: rgba(255, 255, 255, 0.05); }
-  .time-toggles button.is-active {
-    background-color: #fff;
-    color: #25244B; }
+  color: #6f6e98;
+}
+.time-toggles button:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.time-toggles button.is-active {
+  background-color: #fff;
+  color: #25244b;
+}
 
 .chart-tooltip-box {
   background: #11112f;
-  border: 1px solid #25244b; }
-  .chart-tooltip-box .value {
-    color: #fff; }
-  .chart-tooltip-box .dateSm {
-    color: #6f6e98; }
+  border: 1px solid #25244b;
+}
+.chart-tooltip-box .value {
+  color: #fff;
+}
+.chart-tooltip-box .dateSm {
+  color: #6f6e98;
+}
 
 /*# sourceMappingURL=dark.css.map */

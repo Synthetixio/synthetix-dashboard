@@ -1,9 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
 import { NavLink, Link } from 'react-router-dom';
 
-export default class TopNavBar extends React.Component {
+class TopNavBar extends React.Component {
   static propTypes = {
     selectedSection: PropTypes.string,
   };
@@ -19,6 +20,7 @@ export default class TopNavBar extends React.Component {
 
   render() {
     const { isOpen, section } = this.state;
+    const { theme } = this.props;
     return (
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="container">
@@ -26,7 +28,11 @@ export default class TopNavBar extends React.Component {
             <a className="navbar-item" href="https://synthetix.io">
               <img
                 style={{ maxHeight: 'none' }}
-                src={'/images/synthetix-logo.svg'}
+                src={`${
+                  theme === 'dark'
+                    ? '/images/synthetix-logo.svg'
+                    : '/images/synthetix-logo_black.svg'
+                }`}
                 alt="Havven"
                 width="180"
               />
@@ -80,3 +86,15 @@ export default class TopNavBar extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  const { theme } = state;
+  return {
+    theme: theme.theme,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  {}
+)(TopNavBar);

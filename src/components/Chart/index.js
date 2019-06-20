@@ -271,12 +271,8 @@ export default class HavvenChart extends React.Component {
               y2="100%"
               id="gradient-green"
             >
-              <stop
-                stop-color="#53B167"
-                stop-opacity="0.309669384"
-                offset="0%"
-              />
-              <stop stop-color="#53B167" stop-opacity="0" offset="100%" />
+              <stop stopColor="#53B167" stopOpacity="0.309669384" offset="0%" />
+              <stop stopColor="#53B167" stopOpacity="0" offset="100%" />
             </linearGradient>
 
             <linearGradient
@@ -286,12 +282,8 @@ export default class HavvenChart extends React.Component {
               y2="100%"
               id="gradient-yellow"
             >
-              <stop
-                stop-color="#D9AB44"
-                stop-opacity="0.499971694"
-                offset="0%"
-              />
-              <stop stop-color="#D9AB44" stop-opacity="0" offset="100%" />
+              <stop stopColor="#D9AB44" stopOpacity="0.499971694" offset="0%" />
+              <stop stopColor="#D9AB44" stopOpacity="0" offset="100%" />
             </linearGradient>
 
             <linearGradient
@@ -301,12 +293,8 @@ export default class HavvenChart extends React.Component {
               y2="97.9791366%"
               id="gradient-red"
             >
-              <stop
-                stop-color="#E02254"
-                stop-opacity="0.601364357"
-                offset="0%"
-              />
-              <stop stop-color="#E5255D" stop-opacity="0" offset="100%" />
+              <stop stopColor="#E02254" stopOpacity="0.601364357" offset="0%" />
+              <stop stopColor="#E5255D" stopOpacity="0" offset="100%" />
             </linearGradient>
             <linearGradient
               x1="55.1525017%"
@@ -315,12 +303,8 @@ export default class HavvenChart extends React.Component {
               y2="100%"
               id="gradient-purple"
             >
-              <stop
-                stop-color="#42217E"
-                stop-opacity="0.309669384"
-                offset="0%"
-              />
-              <stop stop-color="#42217E" stop-opacity="0" offset="100%" />
+              <stop stopColor="#42217E" stopOpacity="0.309669384" offset="0%" />
+              <stop stopColor="#42217E" stopOpacity="0" offset="100%" />
             </linearGradient>
           </defs>
         </svg>

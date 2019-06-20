@@ -16,9 +16,9 @@ class HorizontalBarChart extends Component {
           <div>Longs</div>
         </div>
         <div className="verticalSeparator" />
-        {data.map(synth => {
+        {data.map((synth, i) => {
           return (
-            <div className="barRow">
+            <div key={i} className="barRow">
               <div className="synthLabel inverse">{`i${synth.label} (${numeral(
                 synth.z - synth.x
               ).format('$0,(0)')})`}</div>

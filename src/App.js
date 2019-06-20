@@ -967,7 +967,6 @@ class App extends React.Component {
 
 const mapStateToProps = state => {
   const { charts, theme, markets, exchange } = state;
-
   return {
     charts,
     theme: theme.theme,

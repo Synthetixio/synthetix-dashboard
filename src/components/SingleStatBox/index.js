@@ -71,6 +71,7 @@ SingleStatBox.propTypes = {
   desc: PropTypes.string,
   decimals: PropTypes.number,
   onClick: PropTypes.func,
+  isClickable: PropTypes.bool,
 };
 
 SingleStatBox.defaultProps = {

@@ -20,16 +20,28 @@
     display: block
     margin-top: -0.5px
 
-a.navbar-item
-  font-size: 14px
-  transition: all 250ms ease
-  &.active
-    background-color: transparent
-    color: #fff
-  &.is-active
-    background-color: transparent
-  &:hover
-    background-color: transparent
+.navbar
+  a.navbar-item
+    font-size: 14px
+    transition: all 250ms ease
+    &.active
+      background-color: transparent
+    &.is-active
+      background-color: transparent
+    &:hover
+      background-color: transparent
+  .navbar-end.navbar-light
+    a.navbar-item
+      &.active
+        color: #11112F
+      &:hover
+        color: #11112F
+  .navbar-end.navbar-dark
+    a.navbar-item
+      &.active
+        color: #FFF
+      &:hover
+        color: #FFF
 
 +mobile
   .navbar

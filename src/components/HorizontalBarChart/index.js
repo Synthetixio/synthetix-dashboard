@@ -4,21 +4,21 @@ import './styles.sass';
 
 class HorizontalBarChart extends Component {
   render() {
-    const { data } = this.props;
+    const { data, isLightMode } = this.props;
     const max = data.reduce((acc, curr) => {
       if (curr.z > acc) acc = curr.z;
       return acc;
     }, 0);
     return (
       <div className="horizontalBarChart">
-        <div className="legend">
+        <div className={`legend ${isLightMode ? 'legendDark' : ''}`}>
           <div>Shorts</div>
           <div>Longs</div>
         </div>
         <div className="verticalSeparator" />
-        {data.map(synth => {
+        {data.map((synth, i) => {
           return (
-            <div className="barRow">
+            <div key={i} className="barRow">
               <div className="synthLabel inverse">{`i${synth.label} (${numeral(
                 synth.z - synth.x
               ).format('$0,(0)')})`}</div>

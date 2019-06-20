@@ -1,35 +1,57 @@
 @keyframes spinAround {
   from {
-    transform: rotate(0deg); }
+    transform: rotate(0deg);
+  }
   to {
-    transform: rotate(359deg); } }
+    transform: rotate(359deg);
+  }
+}
 html {
-  background-color: #F4F7FA; }
+  background-color: #f4f7fa;
+}
 
 body {
-  color: #6F6E98; }
+  color: #6f6e98;
+}
 
 a {
-  color: #6F6E98; }
-  a:hover {
-    color: #11112F; }
+  color: #6f6e98;
+}
+a:hover {
+  color: #11112f;
+}
 
 #logo {
-  fill: #25244B; }
+  fill: #25244b;
+}
 
 @media screen and (max-width: 768px) {
   .navbar {
-    background-color: rgba(244, 247, 250, 0.95) !important; } }
-.rounded-box, .theme-switcher, .last-updated-top, .last-updated-bottom {
-  border: 1px solid #EBE9F6; }
-  .rounded-box label, .theme-switcher label, .last-updated-top label, .last-updated-bottom label {
-    color: #6F6E98; }
-  .rounded-box span, .theme-switcher span, .last-updated-top span, .last-updated-bottom span {
-    color: #25244B; }
+    background-color: rgba(244, 247, 250, 0.95) !important;
+  }
+}
+.rounded-box,
+.theme-switcher,
+.last-updated-top,
+.last-updated-bottom {
+  border: 1px solid #ebe9f6;
+}
+.rounded-box label,
+.theme-switcher label,
+.last-updated-top label,
+.last-updated-bottom label {
+  color: #6f6e98;
+}
+.rounded-box span,
+.theme-switcher span,
+.last-updated-top span,
+.last-updated-bottom span {
+  color: #25244b;
+}
 
 .theme-switcher:after {
-  background-color: #6F6E98;
-  content: " ";
+  background-color: #6f6e98;
+  content: ' ';
   display: block;
   position: absolute;
   width: 16px;
@@ -37,99 +59,157 @@ a {
   border-radius: 100%;
   right: 7px;
   top: 50%;
-  transform: translateY(-50%); }
+  transform: translateY(-50%);
+}
 
 .single-stat-box {
-  border: 1px solid #EBE9F6;
-  background-color: #fff; }
-  .single-stat-box:hover {
-    background-color: #fff; }
-  .single-stat-box .single-stat-box__bottom h3 {
-    color: #25244B; }
-  .single-stat-box .single-stat-box__bottom p {
-    color: #6F6E98; }
+  border: 1px solid #ebe9f6;
+  background-color: #fff;
+}
+.single-stat-box:hover {
+  background-color: #fff;
+}
+.single-stat-box .single-stat-box__bottom h3 {
+  color: #25244b;
+}
+.single-stat-box .single-stat-box__bottom p {
+  color: #6f6e98;
+}
 
 .mobile-nav-section a.is-active {
-  color: #11112F;
-  border-bottom: 2px solid #25244B; }
+  color: #11112f;
+  border-bottom: 2px solid #25244b;
+}
 .mobile-nav-section:after {
-  background-color: #EBE9F6; }
+  background-color: #ebe9f6;
+}
 
 a.navbar-item {
-  color: #6F6E98; }
-  a.navbar-item.is-active {
-    color: #11112F; }
-  a.navbar-item:hover {
-    color: #11112F; }
+  color: #6f6e98;
+}
+a.navbar-item.is-active {
+  color: #11112f;
+}
+a.navbar-item:hover {
+  color: #11112f;
+}
 
 .button.is-link {
-  color: #6F6E98; }
-  .button.is-link.is-active {
-    background: #5460FF; }
+  color: #6f6e98;
+}
+.button.is-link.is-active {
+  background: #5460ff;
+}
 
 .chart-section > div {
-  border-top: 1px solid #EBE9F6;
-  border-bottom: 1px solid #EBE9F6;
-  background-color: #fff; }
+  border-top: 1px solid #ebe9f6;
+  border-bottom: 1px solid #ebe9f6;
+  background-color: #fff;
+}
 .chart-section .title h2 {
-  color: #25244B; }
+  color: #25244b;
+}
 .chart-section .title span {
-  color: #6F6E98; }
+  color: #6f6e98;
+}
 
 .chart-box {
-  border: 1px solid #EBE9F6; }
+  border: 1px solid #ebe9f6;
+}
 
 .currency-toggles button.is-link {
-  border: 1px solid #EBE9F6;
-  color: #6F6E98 !important; }
-  .currency-toggles button.is-link.is-active {
-    color: #FFF !important; }
-  .currency-toggles button.is-link:before {
-    background-color: #25244B; }
-  .currency-toggles button.is-link.usd:before {
-    background-color: #53B167; }
-  .currency-toggles button.is-link.usd.is-active {
-    background-color: #53B167; }
-    .currency-toggles button.is-link.usd.is-active:before {
-      background-color: #FFF !important; }
-  .currency-toggles button.is-link.btc:before {
-    background-color: #D9AB44; }
-  .currency-toggles button.is-link.btc.is-active {
-    background-color: #D9AB44; }
-    .currency-toggles button.is-link.btc.is-active:before {
-      background-color: #FFF !important; }
-  .currency-toggles button.is-link.eth:before {
-    background-color: #42217E; }
-  .currency-toggles button.is-link.eth.is-active {
-    background-color: #42217E; }
-    .currency-toggles button.is-link.eth.is-active:before {
-      background-color: #FFF !important; }
+  border: 1px solid #ebe9f6;
+  color: #6f6e98 !important;
+}
+.currency-toggles button.is-link.is-active {
+  color: #fff !important;
+}
+.currency-toggles button.is-link:before {
+  background-color: #25244b;
+}
+.currency-toggles button.is-link.usd:before {
+  background-color: #53b167;
+}
+.currency-toggles button.is-link.usd.is-active {
+  background-color: #53b167;
+}
+.currency-toggles button.is-link.usd.is-active:before {
+  background-color: #fff !important;
+}
+.currency-toggles button.is-link.btc:before {
+  background-color: #d9ab44;
+}
+.currency-toggles button.is-link.btc.is-active {
+  background-color: #d9ab44;
+}
+.currency-toggles button.is-link.btc.is-active:before {
+  background-color: #fff !important;
+}
+.currency-toggles button.is-link.eth:before {
+  background-color: #42217e;
+}
+.currency-toggles button.is-link.eth.is-active {
+  background-color: #42217e;
+}
+.currency-toggles button.is-link.eth.is-active:before {
+  background-color: #fff !important;
+}
 
 .chart-box__stat h2 {
-  color: #25244B; }
+  color: #25244b;
+}
 
 .chart-box__info h3 {
-  color: #25244B; }
+  color: #25244b;
+}
 .chart-box__info div {
-  color: #6F6E98; }
+  color: #6f6e98;
+}
 
 .chart-box__number {
-  color: #25244B; }
+  color: #25244b;
+}
 
 .time-toggles button {
-  color: #6F6E98; }
-  .time-toggles button:hover {
-    background-color: rgba(37, 36, 75, 0.05); }
-  .time-toggles button.is-active {
-    background-color: #e8e8e8;
-    color: #25244B; }
+  color: #6f6e98;
+}
+.time-toggles button:hover {
+  background-color: rgba(37, 36, 75, 0.05);
+}
+.time-toggles button.is-active {
+  background-color: #e8e8e8;
+  color: #25244b;
+}
 
 .chart-tooltip-box {
   background: #fff;
-  border: 1px solid #EBE9F6; }
-  .chart-tooltip-box .value {
-    color: #25244B; }
-  .chart-tooltip-box .dateSm {
-    color: #6F6E98; }
+  border: 1px solid #ebe9f6;
+}
+.chart-tooltip-box .value {
+  color: #25244b;
+}
+.chart-tooltip-box .dateSm {
+  color: #6f6e98;
+}
+
+.markets h2.markets__ttl,
+.markets .markets-price sub {
+  color: #11112f;
+}
+
+.markets__holder .table-container.container {
+  background-color: #fff;
+  border: 1px solid #ebe9f6;
+}
+
+.markets__holder .table-container.container table tr {
+  border-color: #ebe9f6;
+}
+
+.markets__holder .table-container.container table th,
+.markets__holder .table-container.container table td,
+.markets__holder .table-container.container table a.pair {
+  color: #11112f;
+}
 
 /*# sourceMappingURL=light.css.map */

@@ -64,8 +64,6 @@ a
 .single-stat-box
   border: 1px solid $color-3
   background-color: $color-7
-  &.isClickable:hover
-    background-color: $color-4
   .single-stat-box__bottom
     h3
       color: $color-1
@@ -80,12 +78,15 @@ a
   &:after
     background-color: $color-3
 
-a.navbar-item
-  color: $color-2
-  &.is-active
-    color: $color-5
-  &:hover
-    color: $color-5
+.navbar
+  a.navbar-item
+    color: $color-2
+    &.is-active
+      color: $color-5
+    &.active
+      color: $color-5
+    &:hover
+      color: $color-5
 
 .button.is-link
   color: $color-2
@@ -164,3 +165,22 @@ a.navbar-item
     color: $color-1
   .dateSm
     color: $color-2
+
+.markets
+  h2.markets__ttl
+    color: $color-5
+  .markets-price
+    sub
+      color: $color-5
+
+.markets__holder
+  .table-container.container
+    background-color: $color-4
+    border: 1px solid $color-3
+    table
+      tr
+        border-color: $color-3
+      th, td
+        color: $color-5
+      a.pair
+        color: $color-5

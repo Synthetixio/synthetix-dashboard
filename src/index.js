@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import '@babel/polyfill';
 import { AppContainer } from 'react-hot-loader';
@@ -10,42 +9,28 @@ import { store } from './config/store';
 import 'styling/bulma/bulma.sass';
 import 'styling/main.sass';
 
-import HavMarketsComponent from './components/Markets/HavMarkets';
-import NusdMarketsComponent from './components/Markets/NusdMarkets';
-
 let storedThemeData = window.localStorage.getItem('havven-dashboard');
 let data = JSON.parse(storedThemeData);
 let theme = data?.theme?.theme || 'dark';
+
 if (theme === 'dark') {
   require('styling/dark.sass');
 } else {
   require('styling/light.sass');
 }
 
-const Main = () => {
-  return (
-    <Switch>
-      <Route exact path="/" component={App} />
-      <Route path="/buy-susd" component={NusdMarketsComponent} />
-      <Route path="/buy-snx" component={HavMarketsComponent} />
-    </Switch>
-  );
-};
-
 const render = Component => {
   ReactDOM.render(
     <AppContainer>
       <Provider store={store}>
-        <BrowserRouter>
-          <Component />
-        </BrowserRouter>
+        <App />
       </Provider>
     </AppContainer>,
     document.getElementById('root')
   );
 };
 
-render(Main);
+render(App);
 
 if (process.env.NODE_ENV === 'development' && module.hot) {
   module.hot.accept('./App', () => {

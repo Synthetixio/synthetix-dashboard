@@ -69,7 +69,11 @@ class TopNavBar extends React.Component {
               'is-active': isOpen,
             })}
           >
-            <div className="navbar-end">
+            <div
+              className={`navbar-end ${
+                theme === 'light' ? 'navbar-light' : 'navbar-dark'
+              }`}
+            >
               <NavLink exact to="/" className="navbar-item">
                 Dashboard
               </NavLink>

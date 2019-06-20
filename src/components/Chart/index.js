@@ -253,7 +253,7 @@ export default class HavvenChart extends React.Component {
       maxValueEth,
       switchOnCount,
     } = this.state;
-    const { currencySwitch, period } = this.props;
+    const { currencySwitch, period, isLightMode } = this.props;
     const dtFormat = period === '1D' ? 'HH:00' : 'DD/MM';
     let ttY = -100;
     if (switchOnCount) {
@@ -342,6 +342,9 @@ export default class HavvenChart extends React.Component {
                 />
                 {this.state.showScatter && (
                   <VictoryScatter
+                    style={{
+                      data: { fill: isLightMode ? '#25244b' : '#FFFFFF' },
+                    }}
                     data={[
                       {
                         x: this.state.scatterX,
@@ -388,6 +391,9 @@ export default class HavvenChart extends React.Component {
                 />
                 {this.state.showScatter && (
                   <VictoryScatter
+                    style={{
+                      data: { fill: isLightMode ? '#25244b' : '#FFFFFF' },
+                    }}
                     data={[
                       {
                         x: this.state.scatterX,
@@ -446,6 +452,9 @@ export default class HavvenChart extends React.Component {
 
                 {this.state.showScatter && (
                   <VictoryScatter
+                    style={{
+                      data: { fill: isLightMode ? '#25244b' : '#FFFFFF' },
+                    }}
                     data={[
                       {
                         x: this.state.scatterX,
@@ -527,7 +536,11 @@ export default class HavvenChart extends React.Component {
               {this.state.showScatter && (
                 <VictoryLine
                   style={{
-                    data: { stroke: 'rgba(255,255,255,0.15)' },
+                    data: {
+                      stroke: isLightMode
+                        ? '#EBE9F6'
+                        : 'rgba(255,255,255,0.15)',
+                    },
                   }}
                   data={[
                     { x: this.state.scatterX, y: minValue * 0.9 },

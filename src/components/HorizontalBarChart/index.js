@@ -4,14 +4,14 @@ import './styles.sass';
 
 class HorizontalBarChart extends Component {
   render() {
-    const { data } = this.props;
+    const { data, isLightMode } = this.props;
     const max = data.reduce((acc, curr) => {
       if (curr.z > acc) acc = curr.z;
       return acc;
     }, 0);
     return (
       <div className="horizontalBarChart">
-        <div className="legend">
+        <div className={`legend ${isLightMode ? 'legendDark' : ''}`}>
           <div>Shorts</div>
           <div>Longs</div>
         </div>

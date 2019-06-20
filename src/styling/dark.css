@@ -192,4 +192,24 @@ a.navbar-item:hover {
   color: #6f6e98;
 }
 
+.markets h2.markets__ttl,
+.markets .markets-price sub {
+  color: #fff;
+}
+
+.markets__holder .table-container.container {
+  background-color: #11112f;
+  border: 1px solid #25244b;
+}
+
+.markets__holder .table-container.container table tr {
+  border-color: #25244b;
+}
+
+.markets__holder .table-container.container table th,
+.markets__holder .table-container.container table td,
+.markets__holder .table-container.container table a.pair {
+  color: #fff;
+}
+
 /*# sourceMappingURL=dark.css.map */

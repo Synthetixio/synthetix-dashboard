@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import numeral from 'numeral';
 
 import differenceInMins from 'date-fns/difference_in_minutes';
 
-import TopNavBar from '../TopNavBar';
-import SingleStatBox from '../SingleStatBox';
+import TopNavBar from '../../components/TopNavBar';
+import SingleStatBox from '../../components/SingleStatBox';
 
 export const MarketsInfo = props => {
   let minsAgo = differenceInMins(Date.now(), props.lastUpdated);
@@ -30,7 +31,7 @@ export const MarketsInfo = props => {
                 percent_change_24h < 0 ? 'is-negative' : ''
               }`}
             >
-              ${price}
+              {numeral(price).format('$0,(0).0000')}
             </span>
             <sub>USD</sub>{' '}
             <div>
@@ -41,7 +42,7 @@ export const MarketsInfo = props => {
                 }`}
               >
                 {percent_change_24h >= 0 ? '+' : ''}
-                {percent_change_24h}%
+                {numeral(percent_change_24h).format('$0,(0).00')}%
               </span>
             </div>
           </div>

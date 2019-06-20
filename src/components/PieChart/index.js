@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { VictoryPie } from 'victory';
+import './styles.sass';
 
 const LINE_COLOR = ['#D9AB44', '#D42351', '#53B167', '#42217E'];
 
@@ -7,17 +8,33 @@ class PieChart extends Component {
   render() {
     const { data, isLightMode } = this.props;
     return (
-      <VictoryPie
-        style={{
-          data: {
-            fillOpacity: 0.75,
-          },
-          labels: { fill: isLightMode ? '#6F6E98' : '#FFFFFF', fontSize: 10 },
-        }}
-        colorScale={LINE_COLOR}
-        height={250}
-        data={data}
-      />
+      <div className="pieChart">
+        <VictoryPie
+          style={{
+            data: {
+              fillOpacity: 0.75,
+            },
+            labels: { display: 'none' },
+          }}
+          colorScale={LINE_COLOR}
+          height={180}
+          data={data}
+          padding={{ bottom: 10 }}
+        />
+        <div className="pieLegend">
+          {data.map((synth, i) => {
+            return (
+              <div key={i} className="pieLegendElement">
+                <span
+                  style={{ backgroundColor: LINE_COLOR[i] }}
+                  className="pieLegendElementCircle"
+                />
+                {synth.x}
+              </div>
+            );
+          })}
+        </div>
+      </div>
     );
   }
 }

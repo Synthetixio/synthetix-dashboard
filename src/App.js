@@ -52,19 +52,13 @@ class App extends React.Component {
       <div>
         <style>{themeCssLoaded ? cssAfterLoad : ''}</style>
         <style>{themeCss}</style>
-        <div style={{ width: '100%', textAlign: 'center', marginTop: '50vh' }}>
-          <h1 style={{ color: 'white', fontSize: '25px' }}>
-            Synthetix Dashboard is currently down for maintenance.
-          </h1>
-          <h2>Sorry for the inconvenience, it shall be back shortly.</h2>
-        </div>
-        {/* <BrowserRouter>
+        <BrowserRouter>
           <Switch>
             <Route exact path="/" component={Dashboard} />
             <Route path="/buy-susd" component={sUSDMarkets} />
             <Route path="/buy-snx" component={SNXMarkets} />
           </Switch>
-        </BrowserRouter> */}
+        </BrowserRouter>
       </div>
     );
   }

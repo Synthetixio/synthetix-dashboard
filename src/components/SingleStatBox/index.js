@@ -10,6 +10,8 @@ const renderFormattedValue = (type, value, decimals) => {
     case 'number':
       return `${numeral(value).format(`0,0.[${'0'.repeat(decimals)}]`)}`;
     case 'currency':
+    case 'string':
+      return value;
     default:
       return numeral(value).format(`$0,0.[${'0'.repeat(decimals)}]`);
   }
@@ -50,10 +52,13 @@ const SingleStatBox = ({
                 ? trend >= 0 || !trend
                   ? 'is-positive'
                   : 'is-negative'
-                : ''
+                : 'is-positive'
             )}
           >
-            <h2>{loaded && renderFormattedValue(type, value, decimals)}</h2>
+            {loaded || type === 'string' ? (
+              <h2>{renderFormattedValue(type, value, decimals)}</h2>
+            ) : null}
+
             {!isNaN(trend) && <div>{numeral(trend).format('+0.00') + '%'}</div>}
           </div>
         </div>

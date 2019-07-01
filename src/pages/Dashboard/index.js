@@ -417,16 +417,14 @@ class App extends React.Component {
             <div className="column is-half-tablet is-one-quarter-desktop markets-link">
               <SingleStatBox
                 value={
-                  'TBC'
-                  // exchange.totalFeesGenerated > 0
-                  //   ? exchange.totalFeesGenerated
-                  //   : null
+                  exchange.totalFeesGenerated > 0
+                    ? exchange.totalFeesGenerated
+                    : null
                 }
                 label="TOTAL FEES GENERATED"
                 desc="Fees generated since launch (Dec 2018)."
                 onClick={() => {}}
                 decimals={2}
-                type="string"
               />
             </div>
           </div>

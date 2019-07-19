@@ -28,6 +28,7 @@
     "redux-saga": "^0.16.0",
     "resolve-url-loader": "^2.3.0",
     "sass-loader": "^7.0.3",
+    "synthetix-js": "^2.7.2",
     "victory": "^30.0.0"
   },
   "devDependencies": {

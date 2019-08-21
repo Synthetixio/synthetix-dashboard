@@ -5,7 +5,7 @@ import HorizontalBarChart from 'components/HorizontalBarChart';
 import { connect } from 'react-redux';
 import { fetchCharts, setPeriod } from '../../actions/charts';
 import { fetchHAV, fetchNUSD } from '../../actions/markets';
-import { fetchOpenInterest, fetchTradingVolume } from '../../actions/exchange';
+import { fetchOpenInterest, fetchTradingVolume, fetchExchangeTicker } from '../../actions/exchange';
 import SingleStatBox from 'components/SingleStatBox';
 import TopNavBar from 'components/TopNavBar';
 import { switchTheme } from 'actions/theme';
@@ -87,6 +87,19 @@ class App extends React.Component {
     this.props.fetchNUSD();
     this.props.fetchOpenInterest();
     this.props.fetchTradingVolume();
+    
+    // TODO: figure out why saga isn't working
+    //this.props.fetchExchangeTicker();
+    
+    let apiUri = process.env.API_URL || 'https://api.synthetix.io/api/';
+    fetch(apiUri + 'exchange/ticker/seth-susd')
+      .then(response => response.json())
+      .then(response => {
+        this.setState({
+          sETHRate: response.rate
+        })
+      })
+
     this.fetchCharts();
     this.setState({
       intervalId: setInterval(this.fetchCharts, 10 * 60 * 1000),
@@ -144,6 +157,7 @@ class App extends React.Component {
       havButtons,
       havChartName,
       nUSDChartName,
+      sETHRate,
     } = this.state;
     const { stats, lastUpdated } = charts;
     const {
@@ -242,6 +256,9 @@ class App extends React.Component {
       },
     };
     const currentNominStat = nominStats[nUSDChartName];
+
+    const sETHPrice = (sETHRate && susdMarketData) ? (sETHRate * susdMarketData.price) : null
+    const sETHMarketCap = exchange.openInterest && exchange.openInterest.find(s => s.name === 'ETH')
 
     return (
       <div className="dashboard-root">
@@ -425,6 +442,32 @@ class App extends React.Component {
                 desc="Fees generated since launch (Dec 2018)."
                 onClick={() => {}}
                 decimals={2}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  sETHPrice
+                    ? sETHPrice
+                    : null
+                }
+                label="sETH PRICE"
+                desc="The average price of sETH across exchanges."
+                onClick={() => {}}
+                decimals={3}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  sETHMarketCap 
+                    ? sETHMarketCap.total
+                    : null
+                }
+                label="sETH MARKET CAP"
+                desc="The total value of all circulating sETH."
+                onClick={() => {}}
+                decimals={0}
               />
             </div>
           </div>
@@ -878,6 +921,7 @@ const ConnectedApp = connect(
     fetchCharts,
     fetchOpenInterest,
     fetchTradingVolume,
+    fetchExchangeTicker,
     fetchHAV,
     fetchNUSD,
     setPeriod,

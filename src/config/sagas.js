@@ -11,6 +11,8 @@ import {
   FETCH_OPEN_INTEREST_SUCCESS,
   FETCH_TRADING_VOLUME,
   FETCH_TRADING_VOLUME_SUCCESS,
+  FETCH_EXCHANGE_TICKER,
+  FETCH_EXCHANGE_TICKER_SUCCESS,
 } from '../actions/actionTypes';
 
 import { doFetch } from './api';
@@ -39,6 +41,12 @@ function* fetchExchangeTradingVolume() {
   const fetchUri = apiUri + 'exchange/volume';
   const data = yield call(doFetch, fetchUri);
   yield put({ type: FETCH_TRADING_VOLUME_SUCCESS, payload: { data } });
+}
+
+function* fetchExchangeTicker() {
+  const fetchUri = apiUri + 'exchange/ticker/seth-susd';
+  const data = yield call(doFetch, fetchUri);
+  yield put({ type: FETCH_EXCHANGE_TICKER_SUCCESS, payload: { data } });
 }
 
 // MARKETS
@@ -75,6 +83,10 @@ function* fetchTradingVolume() {
   yield takeEvery(FETCH_TRADING_VOLUME, fetchExchangeTradingVolume);
 }
 
+function* fetchExchangeTicker() {
+  yield takeEvery(FETCH_EXCHANGE_TICKER, fetchExchangeTicker);
+}
+
 const rootSaga = function*() {
   yield all([
     fetchChartsCall(),
@@ -84,6 +96,7 @@ const rootSaga = function*() {
     fetchCoinmarketcapNUSDCall(),
     fetchOpenInterest(),
     fetchTradingVolume(),
+    fetchExchangeTicker(),
   ]);
 };
 

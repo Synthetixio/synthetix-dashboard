@@ -252,7 +252,7 @@ class App extends React.Component {
     };
     const currentNominStat = nominStats[nUSDChartName];
 
-    const sETHPrice = (exchange.rate && susdMarketData) ? (exchange.rate * susdMarketData.price) : null
+    const sETHPrice = exchange.rate ? exchange.rate : null
     const sETHMarketCap = exchange.openInterest && exchange.openInterest.find(s => s.name === 'ETH')
     
     const sETHPool = exchange.uniswap

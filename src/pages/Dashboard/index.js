@@ -5,7 +5,7 @@ import HorizontalBarChart from 'components/HorizontalBarChart';
 import { connect } from 'react-redux';
 import { fetchCharts, setPeriod } from '../../actions/charts';
 import { fetchHAV, fetchNUSD } from '../../actions/markets';
-import { fetchOpenInterest, fetchTradingVolume, fetchExchangeTicker } from '../../actions/exchange';
+import { fetchOpenInterest, fetchTradingVolume, fetchExchangeTicker, fetchUniswapPool } from '../../actions/exchange';
 import SingleStatBox from 'components/SingleStatBox';
 import TopNavBar from 'components/TopNavBar';
 import { switchTheme } from 'actions/theme';
@@ -87,18 +87,14 @@ class App extends React.Component {
     this.props.fetchNUSD();
     this.props.fetchOpenInterest();
     this.props.fetchTradingVolume();
+
+    this.props.fetchExchangeTicker();
+    this.props.fetchUniswapPool();
+
+
     
     // TODO: figure out why saga isn't working
-    //this.props.fetchExchangeTicker();
     
-    let apiUri = process.env.API_URL || 'https://api.synthetix.io/api/';
-    fetch(apiUri + 'exchange/ticker/seth-susd')
-      .then(response => response.json())
-      .then(response => {
-        this.setState({
-          sETHRate: response.rate
-        })
-      })
 
     this.fetchCharts();
     this.setState({
@@ -157,7 +153,6 @@ class App extends React.Component {
       havButtons,
       havChartName,
       nUSDChartName,
-      sETHRate,
     } = this.state;
     const { stats, lastUpdated } = charts;
     const {
@@ -257,9 +252,11 @@ class App extends React.Component {
     };
     const currentNominStat = nominStats[nUSDChartName];
 
-    const sETHPrice = (sETHRate && susdMarketData) ? (sETHRate * susdMarketData.price) : null
+    const sETHPrice = (exchange.rate && susdMarketData) ? (exchange.rate * susdMarketData.price) : null
     const sETHMarketCap = exchange.openInterest && exchange.openInterest.find(s => s.name === 'ETH')
-
+    
+    const sETHPool = exchange.uniswap
+    const sETHtoETHRate = sETHPool ? (parseFloat(sETHPool.eth) / parseFloat(sETHPool.synth)) : null
     return (
       <div className="dashboard-root">
         <TopNavBar selectedSection={activeSection} />
@@ -466,6 +463,33 @@ class App extends React.Component {
                 }
                 label="sETH MARKET CAP"
                 desc="The total value of all circulating sETH."
+                onClick={() => {}}
+                decimals={0}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  sETHtoETHRate 
+                    ? sETHtoETHRate
+                    : null
+                }
+                label="sETH UNISWAP RATE"
+                desc={'Pool size: ' + (sETHPool ? `${sETHPool.synth} sETH / ${sETHPool.eth} ETH` : '')}
+                type="number"
+                onClick={() => { window.open('https://uniswap.exchange/swap/0x42456D7084eacF4083f1140d3229471bbA2949A8', '__blank')}}
+                decimals={3}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  totalDistribution
+                    ? totalDistribution
+                    : null
+                }
+                label="TOTAL SYNTH SUPPLY"
+                desc="The total value of all circulating synths."
                 onClick={() => {}}
                 decimals={0}
               />
@@ -922,6 +946,7 @@ const ConnectedApp = connect(
     fetchOpenInterest,
     fetchTradingVolume,
     fetchExchangeTicker,
+    fetchUniswapPool,
     fetchHAV,
     fetchNUSD,
     setPeriod,

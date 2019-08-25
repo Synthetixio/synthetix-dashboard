@@ -13,6 +13,8 @@ import {
   FETCH_TRADING_VOLUME_SUCCESS,
   FETCH_EXCHANGE_TICKER,
   FETCH_EXCHANGE_TICKER_SUCCESS,
+  FETCH_UNISWAP_POOL,
+  FETCH_UNISWAP_POOL_SUCCESS,
 } from '../actions/actionTypes';
 
 import { doFetch } from './api';
@@ -49,6 +51,12 @@ function* fetchExchangeTicker() {
   yield put({ type: FETCH_EXCHANGE_TICKER_SUCCESS, payload: { data } });
 }
 
+function* fetchUniswapPool() {
+  const fetchUri = apiUri + 'exchange/uniswap/seth';
+  const data = yield call(doFetch, fetchUri);
+  yield put({ type: FETCH_UNISWAP_POOL_SUCCESS, payload: { data } });
+}
+
 // MARKETS
 function* fetchCurrency(action) {
   try {
@@ -83,7 +91,11 @@ function* fetchTradingVolume() {
   yield takeEvery(FETCH_TRADING_VOLUME, fetchExchangeTradingVolume);
 }
 
-function* fetchExchangeTicker() {
+function* fetchUniswapPoolCall() {
+  yield takeEvery(FETCH_UNISWAP_POOL, fetchUniswapPool);
+}
+
+function* fetchExchangeTickerCall() {
   yield takeEvery(FETCH_EXCHANGE_TICKER, fetchExchangeTicker);
 }
 
@@ -96,7 +108,8 @@ const rootSaga = function*() {
     fetchCoinmarketcapNUSDCall(),
     fetchOpenInterest(),
     fetchTradingVolume(),
-    fetchExchangeTicker(),
+    fetchExchangeTickerCall(),
+    fetchUniswapPoolCall(),
   ]);
 };
 

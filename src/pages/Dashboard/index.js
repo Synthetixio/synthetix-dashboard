@@ -335,6 +335,59 @@ class App extends React.Component {
             <div className="column is-half-tablet is-one-quarter-desktop markets-link">
               <SingleStatBox
                 value={
+                  sETHMarketCap 
+                    ? sETHMarketCap.total
+                    : null
+                }
+                label="sETH MARKET CAP"
+                desc="The total value of all circulating sETH."
+                onClick={() => {}}
+                decimals={0}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  sETHPrice
+                    ? sETHPrice
+                    : null
+                }
+                label="sETH PRICE"
+                desc="The average price of sETH across exchanges."
+                onClick={() => {}}
+                decimals={3}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  sETHtoETHRate 
+                    ? sETHtoETHRate
+                    : null
+                }
+                label="sETH UNISWAP RATE"
+                desc={'Pool size: ' + (sETHPool ? `${sETHPool.synth} sETH / ${sETHPool.eth} ETH` : '')}
+                type="number"
+                onClick={() => { window.open('https://uniswap.exchange/swap/0x42456D7084eacF4083f1140d3229471bbA2949A8', '__blank')}}
+                decimals={3}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  totalDistribution
+                    ? totalDistribution
+                    : null
+                }
+                label="TOTAL SYNTH SUPPLY"
+                desc="The total value of all circulating synths."
+                onClick={() => {}}
+                decimals={0}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
                   stats.networkCollateralizationRatio &&
                   stats.networkCollateralizationRatio > 0
                     ? 100 / stats.networkCollateralizationRatio
@@ -441,59 +494,7 @@ class App extends React.Component {
                 decimals={2}
               />
             </div>
-            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
-              <SingleStatBox
-                value={
-                  sETHPrice
-                    ? sETHPrice
-                    : null
-                }
-                label="sETH PRICE"
-                desc="The average price of sETH across exchanges."
-                onClick={() => {}}
-                decimals={3}
-              />
-            </div>
-            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
-              <SingleStatBox
-                value={
-                  sETHMarketCap 
-                    ? sETHMarketCap.total
-                    : null
-                }
-                label="sETH MARKET CAP"
-                desc="The total value of all circulating sETH."
-                onClick={() => {}}
-                decimals={0}
-              />
-            </div>
-            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
-              <SingleStatBox
-                value={
-                  sETHtoETHRate 
-                    ? sETHtoETHRate
-                    : null
-                }
-                label="sETH UNISWAP RATE"
-                desc={'Pool size: ' + (sETHPool ? `${sETHPool.synth} sETH / ${sETHPool.eth} ETH` : '')}
-                type="number"
-                onClick={() => { window.open('https://uniswap.exchange/swap/0x42456D7084eacF4083f1140d3229471bbA2949A8', '__blank')}}
-                decimals={3}
-              />
-            </div>
-            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
-              <SingleStatBox
-                value={
-                  totalDistribution
-                    ? totalDistribution
-                    : null
-                }
-                label="TOTAL SYNTH SUPPLY"
-                desc="The total value of all circulating synths."
-                onClick={() => {}}
-                decimals={0}
-              />
-            </div>
+
           </div>
         </div>
         <div className="container chart-section" id="hav">

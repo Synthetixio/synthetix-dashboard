@@ -5,7 +5,7 @@ import HorizontalBarChart from 'components/HorizontalBarChart';
 import { connect } from 'react-redux';
 import { fetchCharts, setPeriod } from '../../actions/charts';
 import { fetchHAV, fetchNUSD } from '../../actions/markets';
-import { fetchOpenInterest, fetchTradingVolume } from '../../actions/exchange';
+import { fetchOpenInterest, fetchTradingVolume, fetchExchangeTicker, fetchUniswapPool } from '../../actions/exchange';
 import SingleStatBox from 'components/SingleStatBox';
 import TopNavBar from 'components/TopNavBar';
 import { switchTheme } from 'actions/theme';
@@ -87,6 +87,15 @@ class App extends React.Component {
     this.props.fetchNUSD();
     this.props.fetchOpenInterest();
     this.props.fetchTradingVolume();
+
+    this.props.fetchExchangeTicker();
+    this.props.fetchUniswapPool();
+
+
+    
+    // TODO: figure out why saga isn't working
+    
+
     this.fetchCharts();
     this.setState({
       intervalId: setInterval(this.fetchCharts, 10 * 60 * 1000),
@@ -243,6 +252,11 @@ class App extends React.Component {
     };
     const currentNominStat = nominStats[nUSDChartName];
 
+    const sETHPrice = exchange.rate ? exchange.rate : null
+    const sETHMarketCap = exchange.openInterest && exchange.openInterest.find(s => s.name === 'ETH')
+    
+    const sETHPool = exchange.uniswap
+    const sETHtoETHRate = sETHPool ? (parseFloat(sETHPool.eth) / parseFloat(sETHPool.synth)) : null
     return (
       <div className="dashboard-root">
         <TopNavBar selectedSection={activeSection} />
@@ -318,6 +332,59 @@ class App extends React.Component {
                 isClickable={true}
               />
             </Link>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  sETHMarketCap 
+                    ? sETHMarketCap.total
+                    : null
+                }
+                label="sETH MARKET CAP"
+                desc="The total value of all circulating sETH."
+                onClick={() => {}}
+                decimals={0}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  sETHPrice
+                    ? sETHPrice
+                    : null
+                }
+                label="sETH PRICE"
+                desc="The average price of sETH across exchanges."
+                onClick={() => {}}
+                decimals={3}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  sETHtoETHRate 
+                    ? sETHtoETHRate
+                    : null
+                }
+                label="sETH UNISWAP RATE"
+                desc={'Pool size: ' + (sETHPool ? `${sETHPool.synth} sETH / ${sETHPool.eth} ETH` : '')}
+                type="number"
+                onClick={() => { window.open('https://uniswap.exchange/swap/0x42456D7084eacF4083f1140d3229471bbA2949A8', '__blank')}}
+                decimals={3}
+              />
+            </div>
+            <div className="column is-half-tablet is-one-quarter-desktop markets-link">
+              <SingleStatBox
+                value={
+                  totalDistribution
+                    ? totalDistribution
+                    : null
+                }
+                label="TOTAL SYNTH SUPPLY"
+                desc="The total value of all circulating synths."
+                onClick={() => {}}
+                decimals={0}
+              />
+            </div>
             <div className="column is-half-tablet is-one-quarter-desktop markets-link">
               <SingleStatBox
                 value={
@@ -427,6 +494,7 @@ class App extends React.Component {
                 decimals={2}
               />
             </div>
+
           </div>
         </div>
         <div className="container chart-section" id="hav">
@@ -878,6 +946,8 @@ const ConnectedApp = connect(
     fetchCharts,
     fetchOpenInterest,
     fetchTradingVolume,
+    fetchExchangeTicker,
+    fetchUniswapPool,
     fetchHAV,
     fetchNUSD,
     setPeriod,

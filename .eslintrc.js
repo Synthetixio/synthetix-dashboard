@@ -16,5 +16,6 @@ module.exports = {
 		'space-before-blocks': ['error', 'always'],
 		'prefer-const': 'error',
 		'no-shadow': 'error',
+		'indent': ['error', 'tab']
 	},
 };

@@ -14,26 +14,26 @@ const data = JSON.parse(storedThemeData);
 const theme = data?.theme?.theme || 'dark';
 
 if (theme === 'dark') {
-  require('styling/dark.sass');
+	require('styling/dark.sass');
 } else {
-  require('styling/light.sass');
+	require('styling/light.sass');
 }
 
 const render = Component => {
-  ReactDOM.render(
-    <AppContainer>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </AppContainer>,
-    document.getElementById('root')
-  );
+	ReactDOM.render(
+		<AppContainer>
+			<Provider store={store}>
+				<App />
+			</Provider>
+		</AppContainer>,
+		document.getElementById('root')
+	);
 };
 
 render(App);
 
 if (process.env.NODE_ENV === 'development' && module.hot) {
-  module.hot.accept('./App', () => {
-    render(App);
-  });
+	module.hot.accept('./App', () => {
+		render(App);
+	});
 }

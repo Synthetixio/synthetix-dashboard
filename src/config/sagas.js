@@ -19,9 +19,13 @@ import {
 
 import { doFetch } from "./api";
 
-import { utils } from "ethers";
+import { SynthetixJs } from 'synthetix-js';
 
-let apiUri = process.env.API_URL || "https://api.synthetix.io/api/";
+const {
+	utils: { formatEther },
+} = SynthetixJs;
+
+const apiUri = process.env.API_URL || "https://api.synthetix.io/api/";
 
 //CHARTS
 function* fetchCharts() {
@@ -47,7 +51,7 @@ const PAGE_SIZE = 100;
 
 function* pageResults({ queryCreator, field }) {
   function* runner({ skip }) {
-    let response = yield doFetch(
+    const response = yield doFetch(
       graphAPI,
       "POST",
       queryCreator({ skip }),
@@ -78,7 +82,7 @@ function* fetchExchangeTradingVolume() {
   });
 
   const last24Hours = synthExchangesIn24Hrs.reduce(
-    (memo, { amountInUSD }) => memo + Number(utils.formatEther(amountInUSD)),
+    (memo, { amountInUSD }) => memo + Number(formatEther(amountInUSD)),
     0
   );
 
@@ -93,10 +97,10 @@ function* fetchExchangeTradingVolume() {
 
   const data = {
     body: {
-      totalFeesGenerated: Number(utils.formatEther(totalFeesGeneratedInUSD)),
+      totalFeesGenerated: Number(formatEther(totalFeesGeneratedInUSD)),
       volume: {
         last24Hours,
-        total: Number(utils.formatEther(exchangeUSDTally))
+        total: Number(formatEther(exchangeUSDTally))
       }
     }
   };

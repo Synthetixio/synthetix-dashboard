@@ -6,7 +6,7 @@ const LINE_COLOR = ['#D9AB44', '#D42351', '#53B167', '#42217E'];
 
 class PieChart extends Component {
 	render() {
-		const { data, isLightMode } = this.props;
+		const { data } = this.props;
 		return (
 			<div className="pieChart">
 				<VictoryPie

@@ -18,6 +18,9 @@ module.exports = {
 		'space-before-blocks': ['error', 'always'],
 		'prefer-const': 'error',
 		'no-shadow': 'error',
-		'indent': ['error', 'tab']
+		'indent': ['error', 'tab'],
+		'react/jsx-no-undef': 2,
+    'react/jsx-uses-react': 2,
+    'react/jsx-uses-vars': 2,
 	},
 };

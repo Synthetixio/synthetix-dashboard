@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-
 import SNXMarkets from './pages/Markets/SNX';
 import sUSDMarkets from './pages/Markets/sUSD';
 import Dashboard from './pages/Dashboard';

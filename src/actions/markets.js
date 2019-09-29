@@ -35,7 +35,7 @@ export const handleFetchHAVError = error => {
 };
 
 /////////////////////////////////////////////
-export const fetchNUSD = data => ({
+export const fetchNUSD = () => ({
 	type: FETCH_NUSD_CURRENCY,
 	url: 'https://coinmarketcap-api.synthetix.io/public/prices?symbols=sUSD',
 	success: handleFetchNUSDSuccess,
@@ -57,7 +57,7 @@ export const handleFetchNUSDError = error => {
 };
 
 /////////////////////////////////////////////
-export const fetchCoinmarketcapHAV = data => ({
+export const fetchCoinmarketcapHAV = () => ({
 	type: FETCH_COINMARKETCAP_HAV,
 	url: 'https://api.synthetix.io/api/markets/snx',
 	success: handleFetchCoinmarketcapHAVSuccess,
@@ -79,7 +79,7 @@ export const handleFetchCoinmarketcapHAVError = error => {
 };
 
 /////////////////////////////////////////////
-export const fetchCoinmarketcapNUSD = data => ({
+export const fetchCoinmarketcapNUSD = () => ({
 	type: FETCH_COINMARKETCAP_NUSD,
 	url: 'https://api.synthetix.io/api/markets/susd',
 	success: handleFetchCoinmarketcapNUSDSuccess,

@@ -1,7 +1,4 @@
 import React from 'react';
-import Chart from 'components/Chart';
-import PieChart from 'components/PieChart';
-import HorizontalBarChart from 'components/HorizontalBarChart';
 import { connect } from 'react-redux';
 import { fetchCharts, setPeriod } from '../../actions/charts';
 import { fetchHAV, fetchNUSD } from '../../actions/markets';
@@ -11,12 +8,14 @@ import {
 	fetchExchangeTicker,
 	fetchUniswapPool,
 } from '../../actions/exchange';
-import SingleStatBox from 'components/SingleStatBox';
-import TopNavBar from 'components/TopNavBar';
-import { switchTheme } from 'actions/theme';
+import Chart from '../../components/Chart';
+import PieChart from '../../components/PieChart';
+import HorizontalBarChart from '../../components/HorizontalBarChart';
+import TopNavBar from '../../components/TopNavBar';
+import SingleStatBox from '../../components/SingleStatBox';
+import SingleStat from '../../components/SingleStat'
+import { switchTheme } from '../../actions/theme';
 import cx from 'classnames';
-import differenceInMins from 'date-fns/difference_in_minutes';
-import SingleStat from 'components/SingleStat';
 import numeral from 'numeral';
 import { scroller } from 'react-scroll';
 
@@ -53,26 +52,6 @@ const DECIMALS = {
 	NominFeesCollected: { Val: 2 },
 	NetworkCollateralizationRatio: { Val: 2 }, //%
 	ActiveCollateralizationRatio: { Val: 2 }, //%
-};
-
-const formatCRatio = data => {
-	if (!data || !data.timeSeriesUsd) return;
-	const timeSeriesUsd = data.timeSeriesUsd.map(d => {
-		return { ...d, y: 10000 / d.y };
-	});
-
-	return {
-		...data,
-		minValueUsd: 10000 / data.minValueUsd,
-		maxValueUsd: 10000 / data.maxValueUsd,
-		timeSeriesUsd,
-	};
-};
-
-const getCRatioDomain = data => {
-	return {
-		y: [10000 / data.minValueUsd, (10000 / data.maxValueUsd) * 0.9],
-	};
 };
 
 class App extends React.Component {
@@ -152,22 +131,13 @@ class App extends React.Component {
 			HavvenMarketCap,
 			HavvenVolume24h,
 			HavvenPrice,
-			// LockedUpHavven,
-			UnlockedHavBalance,
-			LockedHavBalance,
-			LockedHavRatio,
 		} = HAV_CHART;
 		const {
 			NominMarketCap,
 			NominVolume24h,
 			NominPrice,
-			NetworkCollateralizationRatio,
-			ActiveCollateralizationRatio,
-			NominFeesCollected,
 		} = nUSD_CHART;
 
-		let minsAgo = differenceInMins(Date.now(), lastUpdated);
-		minsAgo = isNaN(minsAgo) ? '-' : minsAgo;
 		const { snxMarketData, susdMarketData } = this.getMarketsData();
 		const scrollToOptions = {
 			duration: 500,

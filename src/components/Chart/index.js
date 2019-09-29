@@ -50,7 +50,7 @@ export default class HavvenChart extends React.Component {
 		return r < 769 ? r : this.props.fullSize ? r : r / 2;
 	};
 
-	onCursorChange = (value, props) => {
+	onCursorChange = (value) => {
 		if (value) {
 			const { timeSeries, timeSeriesX, timeSeriesBtc, timeSeriesEth } = this.state;
 			const index = this.findIndexByDate(timeSeriesX, value);
@@ -112,7 +112,7 @@ export default class HavvenChart extends React.Component {
 		window.addEventListener('resize', this.updateDimensions);
 	}
 
-	componentDidUpdate(prevProps, prevState, snapshot) {
+	componentDidUpdate(prevProps) {
 		const initialData = this.props.info && !prevProps.info;
 
 		const differentChartData =
@@ -145,6 +145,7 @@ export default class HavvenChart extends React.Component {
 		const { currencySwitch } = this.props;
 		if (currencySwitch) {
 			for (const key in currencySwitch) {
+				// eslint-disable-next-line no-prototype-builtins
 				if (currencySwitch.hasOwnProperty(key)) {
 					if (currencySwitch[key] === true) count++;
 				}

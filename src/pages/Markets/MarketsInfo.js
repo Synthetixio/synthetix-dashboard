@@ -2,15 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import numeral from 'numeral';
 
-import differenceInMins from 'date-fns/difference_in_minutes';
-
 import TopNavBar from '../../components/TopNavBar';
 import SingleStatBox from '../../components/SingleStatBox';
 
 export const MarketsInfo = props => {
-	let minsAgo = differenceInMins(Date.now(), props.lastUpdated);
-	minsAgo = isNaN(minsAgo) ? '-' : minsAgo;
-	const cssAfterLoad = 'html {transition: all 1s ease}';
 	const { market_cap, percent_change_24h, volume_24h, price } = props.currency.quote.USD;
 	const { circulating_supply, total_supply } = props.currency;
 

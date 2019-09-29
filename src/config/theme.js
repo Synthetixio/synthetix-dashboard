@@ -15,9 +15,6 @@ var blueGrey300 = '#90A4AE';
 var blueGrey700 = '#455A64';
 var grey900 = '#212121';
 var lightBlue = '#30A1D6';
-var darkBlue = '#161D3D';
-var paleBlue = '#30a1d6';
-var grey = '#9B9B9B';
 var white = '#FFFFFF';
 // *
 // * Typography

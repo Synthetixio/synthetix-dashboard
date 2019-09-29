@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import cx from 'classnames';
 import PropTypes from 'prop-types';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 class TopNavBar extends React.Component {
 	static propTypes = {
@@ -19,7 +19,7 @@ class TopNavBar extends React.Component {
 	};
 
 	render() {
-		const { isOpen, section } = this.state;
+		const { isOpen } = this.state;
 		const { theme } = this.props;
 		return (
 			<nav className="navbar" role="navigation" aria-label="main navigation">

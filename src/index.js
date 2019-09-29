@@ -6,8 +6,8 @@ import { AppContainer } from 'react-hot-loader';
 import App from './App';
 import { Provider } from 'react-redux';
 import { store } from './config/store';
-import 'styling/bulma/bulma.sass';
-import 'styling/main.sass';
+import './styling/bulma/bulma.sass';
+import './styling/main.sass';
 
 const storedThemeData = window.localStorage.getItem('havven-dashboard');
 const data = JSON.parse(storedThemeData);
@@ -19,7 +19,7 @@ if (theme === 'dark') {
 	require('styling/light.sass');
 }
 
-const render = Component => {
+const render = () => {
 	ReactDOM.render(
 		<AppContainer>
 			<Provider store={store}>

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 
 import { connect } from 'react-redux';
 import { fetchHAV, fetchCoinmarketcapHAV } from '../../actions/markets';
@@ -57,7 +56,7 @@ export class HavMarketsComponent extends Component {
 							</thead>
 							<tbody>
 								{this.props.markets.coinSNX.map(
-									({ source, pair, volume24, volume, price, updated }, idx) => (
+									({ source, pair, volume24, volume, price }, idx) => (
 										<tr key={`t_row_${idx}`}>
 											<td>
 												<span className="flex">

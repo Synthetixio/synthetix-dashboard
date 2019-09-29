@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
-
 import { connect } from 'react-redux';
 import { fetchNUSD, fetchCoinmarketcapNUSD } from '../../actions/markets';
 import { fetchCharts } from '../../actions/charts';
@@ -57,7 +55,7 @@ export class NusdMarketsComponent extends Component {
 							</thead>
 							<tbody>
 								{this.props.markets.coinSUSD.map(
-									({ source, pair, volume24, volume, price, updated }, idx) => (
+									({ source, pair, volume24, volume, price }, idx) => (
 										<tr key={`t_row_${idx}`}>
 											<td>
 												<span className="flex">

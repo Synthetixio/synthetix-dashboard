@@ -5,8 +5,10 @@ module.exports = {
 		es6: true,
 		jest: true,
 		browser: true,
-		node: true
+		node: true,
 	},
+
+	plugins: ['react'],
 
 	rules: {
 		'import/no-unresolved': 'error',

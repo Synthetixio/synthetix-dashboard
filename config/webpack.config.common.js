@@ -1,43 +1,9 @@
-const autoprefixer = require("autoprefixer");
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const path = require("path");
 const ModuleScopePlugin = require("react-dev-utils/ModuleScopePlugin");
-const webpack = require("webpack");
 
 const paths = require("./paths");
 
 const isDev = process.env.NODE_ENV === "development";
-// Some apps do not use client-side routing with pushState.
-// For these, "homepage" can be set to "." to enable relative asset paths.
-const shouldUseRelativeAssetPaths = paths.servedPath === "./";
-// Options for autoPrefixer
-const autoprefixerOptions = {
-	browsers: [
-		">1%",
-		"last 4 versions",
-		"Firefox ESR",
-		"not ie < 9" // React doesn't support IE8 anyway
-	],
-	flexbox: "no-2009"
-};
-// Note: defined here because it will be used more than once.
-const cssFilename = "static/css/[name].[contenthash:8].css";
-const cssClassName = isDev
-	? "[path][name]__[local]--[hash:base64:5]"
-	: "[hash:base64:5]";
-
-// ExtractTextPlugin expects the build output to be flat.
-// (See https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/27)
-// However, our output is structured with css, js and media folders.
-// To have this structure working with relative paths, we have to use custom options.
-const extractTextPluginOptions = shouldUseRelativeAssetPaths
-	? // Making sure that the publicPath goes back to to build folder.
-	{ publicPath: Array(cssFilename.split("/").length).join("../") }
-	: {};
-// Source maps are resource heavy and can cause out of memory issue for large source files.
-const shouldUseSourceMap =
-  process.env.NODE_ENV === "production" &&
-  process.env.GENERATE_SOURCEMAP !== "false";
 
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.

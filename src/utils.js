@@ -9,7 +9,7 @@ const TICKS = {
 };
 
 const selectPeriod = (sourceData, period) => {
-  let data = sourceData.slice(TICKS[period]);
+  const data = sourceData.slice(TICKS[period]);
   return data;
 };
 
@@ -46,19 +46,19 @@ export const parseChartData = (sourceData, key, period = 'ALL') => {
   }
   last = timeSeries[timeSeries.length - 1];
 
-  let minValueUsd = minBy(timeSeries, o => o.usdValue).usdValue;
+  const minValueUsd = minBy(timeSeries, o => o.usdValue).usdValue;
   let minValueBtc = minBy(timeSeries, o => o.btcValue);
   minValueBtc = (minValueBtc && minValueBtc.btcValue) || 0;
   let minValueEth = minBy(timeSeries, o => o.ethValue);
   minValueEth = (minValueEth && minValueEth.ethValue) || 0;
 
-  let maxValueUsd = maxBy(timeSeries, o => o.usdValue).usdValue;
+  const maxValueUsd = maxBy(timeSeries, o => o.usdValue).usdValue;
   let maxValueBtc = maxBy(timeSeries, o => o.btcValue);
   maxValueBtc = (maxValueBtc && maxValueBtc.btcValue) || 0;
   let maxValueEth = maxBy(timeSeries, o => o.ethValue);
   maxValueEth = (maxValueEth && maxValueEth.ethValue) || 0;
 
-  let data = {
+  const data = {
     timeSeriesUsd: timeSeries.map(o => ({ x: o.created, y: o.usdValue })),
     timeSeriesBtc: timeSeries.map(o => ({ x: o.created, y: o.btcValue })),
     timeSeriesEth: timeSeries.map(o => ({ x: o.created, y: o.ethValue })),

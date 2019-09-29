@@ -118,17 +118,17 @@ export default class HavvenChart extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    let initialData = this.props.info && !prevProps.info;
+    const initialData = this.props.info && !prevProps.info;
 
-    let differentChartData =
+    const differentChartData =
       this.props.info &&
       prevProps.info &&
       (this.props.info.displayName !== prevProps.info.displayName ||
         this.props.currencyIndex !== prevProps.currencyIndex);
 
-    let freshChartData = prevProps.lastUpdated !== this.props.lastUpdated;
+    const freshChartData = prevProps.lastUpdated !== this.props.lastUpdated;
 
-    let periodChanged = prevProps.period !== this.props.period;
+    const periodChanged = prevProps.period !== this.props.period;
 
     if (initialData || differentChartData || freshChartData || periodChanged) {
       this.parseProps(this.props);
@@ -149,7 +149,7 @@ export default class HavvenChart extends React.Component {
     let count = 0;
     const { currencySwitch } = this.props;
     if (currencySwitch) {
-      for (let key in currencySwitch) {
+      for (const key in currencySwitch) {
         if (currencySwitch.hasOwnProperty(key)) {
           if (currencySwitch[key] === true) count++;
         }
@@ -168,7 +168,7 @@ export default class HavvenChart extends React.Component {
       minValueEth,
       maxValueEth;
 
-    let { currencyIndex = 0 } = this.props;
+    const { currencyIndex = 0 } = this.props;
     const currency = CURRENCY_MAP[currencyIndex];
     const data = info;
     const minValue = data && data['minValue' + currency];

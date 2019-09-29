@@ -9,9 +9,9 @@ import { store } from './config/store';
 import 'styling/bulma/bulma.sass';
 import 'styling/main.sass';
 
-let storedThemeData = window.localStorage.getItem('havven-dashboard');
-let data = JSON.parse(storedThemeData);
-let theme = data?.theme?.theme || 'dark';
+const storedThemeData = window.localStorage.getItem('havven-dashboard');
+const data = JSON.parse(storedThemeData);
+const theme = data?.theme?.theme || 'dark';
 
 if (theme === 'dark') {
   require('styling/dark.sass');

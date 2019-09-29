@@ -103,7 +103,7 @@ class App extends React.Component {
   }
 
   onCurrencyClick = val => {
-    let havButtons = { ...this.state.havButtons };
+    const havButtons = { ...this.state.havButtons };
     havButtons[val] = !havButtons[val];
     this.setState({
       havButtons,
@@ -183,7 +183,7 @@ class App extends React.Component {
       offset: -110,
     };
 
-    let formattedDistribution = [];
+    const formattedDistribution = [];
     let totalDistribution = 0;
 
     if (exchange.distribution) {

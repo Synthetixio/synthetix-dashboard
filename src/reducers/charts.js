@@ -69,7 +69,7 @@ export default (state = initialState, action) => {
             };
           })
           .reduce((acc, next) => ({ ...acc, ...next }), {});
-        let data = action.payload.data.body;
+        const data = action.payload.data.body;
         return {
           ...chartData,
           sourceData: data,

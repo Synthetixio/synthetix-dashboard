@@ -28,7 +28,7 @@ const SingleStatBox = ({
   isSmall,
   isClickable,
 }) => {
-  let loaded = !isNaN(value);
+  const loaded = !isNaN(value);
   return (
     <div
       className="column is-half-tablet is-one-quarter-desktop"

@@ -1,5 +1,4 @@
 import { applyMiddleware, createStore, compose } from 'redux';
-import logger from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 import persistState from 'redux-localstorage';
 
@@ -10,19 +9,19 @@ const persistEnhancer = persistState(['theme'], { key: 'havven-dashboard' });
 const sagaMiddleware = createSagaMiddleware();
 const middleware = [sagaMiddleware];
 if (process.env.NODE_ENV === 'development') {
-  // middleware.push(logger);
+	// middleware.push(logger);
 }
 
 const store = createStore(
-  reducer,
-  compose(
-    applyMiddleware(...middleware),
-    persistEnhancer
-  )
+	reducer,
+	compose(
+		applyMiddleware(...middleware),
+		persistEnhancer
+	)
 );
 
 if (process.env.NODE_ENV === 'development') {
-  window.store = store;
+	window.store = store;
 }
 
 sagaMiddleware.run(rootSaga);

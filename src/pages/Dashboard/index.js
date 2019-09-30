@@ -13,7 +13,7 @@ import PieChart from '../../components/PieChart';
 import HorizontalBarChart from '../../components/HorizontalBarChart';
 import TopNavBar from '../../components/TopNavBar';
 import SingleStatBox from '../../components/SingleStatBox';
-import SingleStat from '../../components/SingleStat'
+import SingleStat from '../../components/SingleStat';
 import { switchTheme } from '../../actions/theme';
 import cx from 'classnames';
 import numeral from 'numeral';
@@ -127,16 +127,8 @@ class App extends React.Component {
 		const { havPeriod, nUSDPeriod } = charts;
 		const { activeSection, havButtons, havChartName, nUSDChartName } = this.state;
 		const { stats, lastUpdated } = charts;
-		const {
-			HavvenMarketCap,
-			HavvenVolume24h,
-			HavvenPrice,
-		} = HAV_CHART;
-		const {
-			NominMarketCap,
-			NominVolume24h,
-			NominPrice,
-		} = nUSD_CHART;
+		const { HavvenMarketCap, HavvenVolume24h, HavvenPrice } = HAV_CHART;
+		const { NominMarketCap, NominVolume24h, NominPrice } = nUSD_CHART;
 
 		const { snxMarketData, susdMarketData } = this.getMarketsData();
 		const scrollToOptions = {
@@ -290,7 +282,7 @@ class App extends React.Component {
 						</Link>
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
-								value={sETHMarketCap ? sETHMarketCap.total : null}
+								value={sETHMarketCap ? sETHMarketCap.longs : null}
 								label="sETH MARKET CAP"
 								desc="The total value of all circulating sETH."
 								onClick={() => {}}

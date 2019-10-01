@@ -20,6 +20,7 @@ import numeral from 'numeral';
 import { scroller } from 'react-scroll';
 
 import { Link } from 'react-router-dom';
+import { SynthetixJs } from 'synthetix-js';
 
 const HAV_CHART = {
 	HavvenPrice: 'HavvenPrice',
@@ -76,10 +77,11 @@ class App extends React.Component {
 		this.props.fetchUniswapPool();
 
 		// TODO: figure out why saga isn't working
-
+		const snxjs = new SynthetixJs();
 		this.fetchCharts();
 		this.setState({
 			intervalId: setInterval(this.fetchCharts, 10 * 60 * 1000),
+			sethProxyAddress: snxjs.sETH.contract.address,
 		});
 	}
 
@@ -125,7 +127,7 @@ class App extends React.Component {
 	render() {
 		const { charts, theme, exchange } = this.props;
 		const { havPeriod, nUSDPeriod } = charts;
-		const { activeSection, havButtons, havChartName, nUSDChartName } = this.state;
+		const { activeSection, havButtons, havChartName, nUSDChartName, sethProxyAddress } = this.state;
 		const { stats, lastUpdated } = charts;
 		const { HavvenMarketCap, HavvenVolume24h, HavvenPrice } = HAV_CHART;
 		const { NominMarketCap, NominVolume24h, NominPrice } = nUSD_CHART;
@@ -307,10 +309,7 @@ class App extends React.Component {
 								}
 								type="number"
 								onClick={() => {
-									window.open(
-										'https://uniswap.exchange/swap/0x42456D7084eacF4083f1140d3229471bbA2949A8',
-										'__blank'
-									);
+									window.open(`https://uniswap.exchange/swap/${sethProxyAddress}`, '__blank');
 								}}
 								decimals={3}
 							/>

@@ -29,7 +29,7 @@
 		"redux-saga": "^0.16.0",
 		"resolve-url-loader": "^2.3.0",
 		"sass-loader": "^7.0.3",
-		"synthetix-js": "^2.8.6",
+		"synthetix-js": "2.10.6",
 		"victory": "^30.0.0"
 	},
 	"devDependencies": {

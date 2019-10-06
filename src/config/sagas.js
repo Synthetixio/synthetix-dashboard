@@ -71,11 +71,11 @@ function* fetchExchangeTradingVolume() {
 	const synthExchangesIn24Hrs = yield call(pageResults, {
 		field: 'synthExchanges',
 		queryCreator: ({ skip }) =>
-			`{"query":"{synthExchanges(first:${PAGE_SIZE}, skip:${skip}, orderBy:timestamp, orderDirection:desc, where:{timestamp_gt: ${oneDayAgo}}){id,from,gasPrice,fromAmount,fromCurrencyKey,toCurrencyKey,amountInUSD,block,timestamp,toAddress}}","variables":null}`,
+			`{"query":"{synthExchanges(first:${PAGE_SIZE}, skip:${skip}, orderBy:timestamp, orderDirection:desc, where:{timestamp_gt: ${oneDayAgo}}){id,from,gasPrice,fromAmount,fromCurrencyKey,toCurrencyKey,fromAmountInUSD,block,timestamp,toAddress}}","variables":null}`,
 	});
 
 	const last24Hours = synthExchangesIn24Hrs.reduce(
-		(memo, { amountInUSD }) => memo + Number(formatEther(amountInUSD)),
+		(memo, { fromAmountInUSD }) => memo + Number(formatEther(fromAmountInUSD)),
 		0
 	);
 

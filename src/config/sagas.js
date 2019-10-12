@@ -19,7 +19,7 @@ import {
 
 import { doFetch } from './api';
 
-import snxData from 'synthetix-subgraph';
+import snxData from 'synthetix-data';
 
 const apiUri = process.env.API_URL || 'https://api.synthetix.io/api/';
 

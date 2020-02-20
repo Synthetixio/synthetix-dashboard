@@ -378,7 +378,7 @@ class App extends React.Component {
 								decimals={2}
 							/>
 						</div>
-						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+						{/* <div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
 									exchange.volume && exchange.volume.last24Hours > 0
@@ -421,7 +421,7 @@ class App extends React.Component {
 								onClick={() => {}}
 								decimals={2}
 							/>
-						</div>
+						</div> */}
 					</div>
 				</div>
 				<div className="container chart-section" id="hav">

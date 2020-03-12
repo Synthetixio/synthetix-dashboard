@@ -25,9 +25,13 @@ const apiUri = process.env.API_URL || 'https://api.synthetix.io/api/';
 
 //CHARTS
 function* fetchCharts() {
-	const fetchUri = apiUri + 'dataPoint/chartData';
-	const data = yield call(doFetch, fetchUri);
-	yield put({ type: FETCH_CHARTS_SUCCESS, payload: { data } });
+	const fetchChartUri = apiUri + 'dataPoint/chartData';
+	const chartHistoricalData = yield call(doFetch, fetchChartUri);
+
+	const fetchDashboardDataUri = apiUri + 'dataPoint/dashboardData';
+	const dashboardData = yield call(doFetch, fetchDashboardDataUri);
+
+	yield put({ type: FETCH_CHARTS_SUCCESS, payload: { chartHistoricalData, dashboardData } });
 }
 
 function* fetchChartsCall() {

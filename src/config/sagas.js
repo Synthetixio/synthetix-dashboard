@@ -62,11 +62,6 @@ function* fetchNetworkDataCall({ payload: { snxjs } }) {
 		snxjs.ethers.utils.formatUnits(unformattedLastDebtLedgerEntry, 27)
 	);
 
-	const escrowContracts = [
-		snxjs.SynthetixEscrow.contract.address,
-		snxjs.RewardEscrow.contract.address,
-	];
-
 	const [totalIssuedSynths, issuanceRatio, usdToSnxPrice] = [
 		unformattedTotalIssuedSynths,
 		unformattedIssuanceRatio,
@@ -78,28 +73,25 @@ function* fetchNetworkDataCall({ payload: { snxjs } }) {
 	let stakersTotalDebt = 0;
 	let stakersTotalCollateral = 0;
 
-	// remove escrow accounts from list of holders and loop over remaining holders
-	holders
-		.filter(({ address }) => escrowContracts.indexOf(address.toLowerCase()) === -1)
-		.forEach(({ collateral, debtEntryAtIndex, initialDebtOwnership }) => {
-			let debtBalance =
-				((totalIssuedSynths * lastDebtLedgerEntry) / debtEntryAtIndex) * initialDebtOwnership;
-			let collateralRatio = debtBalance / collateral / usdToSnxPrice;
-			// ignore if 0 balance
-			//if (Number(collateral) <= 0) continue;
-			if (isNaN(debtBalance)) {
-				debtBalance = 0;
-				collateralRatio = 0;
-			}
-			const lockedSnx = collateral * Math.min(1, collateralRatio / issuanceRatio);
+	holders.forEach(({ collateral, debtEntryAtIndex, initialDebtOwnership }) => {
+		let debtBalance =
+			((totalIssuedSynths * lastDebtLedgerEntry) / debtEntryAtIndex) * initialDebtOwnership;
+		let collateralRatio = debtBalance / collateral / usdToSnxPrice;
+		// ignore if 0 balance
+		//if (Number(collateral) <= 0) continue;
+		if (isNaN(debtBalance)) {
+			debtBalance = 0;
+			collateralRatio = 0;
+		}
+		const lockedSnx = collateral * Math.min(1, collateralRatio / issuanceRatio);
 
-			if (Number(debtBalance) > 0) {
-				stakersTotalDebt += Number(debtBalance);
-				stakersTotalCollateral += Number(collateral * usdToSnxPrice);
-			}
-			snxTotal += Number(collateral);
-			snxLocked += Number(lockedSnx);
-		});
+		if (Number(debtBalance) > 0) {
+			stakersTotalDebt += Number(debtBalance);
+			stakersTotalCollateral += Number(collateral * usdToSnxPrice);
+		}
+		snxTotal += Number(collateral);
+		snxLocked += Number(lockedSnx);
+	});
 
 	const percentLocked = Number((snxLocked / snxTotal) * 100);
 	const activeCollateralizationRatio = Number(

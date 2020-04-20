@@ -124,7 +124,7 @@ function* fetchExchangeTradingVolume() {
 	const ts = Math.floor(Date.now() / 1e3);
 	const oneDayAgo = ts - 3600 * 24;
 
-	const exchanges = yield call(snxData.exchanges.since, { timestampInSecs: oneDayAgo });
+	const exchanges = yield call(snxData.exchanges.since, { minTimestamp: oneDayAgo });
 	const { totalFeesGeneratedInUSD, exchangeUSDTally } = yield call(snxData.exchanges.total);
 	const last24Hours = exchanges.reduce((memo, { fromAmountInUSD }) => memo + fromAmountInUSD, 0);
 	const data = {

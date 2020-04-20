@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { SynthetixJs } from 'synthetix-js';
 
 import '@babel/polyfill';
 import { AppContainer } from 'react-hot-loader';
@@ -19,12 +20,17 @@ if (theme === 'dark') {
 	require('styling/light.sass');
 }
 
+export const SynthetixJSContext = React.createContext(null);
+const snxjs = new SynthetixJs();
+
 const render = () => {
 	ReactDOM.render(
 		<AppContainer>
-			<Provider store={store}>
-				<App />
-			</Provider>
+			<SynthetixJSContext.Provider value={snxjs}>
+				<Provider store={store}>
+					<App />
+				</Provider>
+			</SynthetixJSContext.Provider>
 		</AppContainer>,
 		document.getElementById('root')
 	);

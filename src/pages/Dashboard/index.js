@@ -8,6 +8,7 @@ import {
 	fetchExchangeTicker,
 	fetchUniswapPool,
 } from '../../actions/exchange';
+import { fetchNetworkData } from '../../actions/network';
 import Chart from '../../components/Chart';
 import PieChart from '../../components/PieChart';
 import HorizontalBarChart from '../../components/HorizontalBarChart';
@@ -15,12 +16,12 @@ import TopNavBar from '../../components/TopNavBar';
 import SingleStatBox from '../../components/SingleStatBox';
 import SingleStat from '../../components/SingleStat';
 import { switchTheme } from '../../actions/theme';
+import { toPercent } from '../utils';
 import cx from 'classnames';
 import numeral from 'numeral';
 import { scroller } from 'react-scroll';
 
 import { Link } from 'react-router-dom';
-import { SynthetixJs } from 'synthetix-js';
 
 const HAV_CHART = {
 	HavvenPrice: 'HavvenPrice',
@@ -75,13 +76,12 @@ class App extends React.Component {
 
 		this.props.fetchExchangeTicker();
 		this.props.fetchUniswapPool();
+		this.props.fetchNetworkData(this.props.snxjs);
 
-		// TODO: figure out why saga isn't working
-		const snxjs = new SynthetixJs();
 		this.fetchCharts();
 		this.setState({
 			intervalId: setInterval(this.fetchCharts, 10 * 60 * 1000),
-			sethProxyAddress: snxjs.sETH.contract.address,
+			sethProxyAddress: this.props.snxjs.sETH.contract.address,
 		});
 	}
 
@@ -125,7 +125,7 @@ class App extends React.Component {
 	}
 
 	render() {
-		const { charts, theme, exchange } = this.props;
+		const { charts, theme, exchange, network } = this.props;
 		const { havPeriod, nUSDPeriod } = charts;
 		const { activeSection, havButtons, havChartName, nUSDChartName, sethProxyAddress } = this.state;
 		const { stats, lastUpdated } = charts;
@@ -326,8 +326,10 @@ class App extends React.Component {
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
-									stats.networkCollateralizationRatio && stats.networkCollateralizationRatio > 0
-										? 100 / stats.networkCollateralizationRatio
+									network.totalIssuedSynths && snxMarketData && snxMarketData.market_cap > 0
+										? Number((snxMarketData.market_cap / network.totalIssuedSynths) * 100).toFixed(
+												2
+										  )
 										: null
 								}
 								type="percentage"
@@ -340,8 +342,8 @@ class App extends React.Component {
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
-									stats.activeCollateralizationRatio && stats.activeCollateralizationRatio > 0
-										? 100 / stats.activeCollateralizationRatio
+									network.activeCollateralizationRatio
+										? toPercent(network.activeCollateralizationRatio)
 										: null
 								}
 								type="percentage"
@@ -354,8 +356,8 @@ class App extends React.Component {
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
-									stats.lockedHavUsdBalance && stats.lockedHavUsdBalance > 0
-										? stats.lockedHavUsdBalance
+									network.percentLocked && snxMarketData && snxMarketData.market_cap > 0
+										? toPercent((network.percentLocked / 100) * snxMarketData.market_cap)
 										: null
 								}
 								label="LOCKED SNX VALUE"
@@ -366,11 +368,7 @@ class App extends React.Component {
 						</div>
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
-								value={
-									stats.lockedHavRatio && stats.lockedHavRatio > 0
-										? stats.lockedHavRatio * 100
-										: null
-								}
+								value={network.percentLocked ? toPercent(network.percentLocked) : null}
 								type="percentage"
 								label="LOCKED SNX RATIO"
 								desc="The percentage of SNX tokens that are staked."
@@ -844,12 +842,13 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => {
-	const { charts, theme, markets, exchange } = state;
+	const { charts, theme, markets, exchange, network } = state;
 	return {
 		charts,
 		theme: theme.theme,
 		markets,
 		exchange,
+		network,
 	};
 };
 
@@ -865,6 +864,7 @@ const ConnectedApp = connect(
 		fetchHAV,
 		fetchNUSD,
 		setPeriod,
+		fetchNetworkData,
 	}
 )(App);
 export default ConnectedApp;

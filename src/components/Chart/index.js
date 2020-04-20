@@ -50,7 +50,7 @@ export default class HavvenChart extends React.Component {
 		return r < 769 ? r : this.props.fullSize ? r : r / 2;
 	};
 
-	onCursorChange = (value) => {
+	onCursorChange = value => {
 		if (value) {
 			const { timeSeries, timeSeriesX, timeSeriesBtc, timeSeriesEth } = this.state;
 			const index = this.findIndexByDate(timeSeriesX, value);

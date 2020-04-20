@@ -6,12 +6,12 @@ const initialState = {
 
 export default (state = initialState, action) => {
 	switch (action.type) {
-	case SWITCH_THEME:
-		return {
-			...state,
-			theme: action.theme,
-		};
-	default:
-		return state;
+		case SWITCH_THEME:
+			return {
+				...state,
+				theme: action.theme,
+			};
+		default:
+			return state;
 	}
 };

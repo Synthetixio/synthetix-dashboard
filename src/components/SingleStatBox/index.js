@@ -5,15 +5,15 @@ import cx from 'classnames';
 
 const renderFormattedValue = (type, value, decimals) => {
 	switch (type) {
-	case 'percentage':
-		return `${numeral(value).format(`0,0.[${'0'.repeat(decimals)}]`)}%`;
-	case 'number':
-		return `${numeral(value).format(`0,0.[${'0'.repeat(decimals)}]`)}`;
-	case 'currency':
-	case 'string':
-		return value;
-	default:
-		return numeral(value).format(`$0,0.[${'0'.repeat(decimals)}]`);
+		case 'percentage':
+			return `${numeral(value).format(`0,0.[${'0'.repeat(decimals)}]`)}%`;
+		case 'number':
+			return `${numeral(value).format(`0,0.[${'0'.repeat(decimals)}]`)}`;
+		case 'currency':
+		case 'string':
+			return value;
+		default:
+			return numeral(value).format(`$0,0.[${'0'.repeat(decimals)}]`);
 	}
 };
 
@@ -58,7 +58,7 @@ const SingleStatBox = ({
 };
 
 SingleStatBox.propTypes = {
-	value: PropTypes.number,
+	value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 	type: PropTypes.string,
 	trend: PropTypes.number,
 	label: PropTypes.string,

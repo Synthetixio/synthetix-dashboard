@@ -1,4 +1,4 @@
-import { takeEvery, call, put, all } from 'redux-saga/effects';
+import { takeEvery, takeLatest, call, put, all } from 'redux-saga/effects';
 
 import {
 	FETCH_CHARTS,
@@ -15,11 +15,14 @@ import {
 	FETCH_EXCHANGE_TICKER_SUCCESS,
 	FETCH_UNISWAP_POOL,
 	FETCH_UNISWAP_POOL_SUCCESS,
+	FETCH_NETWORK_DATA,
+	FETCH_NETWORK_DATA_SUCCESS,
 } from '../actions/actionTypes';
 
 import { doFetch } from './api';
 
 import snxData from 'synthetix-data';
+import { SynthetixJs } from 'synthetix-js';
 
 const apiUri = process.env.API_URL || 'https://api.synthetix.io/api/';
 
@@ -38,6 +41,70 @@ function* fetchChartsCall() {
 	yield takeEvery(FETCH_CHARTS, fetchCharts);
 }
 
+// NETWORK
+function* fetchNetworkDataCall({ payload: { snxjs } }) {
+	const toUtf8Bytes = SynthetixJs.utils.formatBytes32String;
+
+	const holders = yield call(snxData.snx.holders, { max: 1000 });
+	const [
+		unformattedLastDebtLedgerEntry,
+		unformattedTotalIssuedSynths,
+		unformattedIssuanceRatio,
+		unformattedUsdToSnxPrice,
+	] = yield Promise.all([
+		snxjs.SynthetixState.lastDebtLedgerEntry(),
+		snxjs.Synthetix.contract.totalIssuedSynthsExcludeEtherCollateral(toUtf8Bytes('sUSD')),
+		snxjs.SynthetixState.issuanceRatio(),
+		snxjs.ExchangeRates.rateForCurrency(toUtf8Bytes('SNX')),
+	]);
+
+	const lastDebtLedgerEntry = Number(
+		snxjs.ethers.utils.formatUnits(unformattedLastDebtLedgerEntry, 27)
+	);
+
+	const [totalIssuedSynths, issuanceRatio, usdToSnxPrice] = [
+		unformattedTotalIssuedSynths,
+		unformattedIssuanceRatio,
+		unformattedUsdToSnxPrice,
+	].map(val => Number(snxjs.utils.formatEther(val)));
+
+	let snxTotal = 0;
+	let snxLocked = 0;
+	let stakersTotalDebt = 0;
+	let stakersTotalCollateral = 0;
+
+	holders.forEach(({ collateral, debtEntryAtIndex, initialDebtOwnership }) => {
+		let debtBalance =
+			((totalIssuedSynths * lastDebtLedgerEntry) / debtEntryAtIndex) * initialDebtOwnership;
+		let collateralRatio = debtBalance / collateral / usdToSnxPrice;
+		// ignore if 0 balance
+		//if (Number(collateral) <= 0) continue;
+		if (isNaN(debtBalance)) {
+			debtBalance = 0;
+			collateralRatio = 0;
+		}
+		const lockedSnx = collateral * Math.min(1, collateralRatio / issuanceRatio);
+
+		if (Number(debtBalance) > 0) {
+			stakersTotalDebt += Number(debtBalance);
+			stakersTotalCollateral += Number(collateral * usdToSnxPrice);
+		}
+		snxTotal += Number(collateral);
+		snxLocked += Number(lockedSnx);
+	});
+
+	const percentLocked = Number((snxLocked / snxTotal) * 100);
+	const activeCollateralizationRatio = Number(
+		(1 / (stakersTotalDebt / stakersTotalCollateral)) * 100
+	);
+	const data = { body: { percentLocked, activeCollateralizationRatio, totalIssuedSynths } };
+
+	yield put({
+		type: FETCH_NETWORK_DATA_SUCCESS,
+		payload: { data },
+	});
+}
+
 // EXCHANGE
 function* fetchExchangeOpenInterest() {
 	const fetchUri = apiUri + 'exchange/openInterest';
@@ -49,7 +116,7 @@ function* fetchExchangeTradingVolume() {
 	const ts = Math.floor(Date.now() / 1e3);
 	const oneDayAgo = ts - 3600 * 24;
 
-	const exchanges = yield call(snxData.exchanges.since, { timestampInSecs: oneDayAgo });
+	const exchanges = yield call(snxData.exchanges.since, { minTimestamp: oneDayAgo });
 	const { totalFeesGeneratedInUSD, exchangeUSDTally } = yield call(snxData.exchanges.total);
 	const last24Hours = exchanges.reduce((memo, { fromAmountInUSD }) => memo + fromAmountInUSD, 0);
 	const data = {
@@ -122,6 +189,10 @@ function* fetchExchangeTickerCall() {
 	yield takeEvery(FETCH_EXCHANGE_TICKER, fetchExchangeTicker);
 }
 
+function* fetchNetworkData() {
+	yield takeLatest(FETCH_NETWORK_DATA, fetchNetworkDataCall);
+}
+
 const rootSaga = function*() {
 	yield all([
 		fetchChartsCall(),
@@ -133,6 +204,7 @@ const rootSaga = function*() {
 		fetchTradingVolume(),
 		fetchExchangeTickerCall(),
 		fetchUniswapPoolCall(),
+		fetchNetworkData(),
 	]);
 };
 

@@ -2,12 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { fetchCharts, setPeriod } from '../../actions/charts';
 import { fetchHAV, fetchNUSD } from '../../actions/markets';
-import {
-	fetchOpenInterest,
-	fetchTradingVolume,
-	fetchExchangeTicker,
-	fetchUniswapPool,
-} from '../../actions/exchange';
+import { fetchOpenInterest, fetchTradingVolume, fetchUniswapData } from '../../actions/exchange';
 import { fetchNetworkData } from '../../actions/network';
 import Chart from '../../components/Chart';
 import PieChart from '../../components/PieChart';
@@ -74,8 +69,7 @@ class App extends React.Component {
 		this.props.fetchOpenInterest();
 		this.props.fetchTradingVolume();
 
-		this.props.fetchExchangeTicker();
-		this.props.fetchUniswapPool();
+		this.props.fetchUniswapData(this.props.snxjs);
 		this.props.fetchNetworkData(this.props.snxjs);
 
 		this.fetchCharts();
@@ -859,8 +853,7 @@ const ConnectedApp = connect(
 		fetchCharts,
 		fetchOpenInterest,
 		fetchTradingVolume,
-		fetchExchangeTicker,
-		fetchUniswapPool,
+		fetchUniswapData,
 		fetchHAV,
 		fetchNUSD,
 		setPeriod,

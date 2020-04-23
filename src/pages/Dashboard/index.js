@@ -299,7 +299,12 @@ class App extends React.Component {
 								value={sETHtoETHRate ? sETHtoETHRate : null}
 								label="sETH UNISWAP RATE"
 								desc={
-									'Pool size: ' + (sETHPool ? `${sETHPool.synth} sETH / ${sETHPool.eth} ETH` : '')
+									'Pool size: ' +
+									(sETHPool
+										? `${parseFloat(sETHPool.synth).toFixed(2)} sETH / ${parseFloat(
+												sETHPool.eth
+										  ).toFixed(2)} ETH`
+										: '')
 								}
 								type="number"
 								onClick={() => {

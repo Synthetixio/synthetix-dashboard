@@ -11,20 +11,19 @@ import {
 	FETCH_OPEN_INTEREST_SUCCESS,
 	FETCH_TRADING_VOLUME,
 	FETCH_TRADING_VOLUME_SUCCESS,
-	FETCH_EXCHANGE_TICKER,
-	FETCH_EXCHANGE_TICKER_SUCCESS,
-	FETCH_UNISWAP_POOL,
-	FETCH_UNISWAP_POOL_SUCCESS,
+	FETCH_UNISWAP_DATA,
+	FETCH_UNISWAP_DATA_SUCCESS,
 	FETCH_NETWORK_DATA,
 	FETCH_NETWORK_DATA_SUCCESS,
 } from '../actions/actionTypes';
 
 import { doFetch } from './api';
 
-import snxData from 'synthetix-data';
+import snxData, { pageResults } from 'synthetix-data';
 import { SynthetixJs } from 'synthetix-js';
 
 const apiUri = process.env.API_URL || 'https://api.synthetix.io/api/';
+const uniswapGraph = 'https://api.thegraph.com/subgraphs/name/graphprotocol/uniswap';
 
 //CHARTS
 function* fetchCharts() {
@@ -135,16 +134,34 @@ function* fetchExchangeTradingVolume() {
 	});
 }
 
-function* fetchExchangeTicker() {
-	const fetchUri = apiUri + 'exchange/ticker/seth-susd';
-	const data = yield call(doFetch, fetchUri);
-	yield put({ type: FETCH_EXCHANGE_TICKER_SUCCESS, payload: { data } });
-}
-
-function* fetchUniswapPool() {
-	const fetchUri = apiUri + 'exchange/uniswap/seth';
-	const data = yield call(doFetch, fetchUri);
-	yield put({ type: FETCH_UNISWAP_POOL_SUCCESS, payload: { data } });
+function* fetchUniswapData({ payload: { snxjs } }) {
+	const tickerData = yield call(() =>
+		pageResults({
+			api: uniswapGraph,
+			query: {
+				entity: 'exchanges',
+				selection: {
+					where: {
+						tokenSymbol: `\\"sETH\\"`,
+						tokenAddress: `\\"${snxjs.sETH.contract.address}\\"`,
+					},
+				},
+				properties: ['id', 'lastPriceUSD', 'ethBalance', 'tokenBalance'],
+			},
+			max: 1,
+		})
+	);
+	const data = {
+		body:
+			tickerData && tickerData.length > 0
+				? {
+						rate: tickerData[0].lastPriceUSD,
+						eth: tickerData[0].ethBalance,
+						synth: tickerData[0].tokenBalance,
+				  }
+				: { rate: null, synth: null, eth: null },
+	};
+	yield put({ type: FETCH_UNISWAP_DATA_SUCCESS, payload: { data } });
 }
 
 // MARKETS
@@ -181,12 +198,8 @@ function* fetchTradingVolume() {
 	yield takeEvery(FETCH_TRADING_VOLUME, fetchExchangeTradingVolume);
 }
 
-function* fetchUniswapPoolCall() {
-	yield takeEvery(FETCH_UNISWAP_POOL, fetchUniswapPool);
-}
-
-function* fetchExchangeTickerCall() {
-	yield takeEvery(FETCH_EXCHANGE_TICKER, fetchExchangeTicker);
+function* fetchUniswapDataCall() {
+	yield takeLatest(FETCH_UNISWAP_DATA, fetchUniswapData);
 }
 
 function* fetchNetworkData() {
@@ -202,8 +215,7 @@ const rootSaga = function*() {
 		fetchCoinmarketcapNUSDCall(),
 		fetchOpenInterest(),
 		fetchTradingVolume(),
-		fetchExchangeTickerCall(),
-		fetchUniswapPoolCall(),
+		fetchUniswapDataCall(),
 		fetchNetworkData(),
 	]);
 };

@@ -1,4 +1,6 @@
 import { takeEvery, takeLatest, call, put, all } from 'redux-saga/effects';
+import snxData, { pageResults } from 'synthetix-data';
+import { SynthetixJs } from 'synthetix-js';
 
 import {
 	FETCH_CHARTS,
@@ -15,29 +17,51 @@ import {
 	FETCH_UNISWAP_DATA_SUCCESS,
 	FETCH_NETWORK_DATA,
 	FETCH_NETWORK_DATA_SUCCESS,
+	FETCH_NETWORK_FEES,
+	FETCH_NETWORK_FEES_SUCCESS,
 } from '../actions/actionTypes';
 
 import { doFetch } from './api';
-
-import snxData, { pageResults } from 'synthetix-data';
-import { SynthetixJs } from 'synthetix-js';
+import { getUniswapSusdData, getUniswapSnxData } from './helpers';
+import { generateEndTimestamp } from '../utils';
 
 const apiUri = process.env.API_URL || 'https://api.synthetix.io/api/';
-const uniswapGraph = 'https://api.thegraph.com/subgraphs/name/graphprotocol/uniswap';
+export const uniswapGraph = 'https://api.thegraph.com/subgraphs/name/graphprotocol/uniswap';
 
 //CHARTS
-function* fetchCharts() {
-	const fetchChartUri = apiUri + 'dataPoint/chartData';
-	const chartHistoricalData = yield call(doFetch, fetchChartUri);
+function* fetchUniswapChartsData({ payload: { period } }) {
+	const endTimestamp = generateEndTimestamp(period);
+	const sUSDExchangeData = yield getUniswapSusdData(endTimestamp);
+	const snxExchangeData = yield getUniswapSnxData(endTimestamp);
 
-	const fetchDashboardDataUri = apiUri + 'dataPoint/dashboardData';
-	const dashboardData = yield call(doFetch, fetchDashboardDataUri);
-
-	yield put({ type: FETCH_CHARTS_SUCCESS, payload: { chartHistoricalData, dashboardData } });
+	yield put({
+		type: FETCH_CHARTS_SUCCESS,
+		payload: {
+			data: {
+				snxExchangeData,
+				sUSDExchangeData,
+			},
+		},
+	});
 }
 
 function* fetchChartsCall() {
-	yield takeEvery(FETCH_CHARTS, fetchCharts);
+	yield takeEvery(FETCH_CHARTS, fetchUniswapChartsData);
+}
+
+// NETWORK
+function* fetchNetworkFeesCall({ payload: { snxjs } }) {
+	const recentFeePeriods = yield snxjs.FeePool.recentFeePeriods(1);
+	const feesToDistribute =
+		Number(snxjs.ethers.utils.formatEther(recentFeePeriods.feesToDistribute)) || 0;
+	const feesClaimed = Number(snxjs.ethers.utils.formatEther(recentFeePeriods.feesClaimed)) || 0;
+
+	const totalFeesAvailable = feesToDistribute - feesClaimed;
+	const data = { body: { totalFeesAvailable } };
+	yield put({
+		type: FETCH_NETWORK_FEES_SUCCESS,
+		payload: { data },
+	});
 }
 
 // NETWORK
@@ -206,6 +230,10 @@ function* fetchNetworkData() {
 	yield takeLatest(FETCH_NETWORK_DATA, fetchNetworkDataCall);
 }
 
+function* fetchNetworkFees() {
+	yield takeLatest(FETCH_NETWORK_FEES, fetchNetworkFeesCall);
+}
+
 const rootSaga = function*() {
 	yield all([
 		fetchChartsCall(),
@@ -217,6 +245,7 @@ const rootSaga = function*() {
 		fetchTradingVolume(),
 		fetchUniswapDataCall(),
 		fetchNetworkData(),
+		fetchNetworkFees(),
 	]);
 };
 

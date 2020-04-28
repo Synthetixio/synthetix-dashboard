@@ -13,14 +13,25 @@ export class NusdMarketsComponent extends Component {
 	}
 
 	componentDidMount() {
-		this.props.fetchNUSD();
-		this.props.fetchCharts();
-		this.props.fetchCoinmarketcapNUSD();
+		const { charts, fetchCharts, fetchNUSD, fetchCoinmarketcapNUSD } = this.props;
+		fetchNUSD();
+		if (isEmptyObj(charts.stats)) {
+			fetchCharts(CHARTS.DAY);
+			fetchCharts(CHARTS.MONTH);
+		}
+		fetchCoinmarketcapNUSD();
+		this.setState({ intervalId: setInterval(() => fetchCharts(CHARTS.MONTH), 10 * 60 * 1000) });
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.state.intervalId);
 	}
 
 	render() {
-		const charts = this.props.charts;
-		const susd = this.props.markets.susd;
+		const {
+			charts,
+			markets: { susd },
+		} = this.props;
 		const susd_info = isEmptyObj(susd) ? susd : null;
 		const charts_info = isEmptyObj(charts.stats) ? charts : null;
 		if (susd_info === null || charts_info === null) return null;

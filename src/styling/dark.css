@@ -136,15 +136,6 @@ a.navbar-item:hover {
 .currency-toggles button.is-link.usd.is-active:before {
   background-color: #fff !important;
 }
-.currency-toggles button.is-link.btc:before {
-  background-color: #d9ab44;
-}
-.currency-toggles button.is-link.btc.is-active {
-  background-color: #d9ab44;
-}
-.currency-toggles button.is-link.btc.is-active:before {
-  background-color: #fff !important;
-}
 .currency-toggles button.is-link.eth:before {
   background-color: #42217e;
 }

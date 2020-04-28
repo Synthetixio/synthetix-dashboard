@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { fetchCharts, setPeriod } from '../../actions/charts';
 import { fetchHAV, fetchNUSD } from '../../actions/markets';
 import { fetchOpenInterest, fetchTradingVolume, fetchUniswapData } from '../../actions/exchange';
-import { fetchNetworkData } from '../../actions/network';
+import { fetchNetworkData, fetchNetworkFees } from '../../actions/network';
 import Chart from '../../components/Chart';
 import PieChart from '../../components/PieChart';
 import HorizontalBarChart from '../../components/HorizontalBarChart';
@@ -11,7 +11,7 @@ import TopNavBar from '../../components/TopNavBar';
 import SingleStatBox from '../../components/SingleStatBox';
 import SingleStat from '../../components/SingleStat';
 import { switchTheme } from '../../actions/theme';
-import { toPercent } from '../utils';
+import { CHARTS, toPercent } from '../../utils';
 import cx from 'classnames';
 import numeral from 'numeral';
 import { scroller } from 'react-scroll';
@@ -20,35 +20,17 @@ import { Link } from 'react-router-dom';
 
 const HAV_CHART = {
 	HavvenPrice: 'HavvenPrice',
-	HavvenMarketCap: 'HavvenMarketCap',
 	HavvenVolume24h: 'HavvenVolume24h',
-	// LockedUpHavven: "LockedUpHavven",
-	UnlockedHavBalance: 'UnlockedHavBalance',
-	LockedHavBalance: 'LockedHavBalance',
-	LockedHavRatio: 'LockedHavRatio',
 };
 const nUSD_CHART = {
 	NominPrice: 'NominPrice',
-	NominMarketCap: 'NominMarketCap',
 	NominVolume24h: 'NominVolume24h',
-	NominFeesCollected: 'NominFeesCollected',
-	NetworkCollateralizationRatio: 'NetworkCollateralizationRatio',
-	ActiveCollateralizationRatio: 'ActiveCollateralizationRatio',
 };
 const DECIMALS = {
-	HavvenMarketCap: { Val: 0, Btc: 0 },
-	HavvenPrice: { Val: 3, Btc: 7 },
-	HavvenVolume24h: { Val: 0, Btc: 0 },
-	// LockedUpHavven: { Val: 0 },
-	UnlockedHavBalance: { Val: 0 },
-	LockedHavBalance: { Val: 0 },
-	LockedHavRatio: { Val: 2 },
-	NominMarketCap: { Val: 2 },
+	HavvenPrice: { Val: 3, Eth: 7 },
+	HavvenVolume24h: { Val: 0, Eth: 0 },
 	NominPrice: { Val: 3 },
 	NominVolume24h: { Val: 2 },
-	NominFeesCollected: { Val: 2 },
-	NetworkCollateralizationRatio: { Val: 2 }, //%
-	ActiveCollateralizationRatio: { Val: 2 }, //%
 };
 
 class App extends React.Component {
@@ -58,24 +40,38 @@ class App extends React.Component {
 
 	state = {
 		activeSection: 'stats',
-		havButtons: { Usd: true, Btc: true, Eth: false },
+		havButtons: { Usd: true, Eth: true },
 		havChartName: HAV_CHART.HavvenPrice,
 		nUSDChartName: nUSD_CHART.NominPrice,
 	};
 
-	componentWillMount() {
-		this.props.fetchHAV();
-		this.props.fetchNUSD();
-		this.props.fetchOpenInterest();
-		this.props.fetchTradingVolume();
+	componentDidMount() {
+		const {
+			snxjs,
+			fetchHAV,
+			fetchNUSD,
+			fetchCharts,
+			fetchOpenInterest,
+			fetchTradingVolume,
+			fetchUniswapData,
+			fetchNetworkData,
+			fetchNetworkFees,
+		} = this.props;
 
-		this.props.fetchUniswapData(this.props.snxjs);
-		this.props.fetchNetworkData(this.props.snxjs);
+		fetchHAV();
+		fetchNUSD();
+		fetchOpenInterest();
+		fetchTradingVolume();
 
-		this.fetchCharts();
+		fetchUniswapData(snxjs);
+		fetchNetworkData(snxjs);
+		fetchNetworkFees(snxjs);
+
+		fetchCharts(CHARTS.DAY);
+		fetchCharts(CHARTS.MONTH);
 		this.setState({
-			intervalId: setInterval(this.fetchCharts, 10 * 60 * 1000),
-			sethProxyAddress: this.props.snxjs.sETH.contract.address,
+			intervalId: setInterval(() => fetchCharts(CHARTS.MONTH), 10 * 60 * 1000),
+			sethProxyAddress: snxjs.sETH.contract.address,
 		});
 	}
 
@@ -103,10 +99,6 @@ class App extends React.Component {
 		clearInterval(this.state.intervalId);
 	}
 
-	fetchCharts = () => {
-		this.props.fetchCharts();
-	};
-
 	getMarketsData() {
 		const { markets } = this.props;
 		const data = { snxMarketData: {}, susdMarketData: {} };
@@ -123,8 +115,8 @@ class App extends React.Component {
 		const { havPeriod, nUSDPeriod } = charts;
 		const { activeSection, havButtons, havChartName, nUSDChartName, sethProxyAddress } = this.state;
 		const { stats, lastUpdated } = charts;
-		const { HavvenMarketCap, HavvenVolume24h, HavvenPrice } = HAV_CHART;
-		const { NominMarketCap, NominVolume24h, NominPrice } = nUSD_CHART;
+		const { HavvenVolume24h, HavvenPrice } = HAV_CHART;
+		const { NominVolume24h, NominPrice } = nUSD_CHART;
 
 		const { snxMarketData, susdMarketData } = this.getMarketsData();
 		const scrollToOptions = {
@@ -160,11 +152,6 @@ class App extends React.Component {
 		}
 
 		const havStats = {
-			[HAV_CHART.HavvenMarketCap]: {
-				value: snxMarketData.market_cap,
-				trend: stats.havvenMarketCap24hDelta,
-				decimals: 0,
-			},
 			[HAV_CHART.HavvenPrice]: {
 				value: snxMarketData.price,
 				trend: snxMarketData.percent_change_24h / 100,
@@ -172,18 +159,13 @@ class App extends React.Component {
 			},
 			[HAV_CHART.HavvenVolume24h]: {
 				value: snxMarketData.volume_24h,
-				trend: stats.havvenMarketCap24hDelta,
+				trend: stats.havvenVolume24hDelta,
 				decimals: 0,
 			},
 		};
 		const currentHavStat = havStats[havChartName];
 
 		const nominStats = {
-			[nUSD_CHART.NominMarketCap]: {
-				value: susdMarketData.market_cap,
-				trend: stats.nominMarketCap24hDelta,
-				decimals: 0,
-			},
 			[nUSD_CHART.NominPrice]: {
 				value: susdMarketData.price,
 				trend: susdMarketData.percent_change_24h / 100,
@@ -191,7 +173,7 @@ class App extends React.Component {
 			},
 			[nUSD_CHART.NominVolume24h]: {
 				value: susdMarketData.volume_24h,
-				trend: stats.nominMarketCap24hDelta,
+				trend: stats.nominVolume24hDelta,
 				decimals: 0,
 			},
 		};
@@ -214,13 +196,9 @@ class App extends React.Component {
 						>
 							<SingleStatBox
 								value={snxMarketData ? snxMarketData.market_cap : null}
-								trend={stats.havvenMarketCap24hDelta * 100}
+								trend={stats.havvenPrice24hDelta * 100}
 								label="SNX MARKET CAP"
 								desc="The total value of all circulating SNX."
-								onClick={() => {
-									this.setHavChart(HavvenMarketCap);
-									scroller.scrollTo('hav-main-chart', scrollToOptions);
-								}}
 								decimals={0}
 								isClickable={true}
 							/>
@@ -248,13 +226,9 @@ class App extends React.Component {
 						>
 							<SingleStatBox
 								value={susdMarketData ? susdMarketData.market_cap : null}
-								trend={stats.nominMarketCap24hDelta * 100}
+								trend={stats.nominPrice24hDelta * 100}
 								label="sUSD MARKET CAP"
 								desc="The total value of all circulating sUSD."
-								onClick={() => {
-									this.setnUSDChart(NominMarketCap);
-									scroller.scrollTo('nomin-main-chart', scrollToOptions);
-								}}
 								decimals={0}
 								isClickable={true}
 							/>
@@ -400,8 +374,8 @@ class App extends React.Component {
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
-									stats.nominFeesCollected && stats.nominFeesCollected > 0
-										? stats.nominFeesCollected
+									network.totalFeesAvailable && network.totalFeesAvailable > 0
+										? network.totalFeesAvailable
 										: null
 								}
 								label="CURRENT FEE POOL"
@@ -434,18 +408,6 @@ class App extends React.Component {
 								<div className="level-item">
 									<button
 										className={cx('button', 'is-link', {
-											'is-active': havChartName === HavvenMarketCap,
-										})}
-										onClick={() => {
-											this.setHavChart(HavvenMarketCap);
-										}}
-									>
-										Market Cap
-									</button>
-								</div>
-								<div className="level-item">
-									<button
-										className={cx('button', 'is-link', {
 											'is-active': havChartName === HavvenPrice,
 										})}
 										onClick={() => {
@@ -475,44 +437,28 @@ class App extends React.Component {
 									<SingleStat {...currentHavStat} />
 									<div className="time-toggles is-hidden-mobile">
 										<button
-											onClick={() => this.setPeriod('1D', 'HAV')}
+											onClick={() => this.setPeriod(CHARTS.DAY, 'HAV')}
 											className={cx({
-												'is-active': havPeriod === '1D',
+												'is-active': havPeriod === CHARTS.DAY,
 											})}
 										>
 											1D
 										</button>
 										<button
-											onClick={() => this.setPeriod('1W', 'HAV')}
+											onClick={() => this.setPeriod(CHARTS.WEEK, 'HAV')}
 											className={cx({
-												'is-active': havPeriod === '1W',
+												'is-active': havPeriod === CHARTS.WEEK,
 											})}
 										>
 											1W
 										</button>
 										<button
-											onClick={() => this.setPeriod('1M', 'HAV')}
+											onClick={() => this.setPeriod(CHARTS.MONTH, 'HAV')}
 											className={cx({
-												'is-active': havPeriod === '1M',
+												'is-active': havPeriod === CHARTS.MONTH,
 											})}
 										>
 											1M
-										</button>
-										<button
-											onClick={() => this.setPeriod('1Y', 'HAV')}
-											className={cx({
-												'is-active': havPeriod === '1Y',
-											})}
-										>
-											1Y
-										</button>
-										<button
-											onClick={() => this.setPeriod('ALL', 'HAV')}
-											className={cx({
-												'is-active': havPeriod === 'ALL',
-											})}
-										>
-											ALL
 										</button>
 									</div>
 									<div>
@@ -532,44 +478,28 @@ class App extends React.Component {
 						</div>
 						<div className="time-toggles is-hidden-tablet">
 							<button
-								onClick={() => this.setPeriod('1D', 'HAV')}
+								onClick={() => this.setPeriod(CHARTS.DAY, 'HAV')}
 								className={cx({
-									'is-active': havPeriod === '1D',
+									'is-active': havPeriod === CHARTS.DAY,
 								})}
 							>
 								1D
 							</button>
 							<button
-								onClick={() => this.setPeriod('1W', 'HAV')}
+								onClick={() => this.setPeriod(CHARTS.WEEK, 'HAV')}
 								className={cx({
-									'is-active': havPeriod === '1W',
+									'is-active': havPeriod === CHARTS.WEEK,
 								})}
 							>
 								1W
 							</button>
 							<button
-								onClick={() => this.setPeriod('1M', 'HAV')}
+								onClick={() => this.setPeriod(CHARTS.MONTH, 'HAV')}
 								className={cx({
-									'is-active': havPeriod === '1M',
+									'is-active': havPeriod === CHARTS.MONTH,
 								})}
 							>
 								1M
-							</button>
-							<button
-								onClick={() => this.setPeriod('1Y', 'HAV')}
-								className={cx({
-									'is-active': havPeriod === '1Y',
-								})}
-							>
-								1Y
-							</button>
-							<button
-								onClick={() => this.setPeriod('ALL', 'HAV')}
-								className={cx({
-									'is-active': havPeriod === 'ALL',
-								})}
-							>
-								ALL
 							</button>
 						</div>
 						<div className="level is-mobile justified-content-center">
@@ -583,16 +513,6 @@ class App extends React.Component {
 										onClick={() => this.onCurrencyClick('Usd')}
 									>
 										USD
-									</button>
-								</div>
-								<div className="level-item">
-									<button
-										className={cx('button is-link btc', {
-											'is-active': havButtons.Btc,
-										})}
-										onClick={() => this.onCurrencyClick('Btc')}
-									>
-										BTC
 									</button>
 								</div>
 								<div className="level-item">
@@ -619,18 +539,6 @@ class App extends React.Component {
 								</div>
 							</div>
 							<div className="level-right">
-								<div className="level-item">
-									<button
-										className={cx('button', 'is-link', {
-											'is-active': nUSDChartName === NominMarketCap,
-										})}
-										onClick={() => {
-											this.setnUSDChart(NominMarketCap);
-										}}
-									>
-										Market Cap
-									</button>
-								</div>
 								<div className="level-item">
 									<button
 										className={cx('button', 'is-link', {
@@ -664,44 +572,28 @@ class App extends React.Component {
 									<SingleStat {...currentNominStat} />
 									<div className="time-toggles is-hidden-mobile">
 										<button
-											onClick={() => this.setPeriod('1D', 'nUSD')}
+											onClick={() => this.setPeriod(CHARTS.DAY, 'nUSD')}
 											className={cx({
-												'is-active': nUSDPeriod === '1D',
+												'is-active': nUSDPeriod === CHARTS.DAY,
 											})}
 										>
 											1D
 										</button>
 										<button
-											onClick={() => this.setPeriod('1W', 'nUSD')}
+											onClick={() => this.setPeriod(CHARTS.WEEK, 'nUSD')}
 											className={cx({
-												'is-active': nUSDPeriod === '1W',
+												'is-active': nUSDPeriod === CHARTS.WEEK,
 											})}
 										>
 											1W
 										</button>
 										<button
-											onClick={() => this.setPeriod('1M', 'nUSD')}
+											onClick={() => this.setPeriod(CHARTS.MONTH, 'nUSD')}
 											className={cx({
-												'is-active': nUSDPeriod === '1M',
+												'is-active': nUSDPeriod === CHARTS.MONTH,
 											})}
 										>
 											1M
-										</button>
-										<button
-											onClick={() => this.setPeriod('1Y', 'nUSD')}
-											className={cx({
-												'is-active': nUSDPeriod === '1Y',
-											})}
-										>
-											1Y
-										</button>
-										<button
-											onClick={() => this.setPeriod('ALL', 'nUSD')}
-											className={cx({
-												'is-active': nUSDPeriod === 'ALL',
-											})}
-										>
-											ALL
 										</button>
 									</div>
 									<div>
@@ -720,44 +612,28 @@ class App extends React.Component {
 						</div>
 						<div className="time-toggles is-hidden-tablet">
 							<button
-								onClick={() => this.setPeriod('1D', 'nUSD')}
+								onClick={() => this.setPeriod(CHARTS.DAY, 'nUSD')}
 								className={cx({
-									'is-active': nUSDPeriod === '1D',
+									'is-active': nUSDPeriod === CHARTS.DAY,
 								})}
 							>
 								1D
 							</button>
 							<button
-								onClick={() => this.setPeriod('1W', 'nUSD')}
+								onClick={() => this.setPeriod(CHARTS.WEEK, 'nUSD')}
 								className={cx({
-									'is-active': nUSDPeriod === '1W',
+									'is-active': nUSDPeriod === CHARTS.WEEK,
 								})}
 							>
 								1W
 							</button>
 							<button
-								onClick={() => this.setPeriod('1M', 'nUSD')}
+								onClick={() => this.setPeriod(CHARTS.MONTH, 'nUSD')}
 								className={cx({
-									'is-active': nUSDPeriod === '1M',
+									'is-active': nUSDPeriod === CHARTS.MONTH,
 								})}
 							>
 								1M
-							</button>
-							<button
-								onClick={() => this.setPeriod('1Y', 'nUSD')}
-								className={cx({
-									'is-active': nUSDPeriod === '1Y',
-								})}
-							>
-								1Y
-							</button>
-							<button
-								onClick={() => this.setPeriod('ALL', 'nUSD')}
-								className={cx({
-									'is-active': nUSDPeriod === 'ALL',
-								})}
-							>
-								ALL
 							</button>
 						</div>
 						<div className="columns">
@@ -863,6 +739,7 @@ const ConnectedApp = connect(
 		fetchNUSD,
 		setPeriod,
 		fetchNetworkData,
+		fetchNetworkFees,
 	}
 )(App);
 export default ConnectedApp;

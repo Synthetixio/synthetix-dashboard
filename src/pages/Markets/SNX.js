@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchHAV, fetchCoinmarketcapHAV } from '../../actions/markets';
 import { fetchCharts } from '../../actions/charts';
+import { CHARTS } from '../../utils';
 
 import { MarketsInfo } from './MarketsInfo';
 
@@ -14,14 +15,25 @@ export class HavMarketsComponent extends Component {
 	}
 
 	componentDidMount() {
-		this.props.fetchHAV();
-		this.props.fetchCharts();
-		this.props.fetchCoinmarketcapHAV();
+		const { charts, fetchHAV, fetchCharts, fetchCoinmarketcapHAV } = this.props;
+		fetchHAV();
+		if (isEmptyObj(charts.stats)) {
+			fetchCharts(CHARTS.DAY);
+			fetchCharts(CHARTS.MONTH);
+		}
+		fetchCoinmarketcapHAV();
+		this.setState({ intervalId: setInterval(() => fetchCharts(CHARTS.MONTH), 10 * 60 * 1000) });
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.state.intervalId);
 	}
 
 	render() {
-		const charts = this.props.charts;
-		const snx = this.props.markets.snx;
+		const {
+			charts,
+			markets: { snx },
+		} = this.props;
 		const snx_info = isEmptyObj(snx) ? snx : null;
 		const charts_info = isEmptyObj(charts.stats) ? charts : null;
 		if (snx_info === null || charts_info === null) return null;

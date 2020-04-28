@@ -1,23 +1,16 @@
 import { FETCH_CHARTS_SUCCESS, SET_PERIOD_CHART } from '../actions/actionTypes';
-import { parseChartData } from '../utils';
+import { CHARTS, parseChartData, formatNewChartsDataToMatchOld } from '../utils';
 
-const chartTypes = [
-	'HavvenMarketCap',
-	'NominMarketCap',
-	'HavvenPrice',
-	'NominPrice',
-	'HavvenVolume24h',
-	'NominVolume24h',
-];
+export const chartTypes = ['HavvenPrice', 'NominPrice', 'HavvenVolume24h', 'NominVolume24h'];
 
-const chartTypesHAV = ['HavvenMarketCap', 'HavvenPrice', 'HavvenVolume24h'];
+const chartTypesHAV = ['HavvenPrice', 'HavvenVolume24h'];
 
-const chartTypesNomin = ['NominMarketCap', 'NominPrice', 'NominVolume24h'];
+const chartTypesNomin = ['NominPrice', 'NominVolume24h'];
 
 const initialState = {
 	stats: {},
-	havPeriod: '1W',
-	nUSDPeriod: 'ALL',
+	havPeriod: CHARTS.DAY,
+	nUSDPeriod: CHARTS.DAY,
 };
 
 const getInitialPeriod = chartType => {
@@ -25,7 +18,7 @@ const getInitialPeriod = chartType => {
 		return initialState.havPeriod;
 	} else if (chartTypesNomin.indexOf(chartType) >= 0) {
 		return initialState.nUSDPeriod;
-	} else return 'ALL';
+	} else return CHARTS.DAY;
 };
 
 chartTypes.forEach(type => (initialState[type] = {}));
@@ -34,7 +27,11 @@ export default (state = initialState, action) => {
 	switch (action.type) {
 		case FETCH_CHARTS_SUCCESS:
 			try {
-				let { chartHistoricalData, dashboardData } = action.payload;
+				const { snxExchangeData, sUSDExchangeData } = action.payload.data;
+				const chartHistoricalData = formatNewChartsDataToMatchOld(
+					snxExchangeData,
+					sUSDExchangeData
+				);
 				const chartData = chartTypes
 					.map(type => {
 						const period = getInitialPeriod(type);
@@ -43,55 +40,39 @@ export default (state = initialState, action) => {
 						};
 					})
 					.reduce((acc, next) => ({ ...acc, ...next }), {});
-				chartHistoricalData = chartHistoricalData.body;
-				dashboardData = dashboardData.body;
 				return {
 					...chartData,
-					sourceData: chartHistoricalData,
+					sourceData: chartHistoricalData.body,
 					havPeriod: state.havPeriod,
 					nUSDPeriod: state.nUSDPeriod,
 					lastUpdated:
-						chartHistoricalData.HavvenMarketCap.data[
-							chartHistoricalData.HavvenMarketCap.data.length - 1
+						chartHistoricalData.body.HavvenPrice.data[
+							chartHistoricalData.body.HavvenPrice.data.length - 1
 						].created,
 					stats: {
-						havvenMarketCap24hDelta: chartHistoricalData.HavvenMarketCap.usd24hDelta,
-						havvenPriceCap24hDelta: chartHistoricalData.HavvenPrice.usd24hDelta,
-						havvenVolume24hDelta: chartHistoricalData.HavvenVolume24h.usd24hDelta,
-						nominMarketCap24hDelta: chartHistoricalData.NominMarketCap.usd24hDelta,
-						nominPriceCap24hDelta: chartHistoricalData.NominPrice.usd24hDelta,
-						nominVolume24hDelta: chartHistoricalData.NominVolume24h.usd24hDelta,
-						havvenMarketCap:
-							chartHistoricalData.HavvenMarketCap.data[
-								chartHistoricalData.HavvenMarketCap.data.length - 1
-							].usdValue,
+						havvenPriceCap24hDelta: chartHistoricalData.body.HavvenPrice.usd24hDelta,
+						havvenVolume24hDelta: chartHistoricalData.body.HavvenVolume24h.usd24hDelta,
+						nominPriceCap24hDelta: chartHistoricalData.body.NominPrice.usd24hDelta,
+						nominVolume24hDelta: chartHistoricalData.body.NominVolume24h.usd24hDelta,
 						havvenPriceCap:
-							chartHistoricalData.HavvenPrice.data[chartHistoricalData.HavvenPrice.data.length - 1]
-								.usdValue,
-						havvenVolume24h:
-							chartHistoricalData.HavvenVolume24h.data[
-								chartHistoricalData.HavvenVolume24h.data.length - 1
+							chartHistoricalData.body.HavvenPrice.data[
+								chartHistoricalData.body.HavvenPrice.data.length - 1
 							].usdValue,
-						lockedHavUsdBalance: dashboardData.LockedHavUsdBalance,
-						lockedHavRatio: dashboardData.LockedHavRatio,
-						nominMarketCap:
-							chartHistoricalData.NominMarketCap.data[
-								chartHistoricalData.NominMarketCap.data.length - 1
+						havvenVolume24h:
+							chartHistoricalData.body.HavvenVolume24h.data[
+								chartHistoricalData.body.HavvenVolume24h.data.length - 1
 							].usdValue,
 						nominPriceCap:
-							chartHistoricalData.NominPrice.data[chartHistoricalData.NominPrice.data.length - 1]
-								.usdValue,
-						nominVolume24h:
-							chartHistoricalData.NominVolume24h.data[
-								chartHistoricalData.NominVolume24h.data.length - 1
+							chartHistoricalData.body.NominPrice.data[
+								chartHistoricalData.body.NominPrice.data.length - 1
 							].usdValue,
-						nominFeesCollected: dashboardData.NominFeesCollected,
-						networkCollateralizationRatio: dashboardData.NetworkCollateralizationRatio,
-						activeCollateralizationRatio: dashboardData.ActiveCollateralizationRatio,
+						nominVolume24h:
+							chartHistoricalData.body.NominVolume24h.data[
+								chartHistoricalData.body.NominVolume24h.data.length - 1
+							].usdValue,
 					},
 				};
 			} catch (e) {
-				console.log('error', e);
 				return state;
 			}
 
@@ -116,7 +97,6 @@ export default (state = initialState, action) => {
 					nUSDPeriod,
 				};
 			} catch (e) {
-				console.log('error', e);
 				return state;
 			}
 

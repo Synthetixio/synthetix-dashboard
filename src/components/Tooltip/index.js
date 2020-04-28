@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import numeral from 'numeral';
 import format from 'date-fns/format';
 
+import { CHARTS } from '../../utils';
+
 class GraphTooltip extends React.Component {
 	static propTypes = {
 		x: PropTypes.number,
@@ -15,20 +17,19 @@ class GraphTooltip extends React.Component {
 		const {
 			scatterX,
 			scatterY,
-			scatterYBtc,
 			scatterYEth,
 			x,
 			y,
-			decimals = { Val: 2, Btc: 4 },
+			decimals = { Val: 2, Eth: 4 },
 			sign,
 			showScatter,
 			period,
 		} = this.props;
 		const dec = decimals.Val > 0 ? '.' + '0'.repeat(decimals.Val) : '';
-		const decBtc = decimals.Btc > 0 ? '.' + '0'.repeat(decimals.Btc) : '';
+		const decEth = decimals.Eth > 0 ? '.' + '0'.repeat(decimals.Eth) : '';
 		const base = '0,0';
 		const baseVal = sign ? base : '$' + base;
-		const dtFormat = period === '1D' ? 'Do MMMM YYYY HH:00' : 'Do MMMM YYYY';
+		const dtFormat = period === CHARTS.DAY ? 'Do MMMM YYYY HH:00' : 'Do MMMM YYYY';
 
 		if (!showScatter) return null;
 
@@ -46,19 +47,10 @@ class GraphTooltip extends React.Component {
 								<span className="USD">{sign ? sign : 'USD'}</span>
 							</div>
 						)}
-
-						{scatterYBtc && (
-							<div>
-								<span className="value">
-									{numeral(scatterYBtc.toString()).format(base + decBtc)}
-								</span>
-								<span className="BTC">BTC</span>
-							</div>
-						)}
 						{scatterYEth && (
 							<div>
 								<span className="value">
-									{numeral(scatterYEth.toString()).format(base + decBtc)}
+									{numeral(scatterYEth.toString()).format(base + decEth)}
 								</span>
 								<span className="ETH">ETH</span>
 							</div>

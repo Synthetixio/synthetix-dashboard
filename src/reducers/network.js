@@ -1,4 +1,4 @@
-import { FETCH_NETWORK_DATA_SUCCESS } from '../actions/actionTypes';
+import { FETCH_NETWORK_DATA_SUCCESS, FETCH_NETWORK_FEES_SUCCESS } from '../actions/actionTypes';
 
 const initialState = {};
 
@@ -15,6 +15,12 @@ export default (state = initialState, action) => {
 				percentLocked,
 				activeCollateralizationRatio,
 				totalIssuedSynths,
+			};
+		case FETCH_NETWORK_FEES_SUCCESS:
+			const { totalFeesAvailable } = action.payload.data.body;
+			return {
+				...state,
+				totalFeesAvailable,
 			};
 		default:
 			return state;

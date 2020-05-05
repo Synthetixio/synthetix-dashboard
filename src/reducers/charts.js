@@ -40,6 +40,7 @@ export default (state = initialState, action) => {
 						};
 					})
 					.reduce((acc, next) => ({ ...acc, ...next }), {});
+
 				return {
 					...chartData,
 					sourceData: chartHistoricalData.body,

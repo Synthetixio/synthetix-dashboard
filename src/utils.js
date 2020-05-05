@@ -10,16 +10,6 @@ export const CHARTS = {
 export const toPercent = num => num.toFixed(2);
 export const isEmptyObj = obj => Object.keys(obj).length === 0;
 
-const handleTimeDataManipulation = (days, sourceData) => {
-	const date = new Date();
-	date.setDate(days);
-	const endTimestamp = parseInt(date.getTime() / 1000);
-	const endIndex = sourceData.findIndex(
-		({ created }) => parseInt(new Date(created).getTime() / 1000) < endTimestamp
-	);
-	return sourceData.slice(0, endIndex);
-};
-
 const generateMonthTimestamp = () => {
 	const monthDate = new Date();
 	monthDate.setMonth(monthDate.getMonth() - 1);
@@ -32,6 +22,12 @@ const generateDayTimestamp = () => {
 	return parseInt(dayDate.getTime() / 1000);
 };
 
+const generateWeekTimestamp = () => {
+	const dayDate = new Date();
+	dayDate.setDate(dayDate.getDate() - 7);
+	return parseInt(dayDate.getTime() / 1000);
+};
+
 export const generateEndTimestamp = period => {
 	if (period == CHARTS.DAY) {
 		return generateDayTimestamp();
@@ -40,17 +36,23 @@ export const generateEndTimestamp = period => {
 };
 
 const selectPeriod = (sourceData, period) => {
+	let endTimestamp;
 	if (period === CHARTS.DAY) {
-		return handleTimeDataManipulation(-1, sourceData);
+		endTimestamp = generateDayTimestamp();
 	} else if (period === CHARTS.WEEK) {
-		return handleTimeDataManipulation(-7, sourceData);
+		endTimestamp = generateWeekTimestamp();
 	} else {
 		return sourceData;
 	}
+	const endIndex = sourceData.findIndex(
+		({ created }) => parseInt(new Date(created).getTime() / 1000) < endTimestamp
+	);
+	return sourceData.slice(0, endIndex);
 };
 
-export const parseChartData = (sourceData, key, period = CHARTS.MONTH) => {
+export const parseChartData = (sourceData, key, period = CHARTS.DAY) => {
 	const dataSelected = selectPeriod(sourceData, period);
+
 	let reverseTimeSeries = [];
 	let modulo = Math.floor(dataSelected.length / 100);
 	if (modulo < 1) modulo = 1;

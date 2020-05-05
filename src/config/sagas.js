@@ -40,6 +40,7 @@ function* fetchUniswapChartsData({ payload: { period } }) {
 			data: {
 				snxExchangeData,
 				sUSDExchangeData,
+				period,
 			},
 		},
 	});

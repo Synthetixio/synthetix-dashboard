@@ -8,6 +8,7 @@ export const CHARTS = {
 };
 
 export const toPercent = num => num.toFixed(2);
+export const isEmptyObj = obj => Object.keys(obj).length === 0;
 
 const handleTimeDataManipulation = (days, sourceData) => {
 	const date = new Date();

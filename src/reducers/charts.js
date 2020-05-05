@@ -27,7 +27,7 @@ export default (state = initialState, action) => {
 	switch (action.type) {
 		case FETCH_CHARTS_SUCCESS:
 			try {
-				const { snxExchangeData, sUSDExchangeData } = action.payload.data;
+				const { snxExchangeData, sUSDExchangeData, period } = action.payload.data;
 				const chartHistoricalData = formatNewChartsDataToMatchOld(
 					snxExchangeData,
 					sUSDExchangeData
@@ -49,6 +49,7 @@ export default (state = initialState, action) => {
 						chartHistoricalData.body.HavvenPrice.data[
 							chartHistoricalData.body.HavvenPrice.data.length - 1
 						].created,
+					periodLoaded: period,
 					stats: {
 						havvenPriceCap24hDelta: chartHistoricalData.body.HavvenPrice.usd24hDelta,
 						havvenVolume24hDelta: chartHistoricalData.body.HavvenVolume24h.usd24hDelta,

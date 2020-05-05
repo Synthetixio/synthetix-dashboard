@@ -3,11 +3,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchHAV, fetchCoinmarketcapHAV } from '../../actions/markets';
 import { fetchCharts } from '../../actions/charts';
-import { CHARTS } from '../../utils';
+import { CHARTS, isEmptyObj } from '../../utils';
 
 import { MarketsInfo } from './MarketsInfo';
-
-const isEmptyObj = obj => Object.keys(obj).length;
 
 export class HavMarketsComponent extends Component {
 	constructor(props) {
@@ -34,8 +32,8 @@ export class HavMarketsComponent extends Component {
 			charts,
 			markets: { snx },
 		} = this.props;
-		const snx_info = isEmptyObj(snx) ? snx : null;
-		const charts_info = isEmptyObj(charts.stats) ? charts : null;
+		const snx_info = isEmptyObj(snx) ? null : snx;
+		const charts_info = isEmptyObj(charts.stats) ? null : charts;
 		if (snx_info === null || charts_info === null) return null;
 		return (
 			<div>

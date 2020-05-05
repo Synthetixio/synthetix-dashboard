@@ -11,7 +11,7 @@ import TopNavBar from '../../components/TopNavBar';
 import SingleStatBox from '../../components/SingleStatBox';
 import SingleStat from '../../components/SingleStat';
 import { switchTheme } from '../../actions/theme';
-import { CHARTS, toPercent } from '../../utils';
+import { CHARTS, toPercent, isEmptyObj } from '../../utils';
 import cx from 'classnames';
 import numeral from 'numeral';
 import { scroller } from 'react-scroll';
@@ -56,6 +56,7 @@ class App extends React.Component {
 			fetchUniswapData,
 			fetchNetworkData,
 			fetchNetworkFees,
+			charts,
 		} = this.props;
 
 		fetchHAV();
@@ -66,9 +67,10 @@ class App extends React.Component {
 		fetchUniswapData(snxjs);
 		fetchNetworkData(snxjs);
 		fetchNetworkFees(snxjs);
-
-		fetchCharts(CHARTS.DAY);
-		fetchCharts(CHARTS.MONTH);
+		if (isEmptyObj(charts.stats)) {
+			fetchCharts(CHARTS.DAY);
+			fetchCharts(CHARTS.MONTH);
+		}
 		this.setState({
 			intervalId: setInterval(() => fetchCharts(CHARTS.MONTH), 10 * 60 * 1000),
 			sethProxyAddress: snxjs.sETH.contract.address,
@@ -444,22 +446,26 @@ class App extends React.Component {
 										>
 											1D
 										</button>
-										<button
-											onClick={() => this.setPeriod(CHARTS.WEEK, 'HAV')}
-											className={cx({
-												'is-active': havPeriod === CHARTS.WEEK,
-											})}
-										>
-											1W
-										</button>
-										<button
-											onClick={() => this.setPeriod(CHARTS.MONTH, 'HAV')}
-											className={cx({
-												'is-active': havPeriod === CHARTS.MONTH,
-											})}
-										>
-											1M
-										</button>
+										{charts.periodLoaded === CHARTS.MONTH ? (
+											<>
+												<button
+													onClick={() => this.setPeriod(CHARTS.WEEK, 'HAV')}
+													className={cx({
+														'is-active': havPeriod === CHARTS.WEEK,
+													})}
+												>
+													1W
+												</button>
+												<button
+													onClick={() => this.setPeriod(CHARTS.MONTH, 'HAV')}
+													className={cx({
+														'is-active': havPeriod === CHARTS.MONTH,
+													})}
+												>
+													1M
+												</button>
+											</>
+										) : null}
 									</div>
 									<div>
 										<Chart
@@ -485,22 +491,26 @@ class App extends React.Component {
 							>
 								1D
 							</button>
-							<button
-								onClick={() => this.setPeriod(CHARTS.WEEK, 'HAV')}
-								className={cx({
-									'is-active': havPeriod === CHARTS.WEEK,
-								})}
-							>
-								1W
-							</button>
-							<button
-								onClick={() => this.setPeriod(CHARTS.MONTH, 'HAV')}
-								className={cx({
-									'is-active': havPeriod === CHARTS.MONTH,
-								})}
-							>
-								1M
-							</button>
+							{charts.periodLoaded === CHARTS.MONTH ? (
+								<>
+									<button
+										onClick={() => this.setPeriod(CHARTS.WEEK, 'HAV')}
+										className={cx({
+											'is-active': havPeriod === CHARTS.WEEK,
+										})}
+									>
+										1W
+									</button>
+									<button
+										onClick={() => this.setPeriod(CHARTS.MONTH, 'HAV')}
+										className={cx({
+											'is-active': havPeriod === CHARTS.MONTH,
+										})}
+									>
+										1M
+									</button>
+								</>
+							) : null}
 						</div>
 						<div className="level is-mobile justified-content-center">
 							<div className="level-left" />
@@ -579,22 +589,26 @@ class App extends React.Component {
 										>
 											1D
 										</button>
-										<button
-											onClick={() => this.setPeriod(CHARTS.WEEK, 'nUSD')}
-											className={cx({
-												'is-active': nUSDPeriod === CHARTS.WEEK,
-											})}
-										>
-											1W
-										</button>
-										<button
-											onClick={() => this.setPeriod(CHARTS.MONTH, 'nUSD')}
-											className={cx({
-												'is-active': nUSDPeriod === CHARTS.MONTH,
-											})}
-										>
-											1M
-										</button>
+										{charts.periodLoaded === CHARTS.MONTH ? (
+											<>
+												<button
+													onClick={() => this.setPeriod(CHARTS.WEEK, 'nUSD')}
+													className={cx({
+														'is-active': nUSDPeriod === CHARTS.WEEK,
+													})}
+												>
+													1W
+												</button>
+												<button
+													onClick={() => this.setPeriod(CHARTS.MONTH, 'nUSD')}
+													className={cx({
+														'is-active': nUSDPeriod === CHARTS.MONTH,
+													})}
+												>
+													1M
+												</button>
+											</>
+										) : null}
 									</div>
 									<div>
 										<Chart
@@ -619,22 +633,26 @@ class App extends React.Component {
 							>
 								1D
 							</button>
-							<button
-								onClick={() => this.setPeriod(CHARTS.WEEK, 'nUSD')}
-								className={cx({
-									'is-active': nUSDPeriod === CHARTS.WEEK,
-								})}
-							>
-								1W
-							</button>
-							<button
-								onClick={() => this.setPeriod(CHARTS.MONTH, 'nUSD')}
-								className={cx({
-									'is-active': nUSDPeriod === CHARTS.MONTH,
-								})}
-							>
-								1M
-							</button>
+							{charts.periodLoaded === CHARTS.MONTH ? (
+								<>
+									<button
+										onClick={() => this.setPeriod(CHARTS.WEEK, 'nUSD')}
+										className={cx({
+											'is-active': nUSDPeriod === CHARTS.WEEK,
+										})}
+									>
+										1W
+									</button>
+									<button
+										onClick={() => this.setPeriod(CHARTS.MONTH, 'nUSD')}
+										className={cx({
+											'is-active': nUSDPeriod === CHARTS.MONTH,
+										})}
+									>
+										1M
+									</button>
+								</>
+							) : null}
 						</div>
 						<div className="columns">
 							<div className="column">

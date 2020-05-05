@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchNUSD, fetchCoinmarketcapNUSD } from '../../actions/markets';
 import { fetchCharts } from '../../actions/charts';
-
+import { isEmptyObj, CHARTS } from '../../utils';
 import { MarketsInfo } from './MarketsInfo';
-
-const isEmptyObj = obj => Object.keys(obj).length;
 
 export class NusdMarketsComponent extends Component {
 	constructor(props) {
@@ -32,8 +30,8 @@ export class NusdMarketsComponent extends Component {
 			charts,
 			markets: { susd },
 		} = this.props;
-		const susd_info = isEmptyObj(susd) ? susd : null;
-		const charts_info = isEmptyObj(charts.stats) ? charts : null;
+		const susd_info = isEmptyObj(susd) ? null : susd;
+		const charts_info = isEmptyObj(charts.stats) ? null : charts;
 		if (susd_info === null || charts_info === null) return null;
 		return (
 			<div>

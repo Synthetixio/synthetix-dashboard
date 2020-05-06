@@ -7,8 +7,6 @@ import {
 	FETCH_CHARTS_SUCCESS,
 	FETCH_HAV_CURRENCY,
 	FETCH_NUSD_CURRENCY,
-	FETCH_COINMARKETCAP_HAV,
-	FETCH_COINMARKETCAP_NUSD,
 	FETCH_OPEN_INTEREST,
 	FETCH_OPEN_INTEREST_SUCCESS,
 	FETCH_TRADING_VOLUME,
@@ -207,14 +205,6 @@ function* fetchNUSDCurrencyCall() {
 	yield takeEvery(FETCH_NUSD_CURRENCY, fetchCurrency);
 }
 
-function* fetchCoinmarketcapHAVCall() {
-	yield takeEvery(FETCH_COINMARKETCAP_HAV, fetchCurrency);
-}
-
-function* fetchCoinmarketcapNUSDCall() {
-	yield takeEvery(FETCH_COINMARKETCAP_NUSD, fetchCurrency);
-}
-
 function* fetchOpenInterest() {
 	yield takeEvery(FETCH_OPEN_INTEREST, fetchExchangeOpenInterest);
 }
@@ -240,8 +230,6 @@ const rootSaga = function*() {
 		fetchChartsCall(),
 		fetchHAVCurrencyCall(),
 		fetchNUSDCurrencyCall(),
-		fetchCoinmarketcapHAVCall(),
-		fetchCoinmarketcapNUSDCall(),
 		fetchOpenInterest(),
 		fetchTradingVolume(),
 		fetchUniswapDataCall(),

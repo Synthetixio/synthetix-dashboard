@@ -16,8 +16,6 @@ import cx from 'classnames';
 import numeral from 'numeral';
 import { scroller } from 'react-scroll';
 
-import { Link } from 'react-router-dom';
-
 const HAV_CHART = {
 	HavvenPrice: 'HavvenPrice',
 	HavvenVolume24h: 'HavvenVolume24h',
@@ -192,66 +190,46 @@ class App extends React.Component {
 				<TopNavBar selectedSection={activeSection} />
 				<div className="container main-content">
 					<div className="columns is-multiline" id="stats">
-						<Link
-							to="/buy-snx"
-							className="column is-half-tablet is-one-quarter-desktop markets-link"
-						>
-							<SingleStatBox
-								value={snxMarketData ? snxMarketData.market_cap : null}
-								trend={stats.havvenPrice24hDelta * 100}
-								label="SNX MARKET CAP"
-								desc="The total value of all circulating SNX."
-								decimals={0}
-								isClickable={true}
-							/>
-						</Link>
-						<Link
-							to="/buy-snx"
-							className="column is-half-tablet is-one-quarter-desktop markets-link"
-						>
-							<SingleStatBox
-								value={snxMarketData ? snxMarketData.price : null}
-								trend={snxMarketData ? snxMarketData.percent_change_24h : null}
-								label="SNX PRICE"
-								desc="The average price of SNX across exchanges."
-								decimals={3}
-								onClick={() => {
-									this.setHavChart(HavvenPrice);
-									scroller.scrollTo('hav-main-chart', scrollToOptions);
-								}}
-								isClickable={true}
-							/>
-						</Link>
-						<Link
-							to="/buy-susd"
-							className="column is-half-tablet is-one-quarter-desktop markets-link"
-						>
-							<SingleStatBox
-								value={susdMarketData ? susdMarketData.market_cap : null}
-								trend={stats.nominPrice24hDelta * 100}
-								label="sUSD MARKET CAP"
-								desc="The total value of all circulating sUSD."
-								decimals={0}
-								isClickable={true}
-							/>
-						</Link>
-						<Link
-							to="/buy-susd"
-							className="column is-half-tablet is-one-quarter-desktop markets-link"
-						>
-							<SingleStatBox
-								value={susdMarketData ? susdMarketData.price : null}
-								trend={susdMarketData ? susdMarketData.percent_change_24h : null}
-								label="sUSD PRICE"
-								desc="The average price of sUSD across exchanges."
-								decimals={3}
-								onClick={() => {
-									this.setnUSDChart(NominPrice);
-									scroller.scrollTo('nomin-main-chart', scrollToOptions);
-								}}
-								isClickable={true}
-							/>
-						</Link>
+						<SingleStatBox
+							value={snxMarketData ? snxMarketData.market_cap : null}
+							trend={stats.havvenPrice24hDelta * 100}
+							label="SNX MARKET CAP"
+							desc="The total value of all circulating SNX."
+							decimals={0}
+							isClickable={true}
+						/>
+						<SingleStatBox
+							value={snxMarketData ? snxMarketData.price : null}
+							trend={snxMarketData ? snxMarketData.percent_change_24h : null}
+							label="SNX PRICE"
+							desc="The average price of SNX across exchanges."
+							decimals={3}
+							onClick={() => {
+								this.setHavChart(HavvenPrice);
+								scroller.scrollTo('hav-main-chart', scrollToOptions);
+							}}
+							isClickable={true}
+						/>
+						<SingleStatBox
+							value={susdMarketData ? susdMarketData.market_cap : null}
+							trend={stats.nominPrice24hDelta * 100}
+							label="sUSD MARKET CAP"
+							desc="The total value of all circulating sUSD."
+							decimals={0}
+							isClickable={true}
+						/>
+						<SingleStatBox
+							value={susdMarketData ? susdMarketData.price : null}
+							trend={susdMarketData ? susdMarketData.percent_change_24h : null}
+							label="sUSD PRICE"
+							desc="The average price of sUSD across exchanges."
+							decimals={3}
+							onClick={() => {
+								this.setnUSDChart(NominPrice);
+								scroller.scrollTo('nomin-main-chart', scrollToOptions);
+							}}
+							isClickable={true}
+						/>
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={sETHMarketCap ? sETHMarketCap.longs : null}

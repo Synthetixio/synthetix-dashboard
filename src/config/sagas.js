@@ -15,6 +15,8 @@ import {
 	FETCH_UNISWAP_DATA_SUCCESS,
 	FETCH_NETWORK_DATA,
 	FETCH_NETWORK_DATA_SUCCESS,
+	FETCH_NETWORK_DEPOT,
+	FETCH_NETWORK_DEPOT_SUCCESS,
 	FETCH_NETWORK_FEES,
 	FETCH_NETWORK_FEES_SUCCESS,
 } from '../actions/actionTypes';
@@ -48,15 +50,42 @@ function* fetchChartsCall() {
 	yield takeEvery(FETCH_CHARTS, fetchUniswapChartsData);
 }
 
+function* fetchFeePeriodData(period, snxjs) {
+	const newRecentFeePeriod = yield snxjs.FeePool.recentFeePeriods(period);
+	return {
+		feesToDistribute:
+			Number(snxjs.ethers.utils.formatEther(newRecentFeePeriod.feesToDistribute)) || 0,
+		feesClaimed: Number(snxjs.ethers.utils.formatEther(newRecentFeePeriod.feesClaimed)) || 0,
+		rewardsToDistribute:
+			Number(snxjs.ethers.utils.formatEther(newRecentFeePeriod.rewardsToDistribute)) || 0,
+		rewardsClaimed: Number(snxjs.ethers.utils.formatEther(newRecentFeePeriod.rewardsClaimed)) || 0,
+	};
+}
+
+// NETWORK
+function* fetchNetworkDepotCall({ payload: { snxjs } }) {
+	const depositsData = yield snxjs.Depot.totalSellableDeposits();
+	const totalSellableDeposits = Number(snxjs.ethers.utils.formatEther(depositsData)) || 0;
+	const data = { body: { totalSellableDeposits } };
+	yield put({
+		type: FETCH_NETWORK_DEPOT_SUCCESS,
+		payload: { data },
+	});
+}
+
 // NETWORK
 function* fetchNetworkFeesCall({ payload: { snxjs } }) {
-	const recentFeePeriods = yield snxjs.FeePool.recentFeePeriods(1);
-	const feesToDistribute =
-		Number(snxjs.ethers.utils.formatEther(recentFeePeriods.feesToDistribute)) || 0;
-	const feesClaimed = Number(snxjs.ethers.utils.formatEther(recentFeePeriods.feesClaimed)) || 0;
+	const recentFeePeriod = yield fetchFeePeriodData(0, snxjs);
+	const olderFeePeriod = yield fetchFeePeriodData(1, snxjs);
 
-	const totalFeesAvailable = feesToDistribute - feesClaimed;
-	const data = { body: { totalFeesAvailable } };
+	const totalRewardsAvailable =
+		olderFeePeriod.rewardsToDistribute + recentFeePeriod.rewardsToDistribute;
+	const unclaimedFees = olderFeePeriod.feesToDistribute - olderFeePeriod.feesClaimed;
+	const unclaimedRewards = olderFeePeriod.rewardsToDistribute - olderFeePeriod.rewardsClaimed;
+	const totalFeesAvailable = olderFeePeriod.feesToDistribute + recentFeePeriod.feesToDistribute;
+	const data = {
+		body: { totalFeesAvailable, totalRewardsAvailable, unclaimedFees, unclaimedRewards },
+	};
 	yield put({
 		type: FETCH_NETWORK_FEES_SUCCESS,
 		payload: { data },
@@ -221,6 +250,10 @@ function* fetchNetworkData() {
 	yield takeLatest(FETCH_NETWORK_DATA, fetchNetworkDataCall);
 }
 
+function* fetchNetworkDepot() {
+	yield takeLatest(FETCH_NETWORK_DEPOT, fetchNetworkDepotCall);
+}
+
 function* fetchNetworkFees() {
 	yield takeLatest(FETCH_NETWORK_FEES, fetchNetworkFeesCall);
 }
@@ -235,6 +268,7 @@ const rootSaga = function*() {
 		fetchUniswapDataCall(),
 		fetchNetworkData(),
 		fetchNetworkFees(),
+		fetchNetworkDepot(),
 	]);
 };
 

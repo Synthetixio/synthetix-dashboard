@@ -1,4 +1,8 @@
-import { FETCH_NETWORK_DATA_SUCCESS, FETCH_NETWORK_FEES_SUCCESS } from '../actions/actionTypes';
+import {
+	FETCH_NETWORK_DATA_SUCCESS,
+	FETCH_NETWORK_FEES_SUCCESS,
+	FETCH_NETWORK_DEPOT_SUCCESS,
+} from '../actions/actionTypes';
 
 const initialState = {};
 
@@ -17,10 +21,24 @@ export default (state = initialState, action) => {
 				totalIssuedSynths,
 			};
 		case FETCH_NETWORK_FEES_SUCCESS:
-			const { totalFeesAvailable } = action.payload.data.body;
+			const {
+				totalFeesAvailable,
+				totalRewardsAvailable,
+				unclaimedFees,
+				unclaimedRewards,
+			} = action.payload.data.body;
 			return {
 				...state,
 				totalFeesAvailable,
+				totalRewardsAvailable,
+				unclaimedFees,
+				unclaimedRewards,
+			};
+		case FETCH_NETWORK_DEPOT_SUCCESS:
+			const { totalSellableDeposits } = action.payload.data.body;
+			return {
+				...state,
+				totalSellableDeposits,
 			};
 		default:
 			return state;

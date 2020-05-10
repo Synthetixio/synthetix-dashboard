@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { fetchCharts, setPeriod } from '../../actions/charts';
 import { fetchHAV, fetchNUSD } from '../../actions/markets';
 import { fetchOpenInterest, fetchTradingVolume, fetchUniswapData } from '../../actions/exchange';
-import { fetchNetworkData, fetchNetworkFees } from '../../actions/network';
+import { fetchNetworkData, fetchNetworkFees, fetchNetworkDepot } from '../../actions/network';
 import Chart from '../../components/Chart';
 import PieChart from '../../components/PieChart';
 import HorizontalBarChart from '../../components/HorizontalBarChart';
@@ -54,6 +54,7 @@ class App extends React.Component {
 			fetchUniswapData,
 			fetchNetworkData,
 			fetchNetworkFees,
+			fetchNetworkDepot,
 			charts,
 		} = this.props;
 
@@ -65,6 +66,7 @@ class App extends React.Component {
 		fetchUniswapData(snxjs);
 		fetchNetworkData(snxjs);
 		fetchNetworkFees(snxjs);
+		fetchNetworkDepot(snxjs);
 		if (isEmptyObj(charts.stats)) {
 			fetchCharts(CHARTS.DAY);
 			fetchCharts(CHARTS.MONTH);
@@ -359,7 +361,57 @@ class App extends React.Component {
 										: null
 								}
 								label="CURRENT FEE POOL"
+								desc="Total fees in the pool."
+								onClick={() => {}}
+								decimals={2}
+							/>
+						</div>
+						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+							<SingleStatBox
+								value={
+									network.totalRewardsAvailable && network.totalRewardsAvailable > 0
+										? network.totalRewardsAvailable
+										: null
+								}
+								label="CURRENT REWARDS POOL"
+								desc="Total Rewards in the pool."
+								onClick={() => {}}
+								decimals={2}
+							/>
+						</div>
+						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+							<SingleStatBox
+								value={
+									network.unclaimedFees && network.unclaimedFees > 0 ? network.unclaimedFees : null
+								}
+								label="UNCLAIMED FEES IN POOL"
 								desc="Fees currently claimable in the pool."
+								onClick={() => {}}
+								decimals={2}
+							/>
+						</div>
+						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+							<SingleStatBox
+								value={
+									network.unclaimedRewards && network.unclaimedRewards > 0
+										? network.unclaimedRewards
+										: null
+								}
+								label="UNCLAIMED REWARDS IN POOL"
+								desc="Rewards currently claimable in the pool."
+								onClick={() => {}}
+								decimals={2}
+							/>
+						</div>
+						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+							<SingleStatBox
+								value={
+									network.totalSellableDeposits && network.totalSellableDeposits > 0
+										? network.totalSellableDeposits
+										: null
+								}
+								label="sUSD in DEPOT QUEUE"
+								desc="Total sUSD for sale in the depot queue."
 								onClick={() => {}}
 								decimals={2}
 							/>
@@ -736,6 +788,7 @@ const ConnectedApp = connect(
 		setPeriod,
 		fetchNetworkData,
 		fetchNetworkFees,
+		fetchNetworkDepot,
 	}
 )(App);
 export default ConnectedApp;

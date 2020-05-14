@@ -374,7 +374,7 @@ class App extends React.Component {
 										: null
 								}
 								label="CURRENT REWARDS POOL"
-								desc="Total SNX rewards in the pool."
+								desc="Total SNX rewards claimable this period."
 								onClick={() => {}}
 								decimals={2}
 							/>

@@ -78,8 +78,7 @@ function* fetchNetworkFeesCall({ payload: { snxjs } }) {
 	const recentFeePeriod = yield fetchFeePeriodData(0, snxjs);
 	const olderFeePeriod = yield fetchFeePeriodData(1, snxjs);
 
-	const totalRewardsAvailable =
-		olderFeePeriod.rewardsToDistribute + recentFeePeriod.rewardsToDistribute;
+	const totalRewardsAvailable = recentFeePeriod.rewardsToDistribute;
 	const unclaimedFees = olderFeePeriod.feesToDistribute - olderFeePeriod.feesClaimed;
 	const unclaimedRewards = olderFeePeriod.rewardsToDistribute - olderFeePeriod.rewardsClaimed;
 	const totalFeesAvailable = olderFeePeriod.feesToDistribute + recentFeePeriod.feesToDistribute;

@@ -335,13 +335,12 @@ class App extends React.Component {
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
-									network.totalRewardsAvailable && network.totalRewardsAvailable > 0
-										? network.totalRewardsAvailable
+									exchange.volume && exchange.volume.last24Hours > 0
+										? exchange.volume.last24Hours
 										: null
 								}
-								type="number"
-								label="CURRENT REWARDS POOL"
-								desc="Total SNX rewards claimable this period."
+								label="SYNTHETIX.EXCHANGE VOLUME"
+								desc="Synthetix.Exchange 24h trading volume."
 								onClick={() => {}}
 								decimals={0}
 							/>
@@ -362,25 +361,43 @@ class App extends React.Component {
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
-									exchange.volume && exchange.volume.last24Hours > 0
-										? exchange.volume.last24Hours
-										: null
+									network.unclaimedFees && network.unclaimedFees > 0 ? network.unclaimedFees : null
 								}
-								label="SYNTHETIX.EXCHANGE VOLUME"
-								desc="Synthetix.Exchange 24h trading volume."
+								label="UNCLAIMED FEES IN POOL"
+								desc="Trading fees currently claimable in the pool."
 								onClick={() => {}}
 								decimals={0}
 							/>
 						</div>
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
+								value={exchange.totalFeesGenerated > 0 ? exchange.totalFeesGenerated : null}
+								label="TOTAL FEES GENERATED"
+								desc="Fees generated since launch (Dec 2018)."
+								onClick={() => {}}
+								decimals={0}
+							/>
+						</div>
+						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+							<SingleStatBox
+								value={exchange.volume && exchange.volume.total > 0 ? exchange.volume.total : null}
+								label="SYNTHETIX.EXCHANGE TOTAL VOL."
+								desc="Synthetix.Exchange all time volume."
+								onClick={() => {}}
+								decimals={0}
+							/>
+						</div>
+
+						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+							<SingleStatBox
 								value={
-									network.totalSellableDeposits && network.totalSellableDeposits > 0
-										? network.totalSellableDeposits
+									network.totalRewardsAvailable && network.totalRewardsAvailable > 0
+										? network.totalRewardsAvailable
 										: null
 								}
-								label="sUSD in DEPOT QUEUE"
-								desc="Total sUSD for sale in the depot queue."
+								type="number"
+								label="CURRENT REWARDS POOL"
+								desc="Total SNX rewards claimable this period."
 								onClick={() => {}}
 								decimals={0}
 							/>
@@ -402,28 +419,12 @@ class App extends React.Component {
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
-									network.unclaimedFees && network.unclaimedFees > 0 ? network.unclaimedFees : null
+									network.totalSellableDeposits && network.totalSellableDeposits > 0
+										? network.totalSellableDeposits
+										: null
 								}
-								label="UNCLAIMED FEES IN POOL"
-								desc="Trading fees currently claimable in the pool."
-								onClick={() => {}}
-								decimals={0}
-							/>
-						</div>
-						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
-							<SingleStatBox
-								value={exchange.volume && exchange.volume.total > 0 ? exchange.volume.total : null}
-								label="SYNTHETIX.EXCHANGE TOTAL VOL."
-								desc="Synthetix.Exchange all time volume."
-								onClick={() => {}}
-								decimals={0}
-							/>
-						</div>
-						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
-							<SingleStatBox
-								value={exchange.totalFeesGenerated > 0 ? exchange.totalFeesGenerated : null}
-								label="TOTAL FEES GENERATED"
-								desc="Fees generated since launch (Dec 2018)."
+								label="sUSD in DEPOT QUEUE"
+								desc="Total sUSD for sale in the depot queue."
 								onClick={() => {}}
 								decimals={0}
 							/>

@@ -1,35 +1,35 @@
 import {
 	FETCH_OPEN_INTEREST_SUCCESS,
 	FETCH_TRADING_VOLUME_SUCCESS,
-	FETCH_EXCHANGE_TICKER_SUCCESS,
-	FETCH_UNISWAP_POOL_SUCCESS,
+	FETCH_UNISWAP_DATA_SUCCESS,
 } from '../actions/actionTypes';
 
 const initialState = {};
 
 export default (state = initialState, action) => {
 	switch (action.type) {
-	case FETCH_OPEN_INTEREST_SUCCESS:
-		return {
-			...state,
-			...action.payload.data.body,
-		};
-	case FETCH_TRADING_VOLUME_SUCCESS:
-		return {
-			...state,
-			...action.payload.data.body,
-		};
-	case FETCH_EXCHANGE_TICKER_SUCCESS:
-		return {
-			...state,
-			...action.payload.data.body,
-		};
-	case FETCH_UNISWAP_POOL_SUCCESS:
-		return {
-			...state,
-			...{ uniswap: action.payload.data.body },
-		};
-	default:
-		return state;
+		case FETCH_OPEN_INTEREST_SUCCESS:
+			const { openInterest, distribution } = action.payload.data.body;
+			return {
+				...state,
+				openInterest,
+				distribution,
+			};
+		case FETCH_TRADING_VOLUME_SUCCESS:
+			const { volume, totalFeesGenerated } = action.payload.data.body;
+			return {
+				...state,
+				volume,
+				totalFeesGenerated,
+			};
+		case FETCH_UNISWAP_DATA_SUCCESS:
+			const { rate, eth, synth } = action.payload.data.body;
+			return {
+				...state,
+				rate,
+				uniswap: { eth, synth },
+			};
+		default:
+			return state;
 	}
 };

@@ -373,6 +373,7 @@ class App extends React.Component {
 										? network.totalRewardsAvailable
 										: null
 								}
+								type="number"
 								label="CURRENT REWARDS POOL"
 								desc="Total SNX rewards claimable this period."
 								onClick={() => {}}
@@ -397,6 +398,7 @@ class App extends React.Component {
 										? network.unclaimedRewards
 										: null
 								}
+								type="number"
 								label="UNCLAIMED REWARDS IN POOL"
 								desc="SNX rewards currently claimable in the pool."
 								onClick={() => {}}

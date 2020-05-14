@@ -5,10 +5,6 @@ import './styles.sass';
 class HorizontalBarChart extends Component {
 	render() {
 		const { data, isLightMode } = this.props;
-		const max = data.reduce((acc, curr) => {
-			if (curr.z > acc) acc = curr.z;
-			return acc;
-		}, 0);
 		return (
 			<div className="horizontalBarChart">
 				<div className={`legend ${isLightMode ? 'legendDark' : ''}`}>
@@ -29,12 +25,18 @@ class HorizontalBarChart extends Component {
 							<div className="barWrapper">
 								<div
 									style={{
-										left: `calc(100% - ${(100 * synth.y) / max}% + 1px)`,
+										left: `calc(100% - ${(100 * synth.y) / (synth.x + synth.y)}% + 1px)`,
 									}}
 									className="bar"
 								>
-									<div style={{ width: (100 * synth.y) / max + '%' }} className="inverseSynthBar" />
-									<div style={{ width: (100 * synth.x) / max + '%' }} className="synthBar" />
+									<div
+										style={{ width: (100 * synth.y) / (synth.y + synth.x) + '%' }}
+										className="inverseSynthBar"
+									/>
+									<div
+										style={{ width: (100 * synth.x) / (synth.x + synth.y) + '%' }}
+										className="synthBar"
+									/>
 								</div>
 							</div>
 						</div>

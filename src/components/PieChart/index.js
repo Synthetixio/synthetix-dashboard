@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { VictoryPie } from 'victory';
 import './styles.sass';
 
-const LINE_COLOR = ['#D9AB44', '#D42351', '#53B167', '#42217E'];
+const LINE_COLOR = ['#D9AB44', '#D42351', '#53B167', '#42217E', '#00e2df'];
 
 class PieChart extends Component {
 	render() {

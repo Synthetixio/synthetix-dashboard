@@ -1,9 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
-import SNXMarkets from './pages/Markets/SNX';
-import sUSDMarkets from './pages/Markets/sUSD';
 import Dashboard from './pages/Dashboard';
 import { SynthetixJSContext } from './index';
 
@@ -56,15 +54,7 @@ class App extends React.Component {
 				<SynthetixJSContext.Consumer>
 					{snxjs => (
 						<BrowserRouter>
-							<Switch>
-								<Route
-									exact
-									path="/"
-									render={routeProps => <Dashboard {...routeProps} snxjs={snxjs} />}
-								/>
-								<Route path="/buy-susd" component={sUSDMarkets} />
-								<Route path="/buy-snx" component={SNXMarkets} />
-							</Switch>
+							<Route path="/" render={routeProps => <Dashboard {...routeProps} snxjs={snxjs} />} />
 						</BrowserRouter>
 					)}
 				</SynthetixJSContext.Consumer>

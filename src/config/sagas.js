@@ -1,12 +1,12 @@
 import { takeEvery, takeLatest, call, put, all } from 'redux-saga/effects';
+import snxData, { pageResults } from 'synthetix-data';
+import { SynthetixJs } from 'synthetix-js';
 
 import {
 	FETCH_CHARTS,
 	FETCH_CHARTS_SUCCESS,
 	FETCH_HAV_CURRENCY,
 	FETCH_NUSD_CURRENCY,
-	FETCH_COINMARKETCAP_HAV,
-	FETCH_COINMARKETCAP_NUSD,
 	FETCH_OPEN_INTEREST,
 	FETCH_OPEN_INTEREST_SUCCESS,
 	FETCH_TRADING_VOLUME,
@@ -15,29 +15,81 @@ import {
 	FETCH_UNISWAP_DATA_SUCCESS,
 	FETCH_NETWORK_DATA,
 	FETCH_NETWORK_DATA_SUCCESS,
+	FETCH_NETWORK_DEPOT,
+	FETCH_NETWORK_DEPOT_SUCCESS,
+	FETCH_NETWORK_FEES,
+	FETCH_NETWORK_FEES_SUCCESS,
 } from '../actions/actionTypes';
 
 import { doFetch } from './api';
-
-import snxData, { pageResults } from 'synthetix-data';
-import { SynthetixJs } from 'synthetix-js';
+import { getUniswapSusdData, getUniswapSnxData } from './helpers';
+import { generateEndTimestamp } from '../utils';
 
 const apiUri = process.env.API_URL || 'https://api.synthetix.io/api/';
-const uniswapGraph = 'https://api.thegraph.com/subgraphs/name/graphprotocol/uniswap';
+export const uniswapGraph = 'https://api.thegraph.com/subgraphs/name/graphprotocol/uniswap';
 
 //CHARTS
-function* fetchCharts() {
-	const fetchChartUri = apiUri + 'dataPoint/chartData';
-	const chartHistoricalData = yield call(doFetch, fetchChartUri);
+function* fetchUniswapChartsData({ payload: { period } }) {
+	const endTimestamp = generateEndTimestamp(period);
+	const sUSDExchangeData = yield getUniswapSusdData(endTimestamp);
+	const snxExchangeData = yield getUniswapSnxData(endTimestamp);
 
-	const fetchDashboardDataUri = apiUri + 'dataPoint/dashboardData';
-	const dashboardData = yield call(doFetch, fetchDashboardDataUri);
-
-	yield put({ type: FETCH_CHARTS_SUCCESS, payload: { chartHistoricalData, dashboardData } });
+	yield put({
+		type: FETCH_CHARTS_SUCCESS,
+		payload: {
+			data: {
+				snxExchangeData,
+				sUSDExchangeData,
+				period,
+			},
+		},
+	});
 }
 
 function* fetchChartsCall() {
-	yield takeEvery(FETCH_CHARTS, fetchCharts);
+	yield takeEvery(FETCH_CHARTS, fetchUniswapChartsData);
+}
+
+function* fetchFeePeriodData(period, snxjs) {
+	const newRecentFeePeriod = yield snxjs.FeePool.recentFeePeriods(period);
+	return {
+		feesToDistribute:
+			Number(snxjs.ethers.utils.formatEther(newRecentFeePeriod.feesToDistribute)) || 0,
+		feesClaimed: Number(snxjs.ethers.utils.formatEther(newRecentFeePeriod.feesClaimed)) || 0,
+		rewardsToDistribute:
+			Number(snxjs.ethers.utils.formatEther(newRecentFeePeriod.rewardsToDistribute)) || 0,
+		rewardsClaimed: Number(snxjs.ethers.utils.formatEther(newRecentFeePeriod.rewardsClaimed)) || 0,
+	};
+}
+
+// NETWORK
+function* fetchNetworkDepotCall({ payload: { snxjs } }) {
+	const depositsData = yield snxjs.Depot.totalSellableDeposits();
+	const totalSellableDeposits = Number(snxjs.ethers.utils.formatEther(depositsData)) || 0;
+	const data = { body: { totalSellableDeposits } };
+	yield put({
+		type: FETCH_NETWORK_DEPOT_SUCCESS,
+		payload: { data },
+	});
+}
+
+// NETWORK
+function* fetchNetworkFeesCall({ payload: { snxjs } }) {
+	const recentFeePeriod = yield fetchFeePeriodData(0, snxjs);
+	const olderFeePeriod = yield fetchFeePeriodData(1, snxjs);
+
+	const totalRewardsAvailable =
+		olderFeePeriod.rewardsToDistribute + recentFeePeriod.rewardsToDistribute;
+	const unclaimedFees = olderFeePeriod.feesToDistribute - olderFeePeriod.feesClaimed;
+	const unclaimedRewards = olderFeePeriod.rewardsToDistribute - olderFeePeriod.rewardsClaimed;
+	const totalFeesAvailable = olderFeePeriod.feesToDistribute + recentFeePeriod.feesToDistribute;
+	const data = {
+		body: { totalFeesAvailable, totalRewardsAvailable, unclaimedFees, unclaimedRewards },
+	};
+	yield put({
+		type: FETCH_NETWORK_FEES_SUCCESS,
+		payload: { data },
+	});
 }
 
 // NETWORK
@@ -182,14 +234,6 @@ function* fetchNUSDCurrencyCall() {
 	yield takeEvery(FETCH_NUSD_CURRENCY, fetchCurrency);
 }
 
-function* fetchCoinmarketcapHAVCall() {
-	yield takeEvery(FETCH_COINMARKETCAP_HAV, fetchCurrency);
-}
-
-function* fetchCoinmarketcapNUSDCall() {
-	yield takeEvery(FETCH_COINMARKETCAP_NUSD, fetchCurrency);
-}
-
 function* fetchOpenInterest() {
 	yield takeEvery(FETCH_OPEN_INTEREST, fetchExchangeOpenInterest);
 }
@@ -206,17 +250,25 @@ function* fetchNetworkData() {
 	yield takeLatest(FETCH_NETWORK_DATA, fetchNetworkDataCall);
 }
 
+function* fetchNetworkDepot() {
+	yield takeLatest(FETCH_NETWORK_DEPOT, fetchNetworkDepotCall);
+}
+
+function* fetchNetworkFees() {
+	yield takeLatest(FETCH_NETWORK_FEES, fetchNetworkFeesCall);
+}
+
 const rootSaga = function*() {
 	yield all([
 		fetchChartsCall(),
 		fetchHAVCurrencyCall(),
 		fetchNUSDCurrencyCall(),
-		fetchCoinmarketcapHAVCall(),
-		fetchCoinmarketcapNUSDCall(),
 		fetchOpenInterest(),
 		fetchTradingVolume(),
 		fetchUniswapDataCall(),
 		fetchNetworkData(),
+		fetchNetworkFees(),
+		fetchNetworkDepot(),
 	]);
 };
 

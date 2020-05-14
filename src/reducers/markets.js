@@ -40,28 +40,6 @@ export default (state = initialState, action) => {
 				...state,
 				errors: action.error,
 			};
-		/////////////////////////////////////////
-		case FETCH_COINMARKETCAP_HAV_SUCCESS:
-			return {
-				...state,
-				coinSNX: action.data.body,
-			};
-		case FETCH_COINMARKETCAP_HAV_ERROR:
-			return {
-				...state,
-				errors: action.error,
-			};
-		/////////////////////////////////////////
-		case FETCH_COINMARKETCAP_NUSD_SUCCESS:
-			return {
-				...state,
-				coinSUSD: action.data.body,
-			};
-		case FETCH_COINMARKETCAP_NUSD_ERROR:
-			return {
-				...state,
-				errors: action.error,
-			};
 
 		default:
 			return state;

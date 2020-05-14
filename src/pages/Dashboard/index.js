@@ -361,7 +361,7 @@ class App extends React.Component {
 										: null
 								}
 								label="CURRENT FEE POOL"
-								desc="Total fees in the pool."
+								desc="Total trading fees in the pool."
 								onClick={() => {}}
 								decimals={2}
 							/>
@@ -374,7 +374,7 @@ class App extends React.Component {
 										: null
 								}
 								label="CURRENT REWARDS POOL"
-								desc="Total Rewards in the pool."
+								desc="Total SNX rewards in the pool."
 								onClick={() => {}}
 								decimals={2}
 							/>
@@ -385,7 +385,7 @@ class App extends React.Component {
 									network.unclaimedFees && network.unclaimedFees > 0 ? network.unclaimedFees : null
 								}
 								label="UNCLAIMED FEES IN POOL"
-								desc="Fees currently claimable in the pool."
+								desc="Trading fees currently claimable in the pool."
 								onClick={() => {}}
 								decimals={2}
 							/>
@@ -398,7 +398,7 @@ class App extends React.Component {
 										: null
 								}
 								label="UNCLAIMED REWARDS IN POOL"
-								desc="Rewards currently claimable in the pool."
+								desc="SNX rewards currently claimable in the pool."
 								onClick={() => {}}
 								decimals={2}
 							/>

@@ -331,6 +331,34 @@ class App extends React.Component {
 								decimals={2}
 							/>
 						</div>
+
+						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+							<SingleStatBox
+								value={
+									network.totalRewardsAvailable && network.totalRewardsAvailable > 0
+										? network.totalRewardsAvailable
+										: null
+								}
+								type="number"
+								label="CURRENT REWARDS POOL"
+								desc="Total SNX rewards claimable this period."
+								onClick={() => {}}
+								decimals={0}
+							/>
+						</div>
+						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+							<SingleStatBox
+								value={
+									network.totalFeesAvailable && network.totalFeesAvailable > 0
+										? network.totalFeesAvailable
+										: null
+								}
+								label="CURRENT FEE POOL"
+								desc="Total trading fees in the pool."
+								onClick={() => {}}
+								decimals={0}
+							/>
+						</div>
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
@@ -346,49 +374,15 @@ class App extends React.Component {
 						</div>
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
-								value={exchange.volume && exchange.volume.total > 0 ? exchange.volume.total : null}
-								label="SYNTHETIX.EXCHANGE TOTAL VOL."
-								desc="Synthetix.Exchange all time volume."
+								value={
+									network.totalSellableDeposits && network.totalSellableDeposits > 0
+										? network.totalSellableDeposits
+										: null
+								}
+								label="sUSD in DEPOT QUEUE"
+								desc="Total sUSD for sale in the depot queue."
 								onClick={() => {}}
 								decimals={0}
-							/>
-						</div>
-						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
-							<SingleStatBox
-								value={
-									network.totalFeesAvailable && network.totalFeesAvailable > 0
-										? network.totalFeesAvailable
-										: null
-								}
-								label="CURRENT FEE POOL"
-								desc="Total trading fees in the pool."
-								onClick={() => {}}
-								decimals={2}
-							/>
-						</div>
-						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
-							<SingleStatBox
-								value={
-									network.totalRewardsAvailable && network.totalRewardsAvailable > 0
-										? network.totalRewardsAvailable
-										: null
-								}
-								type="number"
-								label="CURRENT REWARDS POOL"
-								desc="Total SNX rewards claimable this period."
-								onClick={() => {}}
-								decimals={2}
-							/>
-						</div>
-						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
-							<SingleStatBox
-								value={
-									network.unclaimedFees && network.unclaimedFees > 0 ? network.unclaimedFees : null
-								}
-								label="UNCLAIMED FEES IN POOL"
-								desc="Trading fees currently claimable in the pool."
-								onClick={() => {}}
-								decimals={2}
 							/>
 						</div>
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
@@ -402,20 +396,27 @@ class App extends React.Component {
 								label="UNCLAIMED REWARDS IN POOL"
 								desc="SNX rewards currently claimable in the pool."
 								onClick={() => {}}
-								decimals={2}
+								decimals={0}
 							/>
 						</div>
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
-									network.totalSellableDeposits && network.totalSellableDeposits > 0
-										? network.totalSellableDeposits
-										: null
+									network.unclaimedFees && network.unclaimedFees > 0 ? network.unclaimedFees : null
 								}
-								label="sUSD in DEPOT QUEUE"
-								desc="Total sUSD for sale in the depot queue."
+								label="UNCLAIMED FEES IN POOL"
+								desc="Trading fees currently claimable in the pool."
 								onClick={() => {}}
-								decimals={2}
+								decimals={0}
+							/>
+						</div>
+						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+							<SingleStatBox
+								value={exchange.volume && exchange.volume.total > 0 ? exchange.volume.total : null}
+								label="SYNTHETIX.EXCHANGE TOTAL VOL."
+								desc="Synthetix.Exchange all time volume."
+								onClick={() => {}}
+								decimals={0}
 							/>
 						</div>
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
@@ -424,7 +425,7 @@ class App extends React.Component {
 								label="TOTAL FEES GENERATED"
 								desc="Fees generated since launch (Dec 2018)."
 								onClick={() => {}}
-								decimals={2}
+								decimals={0}
 							/>
 						</div>
 					</div>

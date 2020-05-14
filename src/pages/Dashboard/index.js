@@ -440,7 +440,7 @@ class App extends React.Component {
 									<span>(SYNTHETIX)</span>
 								</div>
 							</div>
-							<div className="level-right">
+							{/* <div className="level-right">
 								<div className="level-item">
 									<button
 										className={cx('button', 'is-link', {
@@ -465,7 +465,7 @@ class App extends React.Component {
 										Volume
 									</button>
 								</div>
-							</div>
+							</div> */}
 						</div>
 						<div className="columns">
 							<div className="column">
@@ -582,7 +582,7 @@ class App extends React.Component {
 									<span>(SYNTHS)</span>
 								</div>
 							</div>
-							<div className="level-right">
+							{/* <div className="level-right">
 								<div className="level-item">
 									<button
 										className={cx('button', 'is-link', {
@@ -607,7 +607,7 @@ class App extends React.Component {
 										Volume
 									</button>
 								</div>
-							</div>
+							</div> */}
 						</div>
 
 						<div className="columns">

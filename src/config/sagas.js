@@ -26,7 +26,6 @@ import { doFetch } from './api';
 import { getUniswapSusdData, getUniswapSnxData } from './helpers';
 import { generateEndTimestamp } from '../utils';
 
-const apiUri = process.env.API_URL || 'https://api.synthetix.io/api/';
 export const uniswapGraph = 'https://api.thegraph.com/subgraphs/name/graphprotocol/uniswap';
 
 //CHARTS

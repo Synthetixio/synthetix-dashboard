@@ -60,7 +60,7 @@ class App extends React.Component {
 
 		fetchHAV();
 		fetchNUSD();
-		fetchOpenInterest();
+		fetchOpenInterest(snxjs);
 		fetchTradingVolume();
 
 		fetchUniswapData(snxjs);
@@ -131,12 +131,12 @@ class App extends React.Component {
 		const formattedDistribution = [];
 		let totalDistribution = 0;
 
-		if (exchange.distribution) {
-			totalDistribution = exchange.distribution.reduce((acc, val) => acc + val.value, 0);
+		if (exchange.openInterest) {
+			totalDistribution = exchange.openInterest.reduce((acc, val) => acc + val.value, 0);
 			let cumulativeDistributionValue = 0;
 			let otherDistributionValue = 0;
 			let hasReached = false;
-			exchange.distribution
+			exchange.openInterest
 				.sort((a, b) => b.value - a.value)
 				.forEach(synth => {
 					if (!hasReached && cumulativeDistributionValue / totalDistribution < 0.9) {
@@ -183,7 +183,7 @@ class App extends React.Component {
 
 		const sETHPrice = exchange.rate ? exchange.rate : null;
 		const sETHMarketCap =
-			exchange.openInterest && exchange.openInterest.find(s => s.name === 'ETH');
+			exchange.openInterest && exchange.openInterest.find(s => s.name === 'sETH');
 
 		const sETHPool = exchange.uniswap;
 		const sETHtoETHRate = sETHPool ? parseFloat(sETHPool.eth) / parseFloat(sETHPool.synth) : null;
@@ -234,7 +234,7 @@ class App extends React.Component {
 						/>
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
-								value={sETHMarketCap ? sETHMarketCap.longs : null}
+								value={sETHMarketCap ? sETHMarketCap.value : null}
 								label="sETH MARKET CAP"
 								desc="The total value of all circulating sETH."
 								onClick={() => {}}
@@ -440,7 +440,7 @@ class App extends React.Component {
 									<span>(SYNTHETIX)</span>
 								</div>
 							</div>
-							{/* <div className="level-right">
+							<div className="level-right">
 								<div className="level-item">
 									<button
 										className={cx('button', 'is-link', {
@@ -462,10 +462,10 @@ class App extends React.Component {
 											this.setHavChart(HavvenVolume24h);
 										}}
 									>
-										Volume
+										24hr Volume (Cumulative)
 									</button>
 								</div>
-							</div> */}
+							</div>
 						</div>
 						<div className="columns">
 							<div className="column">
@@ -582,7 +582,7 @@ class App extends React.Component {
 									<span>(SYNTHS)</span>
 								</div>
 							</div>
-							{/* <div className="level-right">
+							<div className="level-right">
 								<div className="level-item">
 									<button
 										className={cx('button', 'is-link', {
@@ -604,10 +604,10 @@ class App extends React.Component {
 											this.setnUSDChart(NominVolume24h);
 										}}
 									>
-										Volume
+										24hr Volume (Cumulative)
 									</button>
 								</div>
-							</div> */}
+							</div>
 						</div>
 
 						<div className="columns">
@@ -699,14 +699,14 @@ class App extends React.Component {
 										<div className="chart-box-desc">Long/short interest on cryptoassets</div>
 									</div>
 
-									{exchange.openInterest ? (
+									{exchange.shortsAndLongs ? (
 										<HorizontalBarChart
 											isLightMode={theme === 'light'}
-											data={exchange.openInterest.map(synth => {
+											data={exchange.shortsAndLongs.map(synth => {
 												return {
-													x: synth.longs,
-													y: synth.total - synth.longs,
-													z: synth.total,
+													x: synth.longs || 0,
+													y: synth.shorts || 0,
+													z: (synth.longs || 0) + (synth.shorts || 0),
 													label: synth.name,
 												};
 											})}

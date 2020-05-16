@@ -11,7 +11,7 @@ import {
 	FETCH_COINMARKETCAP_NUSD,
 	FETCH_COINMARKETCAP_NUSD_SUCCESS,
 	FETCH_COINMARKETCAP_NUSD_ERROR,
-} from './actionTypes.js';
+} from './actionTypes';
 
 export const fetchHAV = () => ({
 	type: FETCH_HAV_CURRENCY,

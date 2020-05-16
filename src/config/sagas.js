@@ -1,3 +1,4 @@
+import orderBy from 'lodash/orderBy';
 import { takeEvery, takeLatest, call, put, all } from 'redux-saga/effects';
 import snxData, { pageResults } from 'synthetix-data';
 import { SynthetixJs } from 'synthetix-js';
@@ -156,10 +157,63 @@ function* fetchNetworkDataCall({ payload: { snxjs } }) {
 }
 
 // EXCHANGE
-function* fetchExchangeOpenInterest() {
-	const fetchUri = apiUri + 'exchange/openInterest';
-	const data = yield call(doFetch, fetchUri);
-	yield put({ type: FETCH_OPEN_INTEREST_SUCCESS, payload: { data } });
+function* fetchExchangeOpenInterest({ payload: { snxjs } }) {
+	const toUtf8Bytes = SynthetixJs.utils.formatBytes32String;
+	const {
+		contractSettings: { synths },
+	} = snxjs;
+	const synthsData = yield Promise.all(
+		synths.map(synth => ({
+			totalSupply: snxjs[synth.name].totalSupply(),
+			currencyKey: snxjs[synth.name].currencyKey(),
+		}))
+	);
+
+	const unsortedOpenInterest = [];
+	for (let i = 0; i < synthsData.length; i++) {
+		const totalSupply = yield synthsData[i].totalSupply;
+		const currencyKey = yield synthsData[i].currencyKey;
+		unsortedOpenInterest.push({
+			name: synths[i].name,
+			totalSupply: Number(snxjs.ethers.utils.formatEther(totalSupply)),
+			value: Number(
+				snxjs.ethers.utils.formatEther(
+					yield snxjs.ExchangeRates.effectiveValue(currencyKey, totalSupply, toUtf8Bytes('sUSD'))
+				)
+			),
+		});
+	}
+	const openInterest = orderBy(unsortedOpenInterest, 'value', 'desc');
+
+	const shortsAndLongs = orderBy(
+		openInterest.reduce((acc, curr) => {
+			const name = curr.name.slice(1);
+			const item =
+				curr.name[0] === 'i'
+					? {
+							name,
+							shorts: curr.value,
+					  }
+					: {
+							name,
+							longs: curr.value,
+					  };
+			const existingIndex = acc.findIndex(item => item.name === name);
+			if (existingIndex !== -1) {
+				acc[existingIndex] = { ...acc[existingIndex], ...item };
+			} else {
+				acc.push(item);
+			}
+			return acc;
+		}, []),
+		'longs',
+		'desc'
+	);
+
+	yield put({
+		type: FETCH_OPEN_INTEREST_SUCCESS,
+		payload: { data: { body: { shortsAndLongs, openInterest } } },
+	});
 }
 
 function* fetchExchangeTradingVolume() {

@@ -444,6 +444,15 @@ class App extends React.Component {
 								<div className="level-item">
 									<button
 										className={cx('button', 'is-link', {
+											'is-active': false,
+										})}
+									>
+										UNISWAP:
+									</button>
+								</div>
+								<div className="level-item">
+									<button
+										className={cx('button', 'is-link', {
 											'is-active': havChartName === HavvenPrice,
 										})}
 										onClick={() => {
@@ -462,7 +471,7 @@ class App extends React.Component {
 											this.setHavChart(HavvenVolume24h);
 										}}
 									>
-										24hr Volume (Cumulative)
+										Volume
 									</button>
 								</div>
 							</div>
@@ -586,6 +595,15 @@ class App extends React.Component {
 								<div className="level-item">
 									<button
 										className={cx('button', 'is-link', {
+											'is-active': false,
+										})}
+									>
+										UNISWAP:
+									</button>
+								</div>
+								<div className="level-item">
+									<button
+										className={cx('button', 'is-link', {
 											'is-active': nUSDChartName === NominPrice,
 										})}
 										onClick={() => {
@@ -604,7 +622,7 @@ class App extends React.Component {
 											this.setnUSDChart(NominVolume24h);
 										}}
 									>
-										24hr Volume (Cumulative)
+										Volume
 									</button>
 								</div>
 							</div>

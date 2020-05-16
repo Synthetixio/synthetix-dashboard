@@ -1,5 +1,6 @@
 import minBy from 'lodash/minBy';
 import maxBy from 'lodash/maxBy';
+import uniqBy from 'lodash/uniqBy';
 
 export const CHARTS = {
 	DAY: '1D',
@@ -91,10 +92,12 @@ export const formatNewChartsDataToMatchOld = (snxExchangeData, sUSDExchangeData)
 	// NOTE these methods are nearly identical but I am not going to get too abstract and make them
 	// a single method helper, as this part of the code will go away soon enough and it is not as
 	// readable when combining them in one method
-	const snxData = snxExchangeData.reduce(
+	const snxData = uniqBy(snxExchangeData, 'timestamp').reduce(
 		(
 			acc,
-			{ ethBalance, tokenBalance, tokenPriceUSD, timestamp, tradeVolumeEth, tradeVolumeUSD }
+			{ ethBalance, tokenBalance, tokenPriceUSD, timestamp, tradeVolumeEth, tradeVolumeToken },
+			index,
+			arr
 		) => {
 			const created = new Date(timestamp * 1000).toISOString();
 			acc.HavvenPrice.data.push({
@@ -102,9 +105,15 @@ export const formatNewChartsDataToMatchOld = (snxExchangeData, sUSDExchangeData)
 				usdValue: tokenPriceUSD,
 				created,
 			});
+			const usdValue =
+				index === arr.length - 1
+					? 0
+					: (tradeVolumeToken - arr[index + 1]['tradeVolumeToken']) * tokenPriceUSD;
+			const etherPrice = (tokenBalance / ethBalance) * tokenPriceUSD;
+			const ethValue = usdValue / etherPrice;
 			acc.HavvenVolume24h.data.push({
-				ethValue: tradeVolumeEth,
-				usdValue: tradeVolumeUSD,
+				ethValue,
+				usdValue,
 				created,
 			});
 			return acc;
@@ -112,10 +121,12 @@ export const formatNewChartsDataToMatchOld = (snxExchangeData, sUSDExchangeData)
 		{ HavvenPrice: { data: [] }, HavvenVolume24h: { data: [] } }
 	);
 
-	const sUSDData = sUSDExchangeData.reduce(
+	const sUSDData = uniqBy(sUSDExchangeData, 'timestamp').reduce(
 		(
 			acc,
-			{ ethBalance, tokenBalance, tokenPriceUSD, timestamp, tradeVolumeEth, tradeVolumeUSD }
+			{ ethBalance, tokenBalance, tokenPriceUSD, timestamp, tradeVolumeEth, tradeVolumeToken },
+			index,
+			arr
 		) => {
 			const created = new Date(timestamp * 1000).toISOString();
 			acc.NominPrice.data.push({
@@ -123,7 +134,17 @@ export const formatNewChartsDataToMatchOld = (snxExchangeData, sUSDExchangeData)
 				usdValue: tokenPriceUSD,
 				created,
 			});
-			acc.NominVolume24h.data.push({ ethValue: tradeVolumeEth, usdValue: tradeVolumeUSD, created });
+			const usdValue =
+				index === arr.length - 1
+					? 0
+					: (tradeVolumeToken - arr[index + 1]['tradeVolumeToken']) * tokenPriceUSD;
+			const etherPrice = (tokenBalance / ethBalance) * tokenPriceUSD;
+			const ethValue = usdValue / etherPrice;
+			acc.NominVolume24h.data.push({
+				ethValue,
+				usdValue,
+				created,
+			});
 			return acc;
 		},
 		{ NominPrice: { data: [] }, NominVolume24h: { data: [] } }

@@ -1,4 +1,4 @@
-import { FETCH_NETWORK_DATA, FETCH_NETWORK_FEES, FETCH_NETWORK_DEPOT } from './actionTypes.js';
+import { FETCH_NETWORK_DATA, FETCH_NETWORK_FEES, FETCH_NETWORK_DEPOT } from './actionTypes';
 
 export const fetchNetworkData = snxjs => {
 	return { type: FETCH_NETWORK_DATA, payload: { snxjs } };

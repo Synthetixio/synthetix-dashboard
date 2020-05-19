@@ -51,28 +51,6 @@ export default (state = initialState, action) => {
 							chartHistoricalData.body.HavvenPrice.data.length - 1
 						].created,
 					periodLoaded: period,
-					stats: {
-						havvenPriceCap24hDelta: chartHistoricalData.body.HavvenPrice.usd24hDelta,
-						havvenVolume24hDelta: chartHistoricalData.body.HavvenVolume24h.usd24hDelta,
-						nominPriceCap24hDelta: chartHistoricalData.body.NominPrice.usd24hDelta,
-						nominVolume24hDelta: chartHistoricalData.body.NominVolume24h.usd24hDelta,
-						havvenPriceCap:
-							chartHistoricalData.body.HavvenPrice.data[
-								chartHistoricalData.body.HavvenPrice.data.length - 1
-							].usdValue,
-						havvenVolume24h:
-							chartHistoricalData.body.HavvenVolume24h.data[
-								chartHistoricalData.body.HavvenVolume24h.data.length - 1
-							].usdValue,
-						nominPriceCap:
-							chartHistoricalData.body.NominPrice.data[
-								chartHistoricalData.body.NominPrice.data.length - 1
-							].usdValue,
-						nominVolume24h:
-							chartHistoricalData.body.NominVolume24h.data[
-								chartHistoricalData.body.NominVolume24h.data.length - 1
-							].usdValue,
-					},
 				};
 			} catch (e) {
 				return state;

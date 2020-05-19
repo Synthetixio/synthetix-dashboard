@@ -34,6 +34,7 @@ export function* getExchangeDataHelper({
 					'timestamp',
 					'tradeVolumeEth',
 					'tradeVolumeUSD',
+					'tradeVolumeToken',
 					'tokenPriceUSD',
 					'ethBalance',
 					'tokenBalance',

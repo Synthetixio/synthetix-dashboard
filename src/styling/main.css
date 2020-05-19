@@ -129,6 +129,7 @@ a.navbar-item {
   letter-spacing: 0.78px;
   line-height: 16px;
   cursor: pointer;
+  position: relative;
   border: none;
   background-color: transparent;
   padding: 0.7em;

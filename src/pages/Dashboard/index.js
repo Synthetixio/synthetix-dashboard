@@ -484,10 +484,7 @@ class App extends React.Component {
 						</div>
 						<div className="time-toggles is-hidden-tablet">
 							<button
-								onClick={() => {
-									console.log('clicked me day');
-									setPeriod(CHARTS.DAY, 'HAV');
-								}}
+								onClick={() => setPeriod(CHARTS.DAY, 'HAV')}
 								className={cx({
 									'is-active': havPeriod === CHARTS.DAY,
 								})}
@@ -497,10 +494,7 @@ class App extends React.Component {
 							{charts.periodLoaded === CHARTS.MONTH ? (
 								<>
 									<button
-										onClick={() => {
-											console.log('clicked me week');
-											setPeriod(CHARTS.WEEK, 'HAV');
-										}}
+										onClick={() => setPeriod(CHARTS.WEEK, 'HAV')}
 										className={cx({
 											'is-active': havPeriod === CHARTS.WEEK,
 										})}
@@ -588,10 +582,7 @@ class App extends React.Component {
 									<div className="chart-box__stat is-positive" />
 									<div className="time-toggles is-hidden-mobile">
 										<button
-											onClick={() => {
-												console.log('dollar chart click');
-												setPeriod(CHARTS.DAY, 'nUSD');
-											}}
+											onClick={() => setPeriod(CHARTS.DAY, 'nUSD')}
 											className={cx({
 												'is-active': nUSDPeriod === CHARTS.DAY,
 											})}

@@ -9,9 +9,8 @@ import PieChart from '../../components/PieChart';
 import HorizontalBarChart from '../../components/HorizontalBarChart';
 import TopNavBar from '../../components/TopNavBar';
 import SingleStatBox from '../../components/SingleStatBox';
-import SingleStat from '../../components/SingleStat';
 import { switchTheme } from '../../actions/theme';
-import { CHARTS, toPercent, isEmptyObj } from '../../utils';
+import { CHARTS, toPercent } from '../../utils';
 import cx from 'classnames';
 import numeral from 'numeral';
 import { scroller } from 'react-scroll';
@@ -37,7 +36,6 @@ class App extends React.Component {
 	}
 
 	state = {
-		activeSection: 'stats',
 		havButtons: { Usd: true, Eth: true },
 		havChartName: HAV_CHART.HavvenPrice,
 		nUSDChartName: nUSD_CHART.NominPrice,
@@ -67,7 +65,7 @@ class App extends React.Component {
 		fetchNetworkData(snxjs);
 		fetchNetworkFees(snxjs);
 		fetchNetworkDepot(snxjs);
-		if (isEmptyObj(charts.stats)) {
+		if (!charts.periodLoaded) {
 			fetchCharts(CHARTS.DAY);
 			fetchCharts(CHARTS.MONTH);
 		}
@@ -93,10 +91,6 @@ class App extends React.Component {
 		this.setState({ nUSDChartName: chartName });
 	};
 
-	setPeriod = (val, token) => {
-		this.props.setPeriod(val, token);
-	};
-
 	componentWillUnmount() {
 		clearInterval(this.state.intervalId);
 	}
@@ -113,10 +107,10 @@ class App extends React.Component {
 	}
 
 	render() {
-		const { charts, theme, exchange, network } = this.props;
+		const { charts, theme, exchange, network, setPeriod } = this.props;
 		const { havPeriod, nUSDPeriod } = charts;
-		const { activeSection, havButtons, havChartName, nUSDChartName, sethProxyAddress } = this.state;
-		const { stats, lastUpdated } = charts;
+		const { havButtons, havChartName, nUSDChartName, sethProxyAddress } = this.state;
+		const { lastUpdated } = charts;
 		const { HavvenVolume24h, HavvenPrice } = HAV_CHART;
 		const { NominVolume24h, NominPrice } = nUSD_CHART;
 
@@ -153,34 +147,6 @@ class App extends React.Component {
 			});
 		}
 
-		const havStats = {
-			[HAV_CHART.HavvenPrice]: {
-				value: snxMarketData.price,
-				trend: snxMarketData.percent_change_24h / 100,
-				decimals: 3,
-			},
-			[HAV_CHART.HavvenVolume24h]: {
-				value: snxMarketData.volume_24h,
-				trend: stats.havvenVolume24hDelta,
-				decimals: 0,
-			},
-		};
-		const currentHavStat = havStats[havChartName];
-
-		const nominStats = {
-			[nUSD_CHART.NominPrice]: {
-				value: susdMarketData.price,
-				trend: susdMarketData.percent_change_24h / 100,
-				decimals: 3,
-			},
-			[nUSD_CHART.NominVolume24h]: {
-				value: susdMarketData.volume_24h,
-				trend: stats.nominVolume24hDelta,
-				decimals: 0,
-			},
-		};
-		const currentNominStat = nominStats[nUSDChartName];
-
 		const sETHPrice = exchange.rate ? exchange.rate : null;
 		const sETHMarketCap =
 			exchange.openInterest && exchange.openInterest.find(s => s.name === 'sETH');
@@ -189,12 +155,12 @@ class App extends React.Component {
 		const sETHtoETHRate = sETHPool ? parseFloat(sETHPool.eth) / parseFloat(sETHPool.synth) : null;
 		return (
 			<div className="dashboard-root">
-				<TopNavBar selectedSection={activeSection} />
+				<TopNavBar selectedSection="stats" />
 				<div className="container main-content">
 					<div className="columns is-multiline" id="stats">
 						<SingleStatBox
 							value={snxMarketData ? snxMarketData.market_cap : null}
-							trend={stats.havvenPrice24hDelta * 100}
+							trend={null}
 							label="SNX MARKET CAP"
 							desc="The total value of all circulating SNX."
 							decimals={0}
@@ -214,7 +180,7 @@ class App extends React.Component {
 						/>
 						<SingleStatBox
 							value={susdMarketData ? susdMarketData.market_cap : null}
-							trend={stats.nominPrice24hDelta * 100}
+							trend={null}
 							label="sUSD MARKET CAP"
 							desc="The total value of all circulating sUSD."
 							decimals={0}
@@ -419,12 +385,12 @@ class App extends React.Component {
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
-									network.totalSellableDeposits && network.totalSellableDeposits > 0
-										? network.totalSellableDeposits
+									snxMarketData.volume_24h && snxMarketData.volume_24h > 0
+										? snxMarketData.volume_24h
 										: null
 								}
-								label="sUSD in DEPOT QUEUE"
-								desc="Total sUSD for sale in the depot queue."
+								label="24HR SNX Trading Volume"
+								desc="24HR SNX Trading Volume from Coinmarketcap API."
 								onClick={() => {}}
 								decimals={0}
 							/>
@@ -437,19 +403,10 @@ class App extends React.Component {
 							<div className="level-left is-hidden-mobile">
 								<div className="level-item title">
 									<h2>SNX</h2>
-									<span>(SYNTHETIX)</span>
+									<span>(UNISWAP DATA ONLY)</span>
 								</div>
 							</div>
 							<div className="level-right">
-								<div className="level-item">
-									<button
-										className={cx('button', 'is-link', {
-											'is-active': false,
-										})}
-									>
-										UNISWAP:
-									</button>
-								</div>
 								<div className="level-item">
 									<button
 										className={cx('button', 'is-link', {
@@ -479,10 +436,10 @@ class App extends React.Component {
 						<div className="columns">
 							<div className="column">
 								<div className="chart-box chart-box--main" id="hav-main-chart">
-									<SingleStat {...currentHavStat} />
+									<div className="chart-box__stat is-positive" />
 									<div className="time-toggles is-hidden-mobile">
 										<button
-											onClick={() => this.setPeriod(CHARTS.DAY, 'HAV')}
+											onClick={() => setPeriod(CHARTS.DAY, 'HAV')}
 											className={cx({
 												'is-active': havPeriod === CHARTS.DAY,
 											})}
@@ -492,7 +449,7 @@ class App extends React.Component {
 										{charts.periodLoaded === CHARTS.MONTH ? (
 											<>
 												<button
-													onClick={() => this.setPeriod(CHARTS.WEEK, 'HAV')}
+													onClick={() => setPeriod(CHARTS.WEEK, 'HAV')}
 													className={cx({
 														'is-active': havPeriod === CHARTS.WEEK,
 													})}
@@ -500,7 +457,7 @@ class App extends React.Component {
 													1W
 												</button>
 												<button
-													onClick={() => this.setPeriod(CHARTS.MONTH, 'HAV')}
+													onClick={() => setPeriod(CHARTS.MONTH, 'HAV')}
 													className={cx({
 														'is-active': havPeriod === CHARTS.MONTH,
 													})}
@@ -527,7 +484,10 @@ class App extends React.Component {
 						</div>
 						<div className="time-toggles is-hidden-tablet">
 							<button
-								onClick={() => this.setPeriod(CHARTS.DAY, 'HAV')}
+								onClick={() => {
+									console.log('clicked me day');
+									setPeriod(CHARTS.DAY, 'HAV');
+								}}
 								className={cx({
 									'is-active': havPeriod === CHARTS.DAY,
 								})}
@@ -537,7 +497,10 @@ class App extends React.Component {
 							{charts.periodLoaded === CHARTS.MONTH ? (
 								<>
 									<button
-										onClick={() => this.setPeriod(CHARTS.WEEK, 'HAV')}
+										onClick={() => {
+											console.log('clicked me week');
+											setPeriod(CHARTS.WEEK, 'HAV');
+										}}
 										className={cx({
 											'is-active': havPeriod === CHARTS.WEEK,
 										})}
@@ -545,7 +508,7 @@ class App extends React.Component {
 										1W
 									</button>
 									<button
-										onClick={() => this.setPeriod(CHARTS.MONTH, 'HAV')}
+										onClick={() => setPeriod(CHARTS.MONTH, 'HAV')}
 										className={cx({
 											'is-active': havPeriod === CHARTS.MONTH,
 										})}
@@ -588,19 +551,10 @@ class App extends React.Component {
 							<div className="level-left is-hidden-mobile">
 								<div className="level-item title">
 									<h2>sUSD</h2>
-									<span>(SYNTHS)</span>
+									<span>(UNISWAP DATA ONLY)</span>
 								</div>
 							</div>
 							<div className="level-right">
-								<div className="level-item">
-									<button
-										className={cx('button', 'is-link', {
-											'is-active': false,
-										})}
-									>
-										UNISWAP:
-									</button>
-								</div>
 								<div className="level-item">
 									<button
 										className={cx('button', 'is-link', {
@@ -631,10 +585,13 @@ class App extends React.Component {
 						<div className="columns">
 							<div className="column">
 								<div className="chart-box chart-box--main" id="nomin-main-chart">
-									<SingleStat {...currentNominStat} />
+									<div className="chart-box__stat is-positive" />
 									<div className="time-toggles is-hidden-mobile">
 										<button
-											onClick={() => this.setPeriod(CHARTS.DAY, 'nUSD')}
+											onClick={() => {
+												console.log('dollar chart click');
+												setPeriod(CHARTS.DAY, 'nUSD');
+											}}
 											className={cx({
 												'is-active': nUSDPeriod === CHARTS.DAY,
 											})}
@@ -644,7 +601,7 @@ class App extends React.Component {
 										{charts.periodLoaded === CHARTS.MONTH ? (
 											<>
 												<button
-													onClick={() => this.setPeriod(CHARTS.WEEK, 'nUSD')}
+													onClick={() => setPeriod(CHARTS.WEEK, 'nUSD')}
 													className={cx({
 														'is-active': nUSDPeriod === CHARTS.WEEK,
 													})}
@@ -652,7 +609,7 @@ class App extends React.Component {
 													1W
 												</button>
 												<button
-													onClick={() => this.setPeriod(CHARTS.MONTH, 'nUSD')}
+													onClick={() => setPeriod(CHARTS.MONTH, 'nUSD')}
 													className={cx({
 														'is-active': nUSDPeriod === CHARTS.MONTH,
 													})}
@@ -678,7 +635,7 @@ class App extends React.Component {
 						</div>
 						<div className="time-toggles is-hidden-tablet">
 							<button
-								onClick={() => this.setPeriod(CHARTS.DAY, 'nUSD')}
+								onClick={() => setPeriod(CHARTS.DAY, 'nUSD')}
 								className={cx({
 									'is-active': nUSDPeriod === CHARTS.DAY,
 								})}
@@ -688,7 +645,7 @@ class App extends React.Component {
 							{charts.periodLoaded === CHARTS.MONTH ? (
 								<>
 									<button
-										onClick={() => this.setPeriod(CHARTS.WEEK, 'nUSD')}
+										onClick={() => setPeriod(CHARTS.WEEK, 'nUSD')}
 										className={cx({
 											'is-active': nUSDPeriod === CHARTS.WEEK,
 										})}
@@ -696,7 +653,7 @@ class App extends React.Component {
 										1W
 									</button>
 									<button
-										onClick={() => this.setPeriod(CHARTS.MONTH, 'nUSD')}
+										onClick={() => setPeriod(CHARTS.MONTH, 'nUSD')}
 										className={cx({
 											'is-active': nUSDPeriod === CHARTS.MONTH,
 										})}

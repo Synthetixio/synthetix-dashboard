@@ -9,11 +9,11 @@ const initialState = {};
 export default (state = initialState, action) => {
 	switch (action.type) {
 		case FETCH_OPEN_INTEREST_SUCCESS:
-			const { openInterest, distribution } = action.payload.data.body;
+			const { openInterest, shortsAndLongs } = action.payload.data.body;
 			return {
 				...state,
 				openInterest,
-				distribution,
+				shortsAndLongs,
 			};
 		case FETCH_TRADING_VOLUME_SUCCESS:
 			const { volume, totalFeesGenerated } = action.payload.data.body;

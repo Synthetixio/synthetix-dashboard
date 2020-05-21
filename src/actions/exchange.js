@@ -1,7 +1,7 @@
-import { FETCH_OPEN_INTEREST, FETCH_TRADING_VOLUME, FETCH_UNISWAP_DATA } from './actionTypes.js';
+import { FETCH_OPEN_INTEREST, FETCH_TRADING_VOLUME, FETCH_UNISWAP_DATA } from './actionTypes';
 
-export const fetchOpenInterest = () => {
-	return { type: FETCH_OPEN_INTEREST };
+export const fetchOpenInterest = snxjs => {
+	return { type: FETCH_OPEN_INTEREST, payload: { snxjs } };
 };
 
 export const fetchTradingVolume = () => {

@@ -1,4 +1,4 @@
-import { FETCH_CHARTS, SET_PERIOD_CHART } from './actionTypes.js';
+import { FETCH_CHARTS, SET_PERIOD_CHART } from './actionTypes';
 
 export const fetchCharts = period => ({
 	type: FETCH_CHARTS,

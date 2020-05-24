@@ -3,30 +3,30 @@ import _assign from 'lodash/assign';
 // *
 // * Colors
 // *
-var yellow200 = '#FFF59D';
-var deepOrange600 = '#F4511E';
-var lime300 = '#DCE775';
-var lightGreen500 = '#8BC34A';
-var teal700 = '#00796B';
-var cyan900 = '#006064';
-var colors = [deepOrange600, yellow200, lime300, lightGreen500, teal700, cyan900];
-var blueGrey50 = '#ECEFF1';
-var blueGrey300 = '#90A4AE';
-var blueGrey700 = '#455A64';
-var grey900 = '#212121';
-var lightBlue = '#30A1D6';
-var white = '#FFFFFF';
+const yellow200 = '#FFF59D';
+const deepOrange600 = '#F4511E';
+const lime300 = '#DCE775';
+const lightGreen500 = '#8BC34A';
+const teal700 = '#00796B';
+const cyan900 = '#006064';
+const colors = [deepOrange600, yellow200, lime300, lightGreen500, teal700, cyan900];
+const blueGrey50 = '#ECEFF1';
+const blueGrey300 = '#90A4AE';
+const blueGrey700 = '#455A64';
+const grey900 = '#212121';
+const lightBlue = '#30A1D6';
+const white = '#FFFFFF';
 // *
 // * Typography
 // *
-var sansSerif = "'Roboto', 'Helvetica Neue', Helvetica, sans-serif";
-var letterSpacing = 'normal';
-var fontSize = 12;
+const sansSerif = "'Roboto', 'Helvetica Neue', Helvetica, sans-serif";
+const letterSpacing = 'normal';
+const fontSize = 12;
 // *
 // * Layout
 // *
-var padding = 8;
-var baseProps = {
+const padding = 8;
+const baseProps = {
 	width: 350,
 	height: 350,
 	padding: 50,
@@ -34,7 +34,7 @@ var baseProps = {
 // *
 // * Labels
 // *
-var baseLabelStyles = {
+const baseLabelStyles = {
 	fontFamily: sansSerif,
 	fontSize: fontSize,
 	letterSpacing: letterSpacing,
@@ -44,13 +44,13 @@ var baseLabelStyles = {
 	strokeWidth: 0,
 };
 
-var centeredLabelStyles = _assign({ textAnchor: 'middle' }, baseLabelStyles);
+const centeredLabelStyles = _assign({ textAnchor: 'middle' }, baseLabelStyles);
 // *
 // * Strokes
 // *
-var strokeDasharray = '1, 4';
-var strokeLinecap = 'round';
-var strokeLinejoin = 'round';
+const strokeDasharray = '1, 4';
+const strokeLinecap = 'round';
+const strokeLinejoin = 'round';
 
 export default {
 	area: _assign(

@@ -15,6 +15,12 @@ The `master` branch automatically deploys to https://dashboard.synthetix.io.
 npm i
 ```
 
+## Format
+
+```sh
+npm run format
+```
+
 ## Run
 
 ```sh

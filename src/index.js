@@ -10,7 +10,7 @@ import { store } from './config/store';
 import './styling/bulma/bulma.sass';
 import './styling/main.sass';
 
-const storedThemeData = window.localStorage.getItem('havven-dashboard');
+const storedThemeData = window.localStorage.getItem('snx-dashboard');
 const data = JSON.parse(storedThemeData);
 const theme = data?.theme?.theme || 'dark';
 

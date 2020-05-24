@@ -6,7 +6,7 @@ import { SynthetixJs } from 'synthetix-js';
 import {
 	FETCH_CHARTS,
 	FETCH_CHARTS_SUCCESS,
-	FETCH_HAV_CURRENCY,
+	FETCH_SNX_CURRENCY,
 	FETCH_NUSD_CURRENCY,
 	FETCH_OPEN_INTEREST,
 	FETCH_OPEN_INTEREST_SUCCESS,
@@ -278,8 +278,8 @@ function* fetchCurrency(action) {
 	}
 }
 
-function* fetchHAVCurrencyCall() {
-	yield takeEvery(FETCH_HAV_CURRENCY, fetchCurrency);
+function* fetchSNXCurrencyCall() {
+	yield takeEvery(FETCH_SNX_CURRENCY, fetchCurrency);
 }
 
 function* fetchNUSDCurrencyCall() {
@@ -313,7 +313,7 @@ function* fetchNetworkFees() {
 const rootSaga = function*() {
 	yield all([
 		fetchChartsCall(),
-		fetchHAVCurrencyCall(),
+		fetchSNXCurrencyCall(),
 		fetchNUSDCurrencyCall(),
 		fetchOpenInterest(),
 		fetchTradingVolume(),

@@ -1,23 +1,23 @@
 import { FETCH_CHARTS_SUCCESS, SET_PERIOD_CHART } from '../actions/actionTypes';
 import { CHARTS, parseChartData, formatNewChartsDataToMatchOld } from '../utils';
 
-export const chartTypes = ['HavvenPrice', 'NominPrice', 'HavvenVolume24h', 'NominVolume24h'];
+export const chartTypes = ['SnxPrice', 'sUSDPrice', 'SnxVolume24h', 'sUSDVolume24h'];
 
-const chartTypesHAV = ['HavvenPrice', 'HavvenVolume24h'];
+const chartTypesSNX = ['SnxPrice', 'SnxVolume24h'];
 
-const chartTypesNomin = ['NominPrice', 'NominVolume24h'];
+const chartTypessUSD = ['sUSDPrice', 'sUSDVolume24h'];
 
 const initialState = {
 	stats: {},
-	havPeriod: CHARTS.DAY,
-	nUSDPeriod: CHARTS.DAY,
+	snxPeriod: CHARTS.DAY,
+	sUSDPeriod: CHARTS.DAY,
 };
 
 const getInitialPeriod = chartType => {
-	if (chartTypesHAV.indexOf(chartType) >= 0) {
-		return initialState.havPeriod;
-	} else if (chartTypesNomin.indexOf(chartType) >= 0) {
-		return initialState.nUSDPeriod;
+	if (chartTypesSNX.indexOf(chartType) >= 0) {
+		return initialState.snxPeriod;
+	} else if (chartTypessUSD.indexOf(chartType) >= 0) {
+		return initialState.sUSDPeriod;
 	} else return CHARTS.DAY;
 };
 
@@ -44,11 +44,11 @@ export default (state = initialState, action) => {
 				return {
 					...chartData,
 					sourceData: chartHistoricalData.body,
-					havPeriod: state.havPeriod,
-					nUSDPeriod: state.nUSDPeriod,
+					snxPeriod: state.snxPeriod,
+					sUSDPeriod: state.sUSDPeriod,
 					lastUpdated:
-						chartHistoricalData.body.HavvenPrice.data[
-							chartHistoricalData.body.HavvenPrice.data.length - 1
+						chartHistoricalData.body.SnxPrice.data[
+							chartHistoricalData.body.SnxPrice.data.length - 1
 						].created,
 					periodLoaded: period,
 				};
@@ -60,9 +60,9 @@ export default (state = initialState, action) => {
 			try {
 				const { token, period } = action;
 				if (!token || !period) throw 'Error: Set chart period parameter missing!';
-				const types = token === 'HAV' ? chartTypesHAV : chartTypesNomin;
-				const havPeriod = token === 'HAV' ? period : state.havPeriod;
-				const nUSDPeriod = token === 'nUSD' ? period : state.nUSDPeriod;
+				const types = token === 'SNX' ? chartTypesSNX : chartTypessUSD;
+				const snxPeriod = token === 'SNX' ? period : state.snxPeriod;
+				const sUSDPeriod = token === 'sUSD' ? period : state.sUSDPeriod;
 
 				const chartData = types
 					.map(type => ({
@@ -73,8 +73,8 @@ export default (state = initialState, action) => {
 				return {
 					...state,
 					...chartData,
-					havPeriod,
-					nUSDPeriod,
+					snxPeriod,
+					sUSDPeriod,
 				};
 			} catch (e) {
 				return state;

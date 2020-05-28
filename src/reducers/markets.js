@@ -1,6 +1,6 @@
 import {
-	FETCH_HAV_CURRENCY_SUCCESS,
-	FETCH_HAV_CURRENCY_ERROR,
+	FETCH_SNX_CURRENCY_SUCCESS,
+	FETCH_SNX_CURRENCY_ERROR,
 	FETCH_NUSD_CURRENCY_SUCCESS,
 	FETCH_NUSD_CURRENCY_ERROR,
 } from '../actions/actionTypes';
@@ -15,12 +15,12 @@ const initialState = {
 
 export default (state = initialState, action) => {
 	switch (action.type) {
-		case FETCH_HAV_CURRENCY_SUCCESS:
+		case FETCH_SNX_CURRENCY_SUCCESS:
 			return {
 				...state,
 				snx: action.data.body.data.SNX,
 			};
-		case FETCH_HAV_CURRENCY_ERROR:
+		case FETCH_SNX_CURRENCY_ERROR:
 			return {
 				...state,
 				errors: action.error,

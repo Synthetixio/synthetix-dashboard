@@ -88,9 +88,6 @@ export const parseChartData = (sourceData, key, period = CHARTS.DAY) => {
 };
 
 export const formatNewChartsDataToMatchOld = (snxExchangeData, sUSDExchangeData) => {
-	// NOTE these methods are nearly identical but I am not going to get too abstract and make them
-	// a single method helper, as this part of the code will go away soon enough and it is not as
-	// readable when combining them in one method
 	const snxData = uniqBy(snxExchangeData, 'timestamp').reduce(
 		(
 			acc,
@@ -99,7 +96,7 @@ export const formatNewChartsDataToMatchOld = (snxExchangeData, sUSDExchangeData)
 			arr
 		) => {
 			const created = new Date(timestamp * 1000).toISOString();
-			acc.HavvenPrice.data.push({
+			acc.SnxPrice.data.push({
 				ethValue: ethBalance / tokenBalance,
 				usdValue: tokenPriceUSD,
 				created,
@@ -110,14 +107,14 @@ export const formatNewChartsDataToMatchOld = (snxExchangeData, sUSDExchangeData)
 					: (tradeVolumeToken - arr[index + 1]['tradeVolumeToken']) * tokenPriceUSD;
 			const etherPrice = (tokenBalance / ethBalance) * tokenPriceUSD;
 			const ethValue = usdValue / etherPrice;
-			acc.HavvenVolume24h.data.push({
+			acc.SnxVolume24h.data.push({
 				ethValue,
 				usdValue,
 				created,
 			});
 			return acc;
 		},
-		{ HavvenPrice: { data: [] }, HavvenVolume24h: { data: [] } }
+		{ SnxPrice: { data: [] }, SnxVolume24h: { data: [] } }
 	);
 
 	const sUSDData = uniqBy(sUSDExchangeData, 'timestamp').reduce(
@@ -128,7 +125,7 @@ export const formatNewChartsDataToMatchOld = (snxExchangeData, sUSDExchangeData)
 			arr
 		) => {
 			const created = new Date(timestamp * 1000).toISOString();
-			acc.NominPrice.data.push({
+			acc.sUSDPrice.data.push({
 				ethValue: ethBalance / tokenBalance,
 				usdValue: tokenPriceUSD,
 				created,
@@ -139,14 +136,14 @@ export const formatNewChartsDataToMatchOld = (snxExchangeData, sUSDExchangeData)
 					: (tradeVolumeToken - arr[index + 1]['tradeVolumeToken']) * tokenPriceUSD;
 			const etherPrice = (tokenBalance / ethBalance) * tokenPriceUSD;
 			const ethValue = usdValue / etherPrice;
-			acc.NominVolume24h.data.push({
+			acc.sUSDVolume24h.data.push({
 				ethValue,
 				usdValue,
 				created,
 			});
 			return acc;
 		},
-		{ NominPrice: { data: [] }, NominVolume24h: { data: [] } }
+		{ sUSDPrice: { data: [] }, sUSDVolume24h: { data: [] } }
 	);
 
 	return { body: Object.assign({}, snxData, sUSDData) };

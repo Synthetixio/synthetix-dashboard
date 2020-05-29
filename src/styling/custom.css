@@ -154,16 +154,16 @@ a.navbar-item {
   .button.is-link.is-active {
     border-radius: 3px; }
 
-#hav, #nusd {
+#snx, #susd {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem; }
-  #hav > div, #nusd > div {
+  #snx > div, #susd > div {
     border-radius: 4px;
     padding: 1.75rem; }
-  #hav .title h2, #nusd .title h2 {
+  #snx .title h2, #susd .title h2 {
     font-size: 56px;
     letter-spacing: -1.95px; }
-  #hav .title span, #nusd .title span {
+  #snx .title span, #susd .title span {
     display: block;
     font-size: 14px;
     letter-spacing: 1px;

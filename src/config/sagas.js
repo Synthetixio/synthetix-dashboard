@@ -6,7 +6,7 @@ import { SynthetixJs } from 'synthetix-js';
 import {
 	FETCH_CHARTS,
 	FETCH_CHARTS_SUCCESS,
-	FETCH_HAV_CURRENCY,
+	FETCH_SNX_CURRENCY,
 	FETCH_NUSD_CURRENCY,
 	FETCH_OPEN_INTEREST,
 	FETCH_OPEN_INTEREST_SUCCESS,
@@ -23,7 +23,7 @@ import {
 } from '../actions/actionTypes';
 
 import { doFetch } from './api';
-import { getUniswapSusdData, getUniswapSnxData } from './helpers';
+import { getUniswapSusdData, getUniswapSnxData, synthSummaryUtilContract } from './helpers';
 import { generateEndTimestamp } from '../utils';
 
 export const uniswapGraph = 'https://api.thegraph.com/subgraphs/name/graphprotocol/uniswap';
@@ -157,29 +157,20 @@ function* fetchNetworkDataCall({ payload: { snxjs } }) {
 
 // EXCHANGE
 function* fetchExchangeOpenInterest({ payload: { snxjs } }) {
-	const toUtf8Bytes = SynthetixJs.utils.formatBytes32String;
-	const {
-		contractSettings: { synths },
-	} = snxjs;
-	const synthsData = yield Promise.all(
-		synths.map(synth => ({
-			totalSupply: snxjs[synth.name].totalSupply(),
-			currencyKey: snxjs[synth.name].currencyKey(),
-		}))
+	const SynthSummaryUtil = new snxjs.ethers.Contract(
+		synthSummaryUtilContract.address,
+		synthSummaryUtilContract.abi,
+		snxjs.contractSettings.provider
 	);
 
+	const synthTotalSupplies = yield SynthSummaryUtil.synthsTotalSupplies();
+
 	const unsortedOpenInterest = [];
-	for (let i = 0; i < synthsData.length; i++) {
-		const totalSupply = yield synthsData[i].totalSupply;
-		const currencyKey = yield synthsData[i].currencyKey;
+	for (let i = 0; i < synthTotalSupplies[0].length; i++) {
 		unsortedOpenInterest.push({
-			name: synths[i].name,
-			totalSupply: Number(snxjs.ethers.utils.formatEther(totalSupply)),
-			value: Number(
-				snxjs.ethers.utils.formatEther(
-					yield snxjs.ExchangeRates.effectiveValue(currencyKey, totalSupply, toUtf8Bytes('sUSD'))
-				)
-			),
+			name: snxjs.ethers.utils.parseBytes32String(synthTotalSupplies[0][i]),
+			totalSupply: Number(snxjs.ethers.utils.formatEther(synthTotalSupplies[1][i])),
+			value: Number(snxjs.ethers.utils.formatEther(synthTotalSupplies[2][i])),
 		});
 	}
 	const openInterest = orderBy(unsortedOpenInterest, 'value', 'desc');
@@ -278,8 +269,8 @@ function* fetchCurrency(action) {
 	}
 }
 
-function* fetchHAVCurrencyCall() {
-	yield takeEvery(FETCH_HAV_CURRENCY, fetchCurrency);
+function* fetchSNXCurrencyCall() {
+	yield takeEvery(FETCH_SNX_CURRENCY, fetchCurrency);
 }
 
 function* fetchNUSDCurrencyCall() {
@@ -313,7 +304,7 @@ function* fetchNetworkFees() {
 const rootSaga = function*() {
 	yield all([
 		fetchChartsCall(),
-		fetchHAVCurrencyCall(),
+		fetchSNXCurrencyCall(),
 		fetchNUSDCurrencyCall(),
 		fetchOpenInterest(),
 		fetchTradingVolume(),

@@ -12,7 +12,7 @@ import {
 } from 'victory';
 import GraphTooltip from '../Tooltip';
 import format from 'date-fns/format';
-import havvenTheme from '../../config/theme';
+import snxTheme from '../../config/theme';
 import { CHARTS } from '../../utils';
 
 const CURRENCY_MAP = ['Usd', 'Eth'];
@@ -23,7 +23,7 @@ const LINE_COLOR = {
 	purple: '#42217E',
 };
 
-export default class HavvenChart extends React.Component {
+export default class SnxChart extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -268,7 +268,7 @@ export default class HavvenChart extends React.Component {
 								domain={{ y: [minValueEth * 0.9, maxValueEth * 1.1] }}
 								scale={{ x: 'time' }}
 								padding={{ bottom: 40 }}
-								theme={havvenTheme}
+								theme={snxTheme}
 								domainPadding={{ y: [0, 20] }}
 								width={this.state.windowWidth}
 							>
@@ -317,7 +317,7 @@ export default class HavvenChart extends React.Component {
 								domain={{ y: [minValue * 0.9, maxValue * 1.1] }}
 								scale={{ x: 'time' }}
 								padding={{ bottom: 40 }}
-								theme={havvenTheme}
+								theme={snxTheme}
 								domainPadding={{ y: [0, 20] }}
 								width={this.state.windowWidth}
 							>
@@ -369,7 +369,7 @@ export default class HavvenChart extends React.Component {
 							domain={{ y: [minValue * 0.9, maxValue * 1.1] }}
 							scale={{ x: 'time' }}
 							padding={{ bottom: 40 }}
-							theme={havvenTheme}
+							theme={snxTheme}
 							domainPadding={{ y: [0, 20] }}
 							width={this.state.windowWidth}
 							containerComponent={
@@ -441,6 +441,6 @@ export default class HavvenChart extends React.Component {
 	}
 }
 
-HavvenChart.propTypes = {
+SnxChart.propTypes = {
 	charts: PropTypes.object,
 };

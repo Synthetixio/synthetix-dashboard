@@ -18,7 +18,7 @@ class TopNavBar extends React.Component {
 										? '/images/synthetix-logo.svg'
 										: '/images/synthetix-logo_black.svg'
 								}`}
-								alt="Havven"
+								alt="Snx"
 								width="180"
 							/>
 						</a>

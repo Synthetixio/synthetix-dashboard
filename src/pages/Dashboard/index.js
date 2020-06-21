@@ -1,6 +1,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchCharts, setPeriod } from '../../actions/charts';
+import {
+	fetchSnxCharts,
+	fetchSusdCharts,
+	fetchSynthsCharts,
+	setPeriod,
+} from '../../actions/charts';
 import { fetchSNX, fetchNUSD } from '../../actions/markets';
 import { fetchOpenInterest, fetchTradingVolume, fetchUniswapData } from '../../actions/exchange';
 import { fetchNetworkData, fetchNetworkFees, fetchNetworkDepot } from '../../actions/network';
@@ -23,11 +28,18 @@ const sUSD_CHART = {
 	sUSDPrice: 'sUSDPrice',
 	sUSDVolume24h: 'sUSDVolume24h',
 };
+const SYNTHS_CHART = {
+	synthsFees: 'synthsFees',
+	synthsVolume: 'synthsVolume',
+};
+
 const DECIMALS = {
 	SnxPrice: { Val: 3, Eth: 7 },
 	SnxVolume24h: { Val: 0, Eth: 0 },
 	sUSDPrice: { Val: 3 },
 	sUSDVolume24h: { Val: 2 },
+	synthsFees: { Val: 2 },
+	synthsVolume: { Val: 2 },
 };
 
 class App extends React.Component {
@@ -39,6 +51,7 @@ class App extends React.Component {
 		snxButtons: { Usd: true, Eth: true },
 		snxChartName: SNX_CHART.SnxPrice,
 		sUSDChartName: sUSD_CHART.sUSDPrice,
+		synthsChartName: SYNTHS_CHART.synthsVolume,
 	};
 
 	componentDidMount() {
@@ -46,7 +59,9 @@ class App extends React.Component {
 			snxjs,
 			fetchSNX,
 			fetchNUSD,
-			fetchCharts,
+			fetchSynthsCharts,
+			fetchSusdCharts,
+			fetchSnxCharts,
 			fetchOpenInterest,
 			fetchTradingVolume,
 			fetchUniswapData,
@@ -65,12 +80,24 @@ class App extends React.Component {
 		fetchNetworkData(snxjs);
 		fetchNetworkFees(snxjs);
 		fetchNetworkDepot(snxjs);
-		if (!charts.periodLoaded) {
-			fetchCharts(CHARTS.DAY);
-			fetchCharts(CHARTS.MONTH);
+
+		const fetchDailyCharts = () => {
+			fetchSynthsCharts(CHARTS.DAY);
+			fetchSusdCharts(CHARTS.DAY);
+			fetchSnxCharts(CHARTS.DAY);
+		};
+		const fetchMonthlyCharts = () => {
+			fetchSynthsCharts(CHARTS.MONTH);
+			fetchSusdCharts(CHARTS.MONTH);
+			fetchSnxCharts(CHARTS.MONTH);
+		};
+
+		if (!charts.chartsStartedLoading) {
+			fetchDailyCharts();
+			fetchMonthlyCharts();
 		}
 		this.setState({
-			intervalId: setInterval(() => fetchCharts(CHARTS.MONTH), 10 * 60 * 1000),
+			intervalId: setInterval(() => fetchMonthlyCharts(), 10 * 60 * 1000),
 			sethProxyAddress: snxjs.sETH.contract.address,
 		});
 	}
@@ -89,6 +116,10 @@ class App extends React.Component {
 
 	setsUSDChart = chartName => {
 		this.setState({ sUSDChartName: chartName });
+	};
+
+	setSynthsChart = chartName => {
+		this.setState({ synthsChartName: chartName });
 	};
 
 	componentWillUnmount() {
@@ -111,11 +142,18 @@ class App extends React.Component {
 
 	render() {
 		const { charts, theme, exchange, network, setPeriod } = this.props;
-		const { snxPeriod, sUSDPeriod } = charts;
-		const { snxButtons, snxChartName, sUSDChartName, sethProxyAddress } = this.state;
-		const { lastUpdated } = charts;
+		const { snxPeriod, sUSDPeriod, synthsPeriod } = charts;
+		const {
+			snxButtons,
+			snxChartName,
+			sUSDChartName,
+			synthsChartName,
+			sethProxyAddress,
+		} = this.state;
+		const { lastUpdatedSnx, lastUpdatedSusd, lastUpdatedSynths } = charts;
 		const { SnxVolume24h, SnxPrice } = SNX_CHART;
 		const { sUSDVolume24h, sUSDPrice } = sUSD_CHART;
+		const { synthsVolume, synthsFees } = SYNTHS_CHART;
 
 		const { snxMarketData, susdMarketData } = this.getMarketsData();
 		const scrollToOptions = {
@@ -315,7 +353,10 @@ class App extends React.Component {
 								}
 								label="SYNTHETIX.EXCHANGE VOLUME"
 								desc="Synthetix.Exchange 24h trading volume."
-								onClick={() => {}}
+								onClick={() => {
+									this.setSynthsChart(synthsVolume);
+									scroller.scrollTo('synths-main-chart', scrollToOptions);
+								}}
 								decimals={0}
 							/>
 						</div>
@@ -348,7 +389,10 @@ class App extends React.Component {
 								value={exchange.totalFeesGenerated > 0 ? exchange.totalFeesGenerated : null}
 								label="TOTAL FEES GENERATED"
 								desc="Fees generated since launch (Dec 2018)."
-								onClick={() => {}}
+								onClick={() => {
+									this.setSynthsChart(synthsFees);
+									scroller.scrollTo('synths-main-chart', scrollToOptions);
+								}}
 								decimals={0}
 							/>
 						</div>
@@ -357,7 +401,10 @@ class App extends React.Component {
 								value={exchange.volume && exchange.volume.total > 0 ? exchange.volume.total : null}
 								label="SYNTHETIX.EXCHANGE TOTAL VOL."
 								desc="Synthetix.Exchange all time volume."
-								onClick={() => {}}
+								onClick={() => {
+									this.setSynthsChart(synthsVolume);
+									scroller.scrollTo('synths-main-chart', scrollToOptions);
+								}}
 								decimals={0}
 							/>
 						</div>
@@ -454,7 +501,7 @@ class App extends React.Component {
 										>
 											1D
 										</button>
-										{charts.periodLoaded === CHARTS.MONTH ? (
+										{charts.snxPeriodLoaded === CHARTS.MONTH ? (
 											<>
 												<button
 													onClick={() => setPeriod(CHARTS.WEEK, 'SNX')}
@@ -483,7 +530,7 @@ class App extends React.Component {
 											decimals={DECIMALS[snxChartName]}
 											fullSize={true}
 											colorGradient="green"
-											lastUpdated={lastUpdated}
+											lastUpdated={lastUpdatedSnx}
 											currencySwitch={this.state.snxButtons}
 										/>
 									</div>
@@ -499,7 +546,7 @@ class App extends React.Component {
 							>
 								1D
 							</button>
-							{charts.periodLoaded === CHARTS.MONTH ? (
+							{charts.snxPeriodLoaded === CHARTS.MONTH ? (
 								<>
 									<button
 										onClick={() => setPeriod(CHARTS.WEEK, 'SNX')}
@@ -597,7 +644,7 @@ class App extends React.Component {
 										>
 											1D
 										</button>
-										{charts.periodLoaded === CHARTS.MONTH ? (
+										{charts.sUSDPeriodLoaded === CHARTS.MONTH ? (
 											<>
 												<button
 													onClick={() => setPeriod(CHARTS.WEEK, 'sUSD')}
@@ -626,7 +673,7 @@ class App extends React.Component {
 											decimals={DECIMALS[sUSDChartName]}
 											fullSize={true}
 											colorGradient="green"
-											lastUpdated={lastUpdated}
+											lastUpdated={lastUpdatedSusd}
 										/>
 									</div>
 								</div>
@@ -641,7 +688,7 @@ class App extends React.Component {
 							>
 								1D
 							</button>
-							{charts.periodLoaded === CHARTS.MONTH ? (
+							{charts.sUSDPeriodLoaded === CHARTS.MONTH ? (
 								<>
 									<button
 										onClick={() => setPeriod(CHARTS.WEEK, 'sUSD')}
@@ -655,6 +702,121 @@ class App extends React.Component {
 										onClick={() => setPeriod(CHARTS.MONTH, 'sUSD')}
 										className={cx({
 											'is-active': sUSDPeriod === CHARTS.MONTH,
+										})}
+									>
+										1M
+									</button>
+								</>
+							) : null}
+						</div>
+					</div>
+				</div>
+				<div className="container chart-section" id="synths">
+					<div>
+						<div className="level is-mobile chart-section__heading">
+							<div className="level-left is-hidden-mobile">
+								<div className="level-item title">
+									<h2>Synths</h2>
+								</div>
+							</div>
+							<div className="level-right">
+								<div className="level-item">
+									<button
+										className={cx('button', 'is-link', {
+											'is-active': synthsChartName === synthsVolume,
+										})}
+										onClick={() => {
+											this.setSynthsChart(synthsVolume);
+										}}
+									>
+										Volume
+									</button>
+								</div>
+								<div className="level-item">
+									<button
+										className={cx('button', 'is-link', {
+											'is-active': synthsChartName === synthsFees,
+										})}
+										onClick={() => {
+											this.setSynthsChart(synthsFees);
+										}}
+									>
+										Fees
+									</button>
+								</div>
+							</div>
+						</div>
+						<div className="columns">
+							<div className="column">
+								<div className="chart-box chart-box--main" id="synths-main-chart">
+									<div className="chart-box__stat is-positive" />
+									<div className="time-toggles is-hidden-mobile">
+										<button
+											onClick={() => setPeriod(CHARTS.DAY, 'synths')}
+											className={cx({
+												'is-active': synthsPeriod === CHARTS.DAY,
+											})}
+										>
+											1D
+										</button>
+										{charts.synthsPeriodLoaded === CHARTS.MONTH ? (
+											<>
+												<button
+													onClick={() => setPeriod(CHARTS.WEEK, 'synths')}
+													className={cx({
+														'is-active': synthsPeriod === CHARTS.WEEK,
+													})}
+												>
+													1W
+												</button>
+												<button
+													onClick={() => setPeriod(CHARTS.MONTH, 'synths')}
+													className={cx({
+														'is-active': synthsPeriod === CHARTS.MONTH,
+													})}
+												>
+													1M
+												</button>
+											</>
+										) : null}
+									</div>
+									<div>
+										<Chart
+											isLightMode={theme === 'light'}
+											period={synthsPeriod}
+											info={charts[synthsChartName]}
+											decimals={DECIMALS[synthsChartName]}
+											fullSize={true}
+											colorGradient="green"
+											lastUpdated={lastUpdatedSynths}
+										/>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="time-toggles is-hidden-tablet">
+							<button
+								onClick={() => setPeriod(CHARTS.DAY, 'synths')}
+								className={cx({
+									'is-active': synthsPeriod === CHARTS.DAY,
+								})}
+							>
+								1D
+							</button>
+							{charts.synthsPeriodLoaded === CHARTS.MONTH ? (
+								<>
+									<button
+										onClick={() => setPeriod(CHARTS.WEEK, 'synths')}
+										className={cx({
+											'is-active': synthsPeriod === CHARTS.WEEK,
+										})}
+									>
+										1W
+									</button>
+									<button
+										onClick={() => setPeriod(CHARTS.MONTH, 'synths')}
+										className={cx({
+											'is-active': synthsPeriod === CHARTS.MONTH,
 										})}
 									>
 										1M
@@ -757,7 +919,9 @@ const ConnectedApp = connect(
 	mapStateToProps,
 	{
 		switchTheme,
-		fetchCharts,
+		fetchSynthsCharts,
+		fetchSusdCharts,
+		fetchSnxCharts,
 		fetchOpenInterest,
 		fetchTradingVolume,
 		fetchUniswapData,

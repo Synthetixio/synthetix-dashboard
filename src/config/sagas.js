@@ -4,8 +4,12 @@ import snxData, { pageResults } from 'synthetix-data';
 import { SynthetixJs } from 'synthetix-js';
 
 import {
-	FETCH_CHARTS,
-	FETCH_CHARTS_SUCCESS,
+	FETCH_SNX_CHARTS,
+	FETCH_SUSD_CHARTS,
+	FETCH_SYNTHS_CHARTS,
+	FETCH_SNX_CHARTS_SUCCESS,
+	FETCH_SUSD_CHARTS_SUCCESS,
+	FETCH_SYNTHS_CHARTS_SUCCESS,
 	FETCH_SNX_CURRENCY,
 	FETCH_NUSD_CURRENCY,
 	FETCH_OPEN_INTEREST,
@@ -23,22 +27,40 @@ import {
 } from '../actions/actionTypes';
 
 import { doFetch } from './api';
-import { getUniswapSusdData, getUniswapSnxData, synthSummaryUtilContract } from './helpers';
+import {
+	getUniswapSusdData,
+	getUniswapSnxData,
+	synthSummaryUtilContract,
+	getSynthsExchangeData,
+} from './helpers';
 import { generateEndTimestamp } from '../utils';
 
 export const uniswapGraph = 'https://api.thegraph.com/subgraphs/name/graphprotocol/uniswap';
 
 //CHARTS
-function* fetchUniswapChartsData({ payload: { period } }) {
+function* fetchUniswapSnxChartData({ payload: { period } }) {
 	const endTimestamp = generateEndTimestamp(period);
-	const sUSDExchangeData = yield getUniswapSusdData(endTimestamp);
 	const snxExchangeData = yield getUniswapSnxData(endTimestamp);
 
 	yield put({
-		type: FETCH_CHARTS_SUCCESS,
+		type: FETCH_SNX_CHARTS_SUCCESS,
 		payload: {
 			data: {
 				snxExchangeData,
+				period,
+			},
+		},
+	});
+}
+
+function* fetchUniswapSusdChartData({ payload: { period } }) {
+	const endTimestamp = generateEndTimestamp(period);
+	const sUSDExchangeData = yield getUniswapSusdData(endTimestamp);
+
+	yield put({
+		type: FETCH_SUSD_CHARTS_SUCCESS,
+		payload: {
+			data: {
 				sUSDExchangeData,
 				period,
 			},
@@ -46,8 +68,30 @@ function* fetchUniswapChartsData({ payload: { period } }) {
 	});
 }
 
-function* fetchChartsCall() {
-	yield takeEvery(FETCH_CHARTS, fetchUniswapChartsData);
+function* fetchSynthetixSynthsChartData({ payload: { period } }) {
+	const synthsExchangeData = yield getSynthsExchangeData(period);
+
+	yield put({
+		type: FETCH_SYNTHS_CHARTS_SUCCESS,
+		payload: {
+			data: {
+				synthsExchangeData,
+				period,
+			},
+		},
+	});
+}
+
+function* fetchSnxChartsCall() {
+	yield takeEvery(FETCH_SNX_CHARTS, fetchUniswapSnxChartData);
+}
+
+function* fetchSusdChartsCall() {
+	yield takeEvery(FETCH_SUSD_CHARTS, fetchUniswapSusdChartData);
+}
+
+function* fetchSynthsChartsCall() {
+	yield takeEvery(FETCH_SYNTHS_CHARTS, fetchSynthetixSynthsChartData);
 }
 
 function* fetchFeePeriodData(period, snxjs) {
@@ -303,7 +347,9 @@ function* fetchNetworkFees() {
 
 const rootSaga = function*() {
 	yield all([
-		fetchChartsCall(),
+		fetchSnxChartsCall(),
+		fetchSusdChartsCall(),
+		fetchSynthsChartsCall(),
 		fetchSNXCurrencyCall(),
 		fetchNUSDCurrencyCall(),
 		fetchOpenInterest(),

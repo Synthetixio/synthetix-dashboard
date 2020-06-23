@@ -100,7 +100,10 @@ class App extends React.Component {
 		const data = { snxMarketData: {}, susdMarketData: {} };
 		['snx', 'susd'].forEach(currency => {
 			if (markets[currency] && markets[currency].quote && markets[currency].quote.USD) {
-				data[`${currency}MarketData`] = { ...markets[currency].quote.USD };
+				data[`${currency}MarketData`] = {
+					...markets[currency].quote.USD,
+					total_supply: markets[currency].total_supply,
+				};
 			}
 		});
 		return data;
@@ -247,10 +250,15 @@ class App extends React.Component {
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
-									network.totalIssuedSynths && snxMarketData && snxMarketData.market_cap > 0
-										? Number((snxMarketData.market_cap / network.totalIssuedSynths) * 100).toFixed(
-												2
-										  )
+									network.totalIssuedSynths &&
+									snxMarketData &&
+									snxMarketData.total_supply &&
+									snxMarketData.price
+										? Number(
+												((snxMarketData.price * snxMarketData.total_supply) /
+													network.totalIssuedSynths) *
+													100
+										  ).toFixed(2)
 										: null
 								}
 								type="percentage"

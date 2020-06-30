@@ -30,7 +30,7 @@
 		"resolve-url-loader": "^2.3.0",
 		"sass-loader": "^7.0.3",
 		"synthetix-data": "2.1.7",
-		"synthetix-js": "2.21.8",
+		"synthetix-js": "^2.23.3",
 		"victory": "^30.0.0"
 	},
 	"devDependencies": {

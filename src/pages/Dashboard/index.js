@@ -1,6 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchCharts, setPeriod } from '../../actions/charts';
+import {
+	fetchBinaryOptionsMarkets,
+	fetchBinaryOptionsTransactions,
+} from '../../actions/binaryOptions';
 import { fetchSNX, fetchNUSD } from '../../actions/markets';
 import { fetchOpenInterest, fetchTradingVolume, fetchUniswapData } from '../../actions/exchange';
 import { fetchNetworkData, fetchNetworkFees, fetchNetworkDepot } from '../../actions/network';
@@ -54,12 +58,16 @@ class App extends React.Component {
 			fetchNetworkFees,
 			fetchNetworkDepot,
 			charts,
+			fetchBinaryOptionsTransactions,
+			fetchBinaryOptionsMarkets,
 		} = this.props;
 
 		fetchSNX();
 		fetchNUSD();
 		fetchOpenInterest(snxjs);
 		fetchTradingVolume();
+		fetchBinaryOptionsTransactions();
+		fetchBinaryOptionsMarkets();
 
 		fetchUniswapData(snxjs);
 		fetchNetworkData(snxjs);
@@ -110,7 +118,7 @@ class App extends React.Component {
 	}
 
 	render() {
-		const { charts, theme, exchange, network, setPeriod } = this.props;
+		const { charts, theme, exchange, network, setPeriod, binaryOptions } = this.props;
 		const { snxPeriod, sUSDPeriod } = charts;
 		const { snxButtons, snxChartName, sUSDChartName, sethProxyAddress } = this.state;
 		const { lastUpdated } = charts;
@@ -369,7 +377,6 @@ class App extends React.Component {
 										? network.totalRewardsAvailable
 										: null
 								}
-								type="number"
 								label="CURRENT REWARDS POOL"
 								desc="Total SNX rewards claimable this period."
 								onClick={() => {}}
@@ -383,7 +390,6 @@ class App extends React.Component {
 										? network.unclaimedRewards
 										: null
 								}
-								type="number"
 								label="UNCLAIMED REWARDS IN POOL"
 								desc="SNX rewards currently claimable in the pool."
 								onClick={() => {}}
@@ -400,6 +406,44 @@ class App extends React.Component {
 								label="24HR SNX Trading Volume"
 								desc="24HR SNX Trading Volume from Coinmarketcap API."
 								onClick={() => {}}
+								decimals={0}
+							/>
+						</div>
+						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+							<SingleStatBox
+								value={binaryOptions.numMarkets}
+								label="Active Binary Options Markets"
+								desc="Number of Binary Options Markets currently active."
+								onClick={() => {}}
+								type="number"
+								decimals={0}
+							/>
+						</div>
+						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+							<SingleStatBox
+								value={binaryOptions.largestMarketPoolSize}
+								label="Largest Active Binary Options Market"
+								desc={`${binaryOptions.largestMarket} has the Largest Active Pool Size`}
+								onClick={() => {}}
+								decimals={0}
+							/>
+						</div>
+						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+							<SingleStatBox
+								value={binaryOptions.totalPoolSizes}
+								label="Binary Options Markets Total Pools"
+								desc="Sum of Pool Sizes for all Active Binary Options Markets."
+								onClick={() => {}}
+								decimals={0}
+							/>
+						</div>
+						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+							<SingleStatBox
+								value={binaryOptions.numOptionsTransactions}
+								label="24HR Binary Options Transactions"
+								desc="Total Binary Options Transactions from the Past day."
+								onClick={() => {}}
+								type="number"
 								decimals={0}
 							/>
 						</div>
@@ -743,13 +787,14 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => {
-	const { charts, theme, markets, exchange, network } = state;
+	const { charts, theme, markets, exchange, network, binaryOptions } = state;
 	return {
 		charts,
 		theme: theme.theme,
 		markets,
 		exchange,
 		network,
+		binaryOptions,
 	};
 };
 
@@ -767,6 +812,8 @@ const ConnectedApp = connect(
 		fetchNetworkData,
 		fetchNetworkFees,
 		fetchNetworkDepot,
+		fetchBinaryOptionsMarkets,
+		fetchBinaryOptionsTransactions,
 	}
 )(App);
 export default ConnectedApp;

@@ -29,14 +29,18 @@ class HorizontalBarChart extends Component {
 									}}
 									className="bar"
 								>
-									<div
-										style={{ width: (100 * synth.y) / (synth.y + synth.x) + '%' }}
-										className="inverseSynthBar"
-									/>
-									<div
-										style={{ width: (100 * synth.x) / (synth.x + synth.y) + '%' }}
-										className="synthBar"
-									/>
+									{synth.y !== 0 && (
+										<div
+											style={{ width: (100 * synth.y) / (synth.y + synth.x) + '%' }}
+											className="inverseSynthBar"
+										/>
+									)}
+									{synth.x !== 0 && (
+										<div
+											style={{ width: (100 * synth.x) / (synth.x + synth.y) + '%' }}
+											className="synthBar"
+										/>
+									)}
 								</div>
 							</div>
 						</div>

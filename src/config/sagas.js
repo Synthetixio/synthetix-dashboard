@@ -24,6 +24,10 @@ import {
 	FETCH_NETWORK_DEPOT_SUCCESS,
 	FETCH_NETWORK_FEES,
 	FETCH_NETWORK_FEES_SUCCESS,
+	FETCH_BINARY_OPTIONS_TRANSACTIONS,
+	FETCH_BINARY_OPTIONS_TRANSACTIONS_SUCCESS,
+	FETCH_BINARY_OPTIONS_MARKETS,
+	FETCH_BINARY_OPTIONS_MARKETS_SUCCESS,
 } from '../actions/actionTypes';
 
 import { doFetch } from './api';
@@ -313,6 +317,68 @@ function* fetchCurrency(action) {
 	}
 }
 
+// BINARY OPTIONS
+function* fetchBinaryOptionsTransactionsCall() {
+	const unformattedOptionTransactions = yield call(snxData.binaryOptions.optionTransactions);
+	const yesterday = new Date();
+	yesterday.setDate(yesterday.getDate() - 1);
+	const optionTransactions = unformattedOptionTransactions.filter(optionTx => {
+		return new Date(optionTx.timestamp) > yesterday;
+	});
+	const data = {
+		body: {
+			numOptionsTransactions: optionTransactions.length,
+		},
+	};
+
+	yield put({
+		type: FETCH_BINARY_OPTIONS_TRANSACTIONS_SUCCESS,
+		payload: { data },
+	});
+}
+
+// BINARY OPTIONS
+function* fetchBinaryOptionsMarketsCall() {
+	const unformattedMarkets = yield call(snxData.binaryOptions.markets, { max: 5000 });
+	const now = new Date();
+	let largestMarket;
+	let largestMarketPoolSize;
+	const [numMarkets, totalPoolSizes] = unformattedMarkets
+		.filter(market => {
+			const expiryDate = new Date(market.expiryDate);
+			return expiryDate > now;
+		})
+		.sort((a, b) => {
+			return parseFloat(b.poolSize) - parseFloat(a.poolSize);
+		})
+		.reduce(
+			([count, sum], activeMarket, index) => {
+				if (index === 0) {
+					largestMarket = activeMarket.currencyKey;
+					largestMarketPoolSize = parseFloat(activeMarket.poolSize);
+				}
+				count++;
+				sum += parseFloat(activeMarket.poolSize);
+				return [count, sum];
+			},
+			[0, 0]
+		);
+
+	const data = {
+		body: {
+			numMarkets,
+			totalPoolSizes,
+			largestMarket,
+			largestMarketPoolSize,
+		},
+	};
+
+	yield put({
+		type: FETCH_BINARY_OPTIONS_MARKETS_SUCCESS,
+		payload: { data },
+	});
+}
+
 function* fetchSNXCurrencyCall() {
 	yield takeEvery(FETCH_SNX_CURRENCY, fetchCurrency);
 }
@@ -345,6 +411,14 @@ function* fetchNetworkFees() {
 	yield takeLatest(FETCH_NETWORK_FEES, fetchNetworkFeesCall);
 }
 
+function* fetchBinaryOptionsTransactions() {
+	yield takeLatest(FETCH_BINARY_OPTIONS_TRANSACTIONS, fetchBinaryOptionsTransactionsCall);
+}
+
+function* fetchBinaryOptionsMarkets() {
+	yield takeLatest(FETCH_BINARY_OPTIONS_MARKETS, fetchBinaryOptionsMarketsCall);
+}
+
 const rootSaga = function*() {
 	yield all([
 		fetchSnxChartsCall(),
@@ -358,6 +432,8 @@ const rootSaga = function*() {
 		fetchNetworkData(),
 		fetchNetworkFees(),
 		fetchNetworkDepot(),
+		fetchBinaryOptionsTransactions(),
+		fetchBinaryOptionsMarkets(),
 	]);
 };
 

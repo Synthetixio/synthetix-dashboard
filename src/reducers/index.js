@@ -4,6 +4,7 @@ import theme from './theme';
 import markets from './markets';
 import exchange from './exchange';
 import network from './network';
+import binaryOptions from './binaryOptions';
 
 export default combineReducers({
 	charts,
@@ -11,4 +12,5 @@ export default combineReducers({
 	markets,
 	exchange,
 	network,
+	binaryOptions,
 });

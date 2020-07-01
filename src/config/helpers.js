@@ -91,7 +91,7 @@ export function* getUniswapSnxData(timestampGt) {
 }
 
 export const synthSummaryUtilContract = {
-	address: '0x88C450a651ac1AaEEee6cFADa225e34a67892Ccf',
+	address: '0x0D69755e12107695E544842BF7F61D9193f09a54',
 	abi: [
 		{
 			constant: true,

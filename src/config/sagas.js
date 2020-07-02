@@ -232,33 +232,31 @@ function* fetchExchangeOpenInterest({ payload: { snxjs } }) {
 		.filter(synth => ['crypto', 'index'].includes(synth.category))
 		.map(({ name }) => name);
 
-	const openInterest = orderBy(
-		unsortedOpenInterest.filter(item => openInterestSynths.includes(item.name)),
-		'value',
-		'desc'
-	);
+	const openInterest = orderBy(unsortedOpenInterest, 'value', 'desc');
 
 	const shortsAndLongs = orderBy(
-		openInterest.reduce((acc, curr) => {
-			const name = curr.name.slice(1);
-			const item =
-				curr.name[0] === 'i'
-					? {
-							name,
-							shorts: curr.value,
-					  }
-					: {
-							name,
-							longs: curr.value,
-					  };
-			const existingIndex = acc.findIndex(item => item.name === name);
-			if (existingIndex !== -1) {
-				acc[existingIndex] = { ...acc[existingIndex], ...item };
-			} else {
-				acc.push(item);
-			}
-			return acc;
-		}, []),
+		openInterest
+			.filter(item => openInterestSynths.includes(item.name))
+			.reduce((acc, curr) => {
+				const name = curr.name.slice(1);
+				const item =
+					curr.name[0] === 'i'
+						? {
+								name,
+								shorts: curr.value,
+						  }
+						: {
+								name,
+								longs: curr.value,
+						  };
+				const existingIndex = acc.findIndex(item => item.name === name);
+				if (existingIndex !== -1) {
+					acc[existingIndex] = { ...acc[existingIndex], ...item };
+				} else {
+					acc.push(item);
+				}
+				return acc;
+			}, []),
 		'longs',
 		'desc'
 	);

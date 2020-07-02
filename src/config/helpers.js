@@ -1,7 +1,7 @@
 import { call } from 'redux-saga/effects';
 import { pageResults } from 'synthetix-data';
 
-import { uniswapGraph } from './sagas';
+import { uniswapGraph, uniswapGraphV2 } from './sagas';
 import { CHARTS } from '../utils';
 
 export function* getExchangeDataHelper({
@@ -135,6 +135,25 @@ export function* getSynthsExchangeData(period) {
 		monthlyData,
 		fifteenMinuteData,
 	};
+}
+
+export function* getUniswapV2SethPrice(snxjs) {
+	const token = snxjs.sETH.contract.address.toLowerCase();
+	return yield call(() =>
+		pageResults({
+			api: uniswapGraphV2,
+			query: {
+				entity: 'tokenDayDatas',
+				selection: {
+					orderBy: 'date',
+					orderDirection: 'desc',
+					where: { token: `\\"${token}\\"` },
+				},
+				properties: ['priceUSD'],
+			},
+			max: 1,
+		})
+	);
 }
 
 export const synthSummaryUtilContract = {

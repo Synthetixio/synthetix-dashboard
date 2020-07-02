@@ -137,7 +137,8 @@ export function* getSynthsExchangeData(period) {
 	};
 }
 
-export function* getUniswapV2SethPrice() {
+export function* getUniswapV2SethPrice(snxjs) {
+	const token = snxjs.sETH.contract.address.toLowerCase();
 	return yield call(() =>
 		pageResults({
 			api: uniswapGraphV2,
@@ -146,9 +147,7 @@ export function* getUniswapV2SethPrice() {
 				selection: {
 					orderBy: 'date',
 					orderDirection: 'desc',
-					where: {
-						token: `\\"0x5e74c9036fb86bd7ecdcb084a0673efc32ea31cb\\"`,
-					},
+					where: { token: `\\"${token}\\"` },
 				},
 				properties: ['priceUSD'],
 			},

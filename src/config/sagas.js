@@ -406,7 +406,7 @@ function* fetchSnxPriceCall({ payload: { snxjs } }) {
 }
 
 function* fetchSethPriceCall({ payload: { snxjs } }) {
-	const sethPriceData = yield getUniswapV2SethPrice();
+	const sethPriceData = yield getUniswapV2SethPrice(snxjs);
 
 	if (sethPriceData && sethPriceData.length > 0 && sethPriceData[0].priceUSD) {
 		yield put({

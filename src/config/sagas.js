@@ -227,10 +227,13 @@ function* fetchExchangeOpenInterest({ payload: { snxjs } }) {
 			value: Number(snxjs.ethers.utils.formatEther(synthTotalSupplies[2][i])),
 		});
 	}
+
+	const openInterestSynths = snxjs.contractSettings.synths
+		.filter(synth => ['crypto', 'index'].includes(synth.category))
+		.map(({ name }) => name);
+
 	const openInterest = orderBy(
-		unsortedOpenInterest.filter(
-			item => !['sGBP', 'sUSD', 'sAUD', 'sJPY', 'sEUR', 'sCHF'].includes(item.name)
-		),
+		unsortedOpenInterest.filter(item => openInterestSynths.includes(item.name)),
 		'value',
 		'desc'
 	);

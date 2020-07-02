@@ -8,7 +8,7 @@ export const CHARTS = {
 	MONTH: '1M',
 };
 
-export const toPercent = num => num.toFixed(2);
+export const twoDigitNumber = num => num.toFixed(2);
 
 const generateMonthTimestamp = () => {
 	const monthDate = new Date();

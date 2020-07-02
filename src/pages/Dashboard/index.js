@@ -10,7 +10,7 @@ import {
 	fetchBinaryOptionsMarkets,
 	fetchBinaryOptionsTransactions,
 } from '../../actions/binaryOptions';
-import { fetchSNX, fetchNUSD } from '../../actions/markets';
+import { fetchSNX, fetchNUSD, fetchSnxPrice, fetchSethPrice } from '../../actions/markets';
 import { fetchOpenInterest, fetchTradingVolume, fetchUniswapData } from '../../actions/exchange';
 import { fetchNetworkData, fetchNetworkFees, fetchNetworkDepot } from '../../actions/network';
 import Chart from '../../components/Chart';
@@ -19,7 +19,7 @@ import HorizontalBarChart from '../../components/HorizontalBarChart';
 import TopNavBar from '../../components/TopNavBar';
 import SingleStatBox from '../../components/SingleStatBox';
 import { switchTheme } from '../../actions/theme';
-import { CHARTS, toPercent } from '../../utils';
+import { CHARTS, twoDigitNumber } from '../../utils';
 import cx from 'classnames';
 import numeral from 'numeral';
 import { scroller } from 'react-scroll';
@@ -61,6 +61,8 @@ class App extends React.Component {
 	componentDidMount() {
 		const {
 			snxjs,
+			fetchSnxPrice,
+			fetchSethPrice,
 			fetchSNX,
 			fetchNUSD,
 			fetchSynthsCharts,
@@ -77,6 +79,8 @@ class App extends React.Component {
 			fetchBinaryOptionsMarkets,
 		} = this.props;
 
+		fetchSnxPrice(snxjs);
+		fetchSethPrice(snxjs);
 		fetchSNX();
 		fetchNUSD();
 		fetchOpenInterest(snxjs);
@@ -149,7 +153,7 @@ class App extends React.Component {
 	}
 
 	render() {
-		const { charts, theme, exchange, network, setPeriod, binaryOptions } = this.props;
+		const { charts, theme, exchange, network, setPeriod, binaryOptions, markets } = this.props;
 		const { snxPeriod, sUSDPeriod, synthsPeriod } = charts;
 		const {
 			snxButtons,
@@ -196,7 +200,11 @@ class App extends React.Component {
 			});
 		}
 
-		const sETHPrice = exchange.rate ? exchange.rate : null;
+		const snxMarketCap =
+			markets.snx.snxPrice && markets.snx.snxTotalSupply
+				? markets.snx.snxPrice * markets.snx.snxTotalSupply
+				: null;
+		const sETHPrice = markets.seth.sethPrice ? markets.seth.sethPrice : null;
 		const sETHMarketCap =
 			exchange.openInterest && exchange.openInterest.find(s => s.name === 'sETH');
 
@@ -208,18 +216,17 @@ class App extends React.Component {
 				<div className="container main-content">
 					<div className="columns is-multiline" id="stats">
 						<SingleStatBox
-							value={snxMarketData ? snxMarketData.market_cap : null}
-							trend={null}
+							value={snxMarketCap}
 							label="SNX MARKET CAP"
-							desc="The total value of all circulating SNX."
+							desc="The total value of all SNX."
 							decimals={0}
 							isClickable={true}
 						/>
 						<SingleStatBox
-							value={snxMarketData ? snxMarketData.price : null}
+							value={markets.snx.snxPrice ? markets.snx.snxPrice : null}
 							trend={snxMarketData ? snxMarketData.percent_change_24h : null}
 							label="SNX PRICE"
-							desc="The average price of SNX across exchanges."
+							desc="The current price of SNX."
 							decimals={3}
 							onClick={() => {
 								this.setSnxChart(SnxPrice);
@@ -227,6 +234,30 @@ class App extends React.Component {
 							}}
 							isClickable={true}
 						/>
+						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+							<SingleStatBox
+								value={network.percentLocked ? twoDigitNumber(network.percentLocked) : null}
+								type="percentage"
+								label="LOCKED SNX RATIO"
+								desc="The percentage of SNX tokens that are staked."
+								onClick={() => {}}
+								decimals={2}
+							/>
+						</div>
+						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
+							<SingleStatBox
+								value={
+									network.percentLocked && snxMarketData && snxMarketCap
+										? twoDigitNumber((network.percentLocked / 100) * snxMarketCap)
+										: null
+								}
+								label="LOCKED SNX VALUE"
+								desc="The total value of all staked SNX."
+								onClick={() => {}}
+								decimals={0}
+							/>
+						</div>
+
 						<SingleStatBox
 							value={susdMarketData ? susdMarketData.market_cap : null}
 							trend={null}
@@ -260,7 +291,7 @@ class App extends React.Component {
 							<SingleStatBox
 								value={sETHPrice ? sETHPrice : null}
 								label="sETH PRICE"
-								desc="The average price of sETH across exchanges."
+								desc="The price of sETH on Uniswap V2."
 								onClick={() => {}}
 								decimals={3}
 							/>
@@ -296,15 +327,8 @@ class App extends React.Component {
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
-									network.totalIssuedSynths &&
-									snxMarketData &&
-									snxMarketData.total_supply &&
-									snxMarketData.price
-										? Number(
-												((snxMarketData.price * snxMarketData.total_supply) /
-													network.totalIssuedSynths) *
-													100
-										  ).toFixed(2)
+									network.totalIssuedSynths && snxMarketCap
+										? twoDigitNumber(Number((snxMarketCap / network.totalIssuedSynths) * 100))
 										: null
 								}
 								type="percentage"
@@ -318,7 +342,7 @@ class App extends React.Component {
 							<SingleStatBox
 								value={
 									network.activeCollateralizationRatio
-										? toPercent(network.activeCollateralizationRatio)
+										? twoDigitNumber(network.activeCollateralizationRatio)
 										: null
 								}
 								type="percentage"
@@ -328,30 +352,6 @@ class App extends React.Component {
 								decimals={2}
 							/>
 						</div>
-						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
-							<SingleStatBox
-								value={
-									network.percentLocked && snxMarketData && snxMarketData.market_cap > 0
-										? toPercent((network.percentLocked / 100) * snxMarketData.market_cap)
-										: null
-								}
-								label="LOCKED SNX VALUE"
-								desc="The total value of all staked SNX."
-								onClick={() => {}}
-								decimals={0}
-							/>
-						</div>
-						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
-							<SingleStatBox
-								value={network.percentLocked ? toPercent(network.percentLocked) : null}
-								type="percentage"
-								label="LOCKED SNX RATIO"
-								desc="The percentage of SNX tokens that are staked."
-								onClick={() => {}}
-								decimals={2}
-							/>
-						</div>
-
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
@@ -502,7 +502,7 @@ class App extends React.Component {
 							<div className="level-left is-hidden-mobile">
 								<div className="level-item title">
 									<h2>SNX</h2>
-									<span>(UNISWAP DATA ONLY)</span>
+									<span>(UNISWAP V1 DATA ONLY)</span>
 								</div>
 							</div>
 							<div className="level-right">
@@ -644,7 +644,7 @@ class App extends React.Component {
 							<div className="level-left is-hidden-mobile">
 								<div className="level-item title">
 									<h2>sUSD</h2>
-									<span>(UNISWAP DATA ONLY)</span>
+									<span>(UNISWAP V1 DATA ONLY)</span>
 								</div>
 							</div>
 							<div className="level-right">
@@ -970,14 +970,16 @@ const ConnectedApp = connect(
 		fetchOpenInterest,
 		fetchTradingVolume,
 		fetchUniswapData,
-		fetchSNX,
 		fetchNUSD,
+		fetchSNX,
 		setPeriod,
 		fetchNetworkData,
 		fetchNetworkFees,
 		fetchNetworkDepot,
 		fetchBinaryOptionsMarkets,
 		fetchBinaryOptionsTransactions,
+		fetchSnxPrice,
+		fetchSethPrice,
 	}
 )(App);
 export default ConnectedApp;

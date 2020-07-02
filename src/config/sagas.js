@@ -10,7 +10,6 @@ import {
 	FETCH_SNX_CHARTS_SUCCESS,
 	FETCH_SUSD_CHARTS_SUCCESS,
 	FETCH_SYNTHS_CHARTS_SUCCESS,
-	FETCH_SNX_CURRENCY,
 	FETCH_NUSD_CURRENCY,
 	FETCH_OPEN_INTEREST,
 	FETCH_OPEN_INTEREST_SUCCESS,
@@ -28,6 +27,11 @@ import {
 	FETCH_BINARY_OPTIONS_TRANSACTIONS_SUCCESS,
 	FETCH_BINARY_OPTIONS_MARKETS,
 	FETCH_BINARY_OPTIONS_MARKETS_SUCCESS,
+	FETCH_SNX_CURRENCY,
+	FETCH_SETH_CURRENCY_PRICE,
+	FETCH_SETH_CURRENCY_PRICE_SUCCESS,
+	FETCH_SNX_CURRENCY_PRICE,
+	FETCH_SNX_CURRENCY_PRICE_SUCCESS,
 } from '../actions/actionTypes';
 
 import { doFetch } from './api';
@@ -36,10 +40,12 @@ import {
 	getUniswapSnxData,
 	synthSummaryUtilContract,
 	getSynthsExchangeData,
+	getUniswapV2SethPrice,
 } from './helpers';
 import { generateEndTimestamp } from '../utils';
 
 export const uniswapGraph = 'https://api.thegraph.com/subgraphs/name/graphprotocol/uniswap';
+export const uniswapGraphV2 = 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2';
 
 //CHARTS
 function* fetchUniswapSnxChartData({ payload: { period } }) {
@@ -126,7 +132,7 @@ function* fetchNetworkFeesCall({ payload: { snxjs } }) {
 	const recentFeePeriod = yield fetchFeePeriodData(0, snxjs);
 	const olderFeePeriod = yield fetchFeePeriodData(1, snxjs);
 
-	const totalRewardsAvailable = recentFeePeriod.rewardsToDistribute;
+	const totalRewardsAvailable = olderFeePeriod.rewardsToDistribute;
 	const unclaimedFees = olderFeePeriod.feesToDistribute - olderFeePeriod.feesClaimed;
 	const unclaimedRewards = olderFeePeriod.rewardsToDistribute - olderFeePeriod.rewardsClaimed;
 	const totalFeesAvailable = olderFeePeriod.feesToDistribute + recentFeePeriod.feesToDistribute;
@@ -221,7 +227,13 @@ function* fetchExchangeOpenInterest({ payload: { snxjs } }) {
 			value: Number(snxjs.ethers.utils.formatEther(synthTotalSupplies[2][i])),
 		});
 	}
-	const openInterest = orderBy(unsortedOpenInterest, 'value', 'desc');
+	const openInterest = orderBy(
+		unsortedOpenInterest.filter(
+			item => !['sGBP', 'sUSD', 'sAUD', 'sJPY', 'sEUR', 'sCHF'].includes(item.name)
+		),
+		'value',
+		'desc'
+	);
 
 	const shortsAndLongs = orderBy(
 		openInterest.reduce((acc, curr) => {
@@ -309,12 +321,8 @@ function* fetchUniswapData({ payload: { snxjs } }) {
 
 // MARKETS
 function* fetchCurrency(action) {
-	try {
-		const data = yield call(doFetch, action.url);
-		yield put(action.success(data));
-	} catch (e) {
-		yield put(action.error(e.body));
-	}
+	const data = yield call(doFetch, action.url);
+	yield put(action.success(data));
 }
 
 // BINARY OPTIONS
@@ -379,6 +387,39 @@ function* fetchBinaryOptionsMarketsCall() {
 	});
 }
 
+function* fetchSnxPriceCall({ payload: { snxjs } }) {
+	const toUtf8Bytes = SynthetixJs.utils.formatBytes32String;
+	const unformattedSnxPrice = yield snxjs.ExchangeRates.rateForCurrency(toUtf8Bytes('SNX'));
+	const unformattedSnxTotalSupply = yield snxjs.Synthetix.totalSupply();
+	const snxPrice = Number(snxjs.utils.formatEther(unformattedSnxPrice));
+	const snxTotalSupply = parseInt(snxjs.ethers.utils.formatEther(unformattedSnxTotalSupply)) || 0;
+
+	yield put({
+		type: FETCH_SNX_CURRENCY_PRICE_SUCCESS,
+		payload: {
+			data: {
+				snxPrice,
+				snxTotalSupply,
+			},
+		},
+	});
+}
+
+function* fetchSethPriceCall({ payload: { snxjs } }) {
+	const sethPriceData = yield getUniswapV2SethPrice(snxjs);
+
+	if (sethPriceData && sethPriceData.length > 0 && sethPriceData[0].priceUSD) {
+		yield put({
+			type: FETCH_SETH_CURRENCY_PRICE_SUCCESS,
+			payload: {
+				data: {
+					sethPrice: sethPriceData[0].priceUSD,
+				},
+			},
+		});
+	}
+}
+
 function* fetchSNXCurrencyCall() {
 	yield takeEvery(FETCH_SNX_CURRENCY, fetchCurrency);
 }
@@ -419,13 +460,21 @@ function* fetchBinaryOptionsMarkets() {
 	yield takeLatest(FETCH_BINARY_OPTIONS_MARKETS, fetchBinaryOptionsMarketsCall);
 }
 
+function* fetchSnxPrice() {
+	yield takeLatest(FETCH_SNX_CURRENCY_PRICE, fetchSnxPriceCall);
+}
+
+function* fetchSethPrice() {
+	yield takeLatest(FETCH_SETH_CURRENCY_PRICE, fetchSethPriceCall);
+}
+
 const rootSaga = function*() {
 	yield all([
 		fetchSnxChartsCall(),
 		fetchSusdChartsCall(),
 		fetchSynthsChartsCall(),
-		fetchSNXCurrencyCall(),
 		fetchNUSDCurrencyCall(),
+		fetchSNXCurrencyCall(),
 		fetchOpenInterest(),
 		fetchTradingVolume(),
 		fetchUniswapDataCall(),
@@ -434,6 +483,8 @@ const rootSaga = function*() {
 		fetchNetworkDepot(),
 		fetchBinaryOptionsTransactions(),
 		fetchBinaryOptionsMarkets(),
+		fetchSnxPrice(),
+		fetchSethPrice(),
 	]);
 };
 

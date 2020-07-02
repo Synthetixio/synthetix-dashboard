@@ -1,16 +1,16 @@
 import {
 	FETCH_SNX_CURRENCY_SUCCESS,
-	FETCH_SNX_CURRENCY_ERROR,
+	FETCH_SNX_CURRENCY_PRICE_SUCCESS,
+	FETCH_SETH_CURRENCY_PRICE_SUCCESS,
 	FETCH_NUSD_CURRENCY_SUCCESS,
-	FETCH_NUSD_CURRENCY_ERROR,
 } from '../actions/actionTypes';
 
 const initialState = {
 	snx: {},
 	susd: {},
+	seth: {},
 	coinSNX: [],
 	coinSUSD: [],
-	errors: {},
 };
 
 export default (state = initialState, action) => {
@@ -20,21 +20,30 @@ export default (state = initialState, action) => {
 				...state,
 				snx: action.data.body.data.SNX,
 			};
-		case FETCH_SNX_CURRENCY_ERROR:
+		case FETCH_SNX_CURRENCY_PRICE_SUCCESS:
+			const { snxPrice, snxTotalSupply } = action.payload.data;
 			return {
 				...state,
-				errors: action.error,
+				snx: {
+					...state.snx,
+					snxPrice,
+					snxTotalSupply,
+				},
+			};
+		case FETCH_SETH_CURRENCY_PRICE_SUCCESS:
+			const { sethPrice } = action.payload.data;
+			return {
+				...state,
+				seth: {
+					...state.seth,
+					sethPrice,
+				},
 			};
 		/////////////////////////////////////////
 		case FETCH_NUSD_CURRENCY_SUCCESS:
 			return {
 				...state,
 				susd: action.data.body.data.SUSD,
-			};
-		case FETCH_NUSD_CURRENCY_ERROR:
-			return {
-				...state,
-				errors: action.error,
 			};
 
 		default:

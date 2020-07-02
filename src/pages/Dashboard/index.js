@@ -327,13 +327,13 @@ class App extends React.Component {
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
-									network.activeCollateralizationRatio
-										? twoDigitNumber(network.activeCollateralizationRatio)
+									network.totalIssuedSynths && snxMarketCap
+										? twoDigitNumber(Number((snxMarketCap / network.totalIssuedSynths) * 100))
 										: null
 								}
 								type="percentage"
-								label="ACTIVE COLLATERALIZATION RATIO"
-								desc="The aggregate collateralisation ratio of SNX wallets that are currently staking."
+								label="NETWORK COLLATERALIZATION RATIO"
+								desc="The aggregate collateralisation ratio of all SNX wallets."
 								onClick={() => {}}
 								decimals={2}
 							/>

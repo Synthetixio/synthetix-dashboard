@@ -132,7 +132,7 @@ function* fetchNetworkFeesCall({ payload: { snxjs } }) {
 	const recentFeePeriod = yield fetchFeePeriodData(0, snxjs);
 	const olderFeePeriod = yield fetchFeePeriodData(1, snxjs);
 
-	const totalRewardsAvailable = recentFeePeriod.rewardsToDistribute;
+	const totalRewardsAvailable = olderFeePeriod.rewardsToDistribute;
 	const unclaimedFees = olderFeePeriod.feesToDistribute - olderFeePeriod.feesClaimed;
 	const unclaimedRewards = olderFeePeriod.rewardsToDistribute - olderFeePeriod.rewardsClaimed;
 	const totalFeesAvailable = olderFeePeriod.feesToDistribute + recentFeePeriod.feesToDistribute;
@@ -228,7 +228,9 @@ function* fetchExchangeOpenInterest({ payload: { snxjs } }) {
 		});
 	}
 	const openInterest = orderBy(
-		unsortedOpenInterest.filter(item => item.name !== 'sUSD'),
+		unsortedOpenInterest.filter(
+			item => !['sGBP', 'sUSD', 'sAUD', 'sJPY', 'sEUR', 'sCHF'].includes(item.name)
+		),
 		'value',
 		'desc'
 	);

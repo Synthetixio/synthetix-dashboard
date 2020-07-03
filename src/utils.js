@@ -1,6 +1,7 @@
 import minBy from 'lodash/minBy';
 import maxBy from 'lodash/maxBy';
 import uniqBy from 'lodash/uniqBy';
+import moment from 'moment';
 
 export const CHARTS = {
 	DAY: '1D',
@@ -71,27 +72,24 @@ export const parseChartData = (sourceData, key, period = CHARTS.DAY) => {
 	});
 	const timeSeries = reverseTimeSeries.reverse();
 
-	const minValueUsd = minBy(timeSeries, o => o.usdValue).usdValue;
-	let minValueEth = minBy(timeSeries, o => o.ethValue);
-	minValueEth = (minValueEth && minValueEth.ethValue) || 0;
-
-	const maxValueUsd = maxBy(timeSeries, o => o.usdValue).usdValue;
-	let maxValueEth = maxBy(timeSeries, o => o.ethValue);
-	maxValueEth = (maxValueEth && maxValueEth.ethValue) || 0;
-
 	const data = {
-		timeSeriesUsd: timeSeries.map(o => ({ x: o.created, y: Number(o.usdValue) })),
-		timeSeriesEth: timeSeries.map(o => ({ x: o.created, y: o.ethValue })),
-		timeSeriesX: timeSeries.map(o => o.created),
-		minValueUsd: Number(minValueUsd),
-		minValueEth,
-		maxValueUsd: Number(maxValueUsd),
-		maxValueEth,
-		fromDate: timeSeries[0].created,
-		toDate: timeSeries[timeSeries.length - 1].created,
+		timeSeries: timeSeries.map(o => {
+			let created =
+				period === CHARTS.DAY
+					? moment(o.created).format('HH:00')
+					: moment(o.created).format('MM/DD');
+			if ((key === 'synthsVolume' || key === 'synthsFees') && period === CHARTS.MONTH) {
+				created = moment(o.created)
+					.add(1, 'days')
+					.format('MM/DD');
+			}
+			return {
+				created,
+				usdValue: twoDigitNumber(Number(o.usdValue)),
+				ethValue: Number(o.ethValue),
+			};
+		}),
 		displayName: key,
-		currentUsd: Number(timeSeries[timeSeries.length - 1].usdValue),
-		currentEth: timeSeries[timeSeries.length - 1].ethValue,
 	};
 	return data;
 };
@@ -231,11 +229,19 @@ export const normalizeMonthlySynthData = sourceData => {
 	// slice off the good data
 	const tempSourceData = [...sourceData];
 	const dailyData = tempSourceData.splice(-23);
+	// use these fields to pro rate the first day's volume
+	let aggregatedCurrentDay = false;
+	let aggregatedCurrentDayUsdValue = 0;
 	// put the 15 minute data into daily aggregates
 	return [
 		...tempSourceData.reduce((acc, { created, usdValue }, index) => {
-			if (index === 0) {
-				acc[0] = { created, usdValue };
+			if (!aggregatedCurrentDay) {
+				if (created.slice(-14) == 'T00:00:00.000Z') {
+					acc[0] = { created, usdValue: index === 0 ? usdValue : aggregatedCurrentDayUsdValue };
+					aggregatedCurrentDay = true;
+				} else {
+					aggregatedCurrentDayUsdValue += usdValue;
+				}
 			} else if (created.slice(-14) == 'T00:00:00.000Z') {
 				acc[acc.length] = { created, usdValue };
 			} else {
@@ -245,4 +251,32 @@ export const normalizeMonthlySynthData = sourceData => {
 		}, []),
 		...dailyData,
 	];
+};
+
+export const calculateInterval = (period, displayName) => {
+	if (!displayName) {
+		return 1;
+	}
+	let interval = period === CHARTS.DAY ? 2 : 6;
+	if (displayName.startsWith('synths') && period === CHARTS.MONTH) {
+		interval = 2;
+	} else if (displayName.startsWith('synths') && period === CHARTS.WEEK) {
+		interval = 50;
+	} else if (displayName.startsWith('synths') && period === CHARTS.DAY) {
+		interval = 12;
+	} else if (displayName.startsWith('Snx') && period === CHARTS.DAY) {
+		interval = 12;
+	}
+
+	if (window.innerWidth < 800) {
+		if (
+			!displayName.startsWith('synths') ||
+			(displayName.startsWith('synths') && period === CHARTS.WEEK)
+		) {
+			interval = interval * 2;
+		} else if (displayName.startsWith('synths') && period === CHARTS.MONTH) {
+			interval = interval * 3;
+		}
+	}
+	return interval;
 };

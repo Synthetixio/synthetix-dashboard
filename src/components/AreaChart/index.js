@@ -1,7 +1,7 @@
-import cx from 'classnames';
+import moment from 'moment';
 import React, { PureComponent } from 'react';
 import { AreaChart, Area, XAxis, Tooltip, Label, ResponsiveContainer } from 'recharts';
-import { calculateInterval } from '../../utils';
+import { calculateInterval, CHARTS } from '../../utils';
 
 const LINE_COLOR = {
 	yellow: '#D9AB44',
@@ -47,7 +47,7 @@ export default class Chart extends PureComponent {
 					<Label value={info.displayName || ''} offset={0} position="insideTopLeft" />
 					<XAxis interval={interval} dataKey="created" axisLine={false} tickLine={false} />
 					<Tooltip
-						formatter={(amount, name) => {
+						formatter={(amount, name, data) => {
 							let newName = name;
 							let newAmount = amount;
 							if (name === 'usdValue') {
@@ -55,6 +55,16 @@ export default class Chart extends PureComponent {
 								newAmount = `$${new Intl.NumberFormat().format(amount)}`;
 							} else if (name === 'ethValue') {
 								newName = 'ETH';
+							}
+							if (
+								info.displayName &&
+								info.displayName.startsWith('synths') &&
+								period === CHARTS.MONTH &&
+								data &&
+								data.payload &&
+								data.payload.created === moment().format('MM/DD')
+							) {
+								newName = `${newName} (pro-rated over 24HR)`;
 							}
 							return [newAmount, newName];
 						}}

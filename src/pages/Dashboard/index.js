@@ -266,7 +266,7 @@ class App extends React.Component {
 							decimals={0}
 							isClickable={true}
 						/>
-						<SingleStatBox
+						{/*<SingleStatBox
 							value={susdMarketData ? susdMarketData.price : null}
 							trend={susdMarketData ? susdMarketData.percent_change_24h : null}
 							label="sUSD PRICE"
@@ -277,7 +277,7 @@ class App extends React.Component {
 								scroller.scrollTo('susd-main-chart', scrollToOptions);
 							}}
 							isClickable={true}
-						/>
+						/>*/}
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={sETHMarketCap ? sETHMarketCap.value : null}

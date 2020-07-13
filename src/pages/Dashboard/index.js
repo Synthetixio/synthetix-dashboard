@@ -420,8 +420,10 @@ class App extends React.Component {
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
-									network.totalRewardsAvailable && network.totalRewardsAvailable > 0
-										? network.totalRewardsAvailable
+									network.totalRewardsAvailable &&
+									network.totalRewardsAvailable > 0 &&
+									markets.snx.snxPrice
+										? network.totalRewardsAvailable * markets.snx.snxPrice
 										: null
 								}
 								label="CURRENT REWARDS POOL"
@@ -433,8 +435,8 @@ class App extends React.Component {
 						<div className="column is-half-tablet is-one-quarter-desktop markets-link">
 							<SingleStatBox
 								value={
-									network.unclaimedRewards && network.unclaimedRewards > 0
-										? network.unclaimedRewards
+									network.unclaimedRewards && network.unclaimedRewards > 0 && markets.snx.snxPrice
+										? network.unclaimedRewards * markets.snx.snxPrice
 										: null
 								}
 								label="UNCLAIMED REWARDS IN POOL"

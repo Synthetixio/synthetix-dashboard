@@ -58,10 +58,6 @@ export default (state = initialState, action) => {
 					...newState,
 					snxPeriod: period,
 					snxPeriodLoaded: period,
-					lastUpdatedSnx:
-						chartHistoricalData.body.SnxPrice.data[
-							chartHistoricalData.body.SnxPrice.data.length - 1
-						].created,
 				};
 			} catch (e) {
 				return state;
@@ -76,10 +72,6 @@ export default (state = initialState, action) => {
 					...newState,
 					sUSDPeriod: period,
 					sUSDPeriodLoaded: period,
-					lastUpdatedSusd:
-						chartHistoricalData.body.sUSDPrice.data[
-							chartHistoricalData.body.sUSDPrice.data.length - 1
-						].created,
 				};
 			} catch (e) {
 				return state;
@@ -94,10 +86,6 @@ export default (state = initialState, action) => {
 					...newState,
 					synthsPeriod: period,
 					synthsPeriodLoaded: period,
-					lastUpdatedSynths:
-						chartHistoricalData.body.synthsFees.data[
-							chartHistoricalData.body.synthsFees.data.length - 1
-						].created,
 				};
 			} catch (e) {
 				return state;

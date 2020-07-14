@@ -870,6 +870,8 @@ class App extends React.Component {
 													y: synth.shorts || 0,
 													z: (synth.longs || 0) + (synth.shorts || 0),
 													label: synth.name,
+													totalSupplyLong: synth.totalSupplyLong,
+													totalSupplyShort: synth.totalSupplyShort,
 												};
 											})}
 										/>

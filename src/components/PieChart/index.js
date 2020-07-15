@@ -14,7 +14,7 @@ class PieChart extends Component {
 						data: {
 							fillOpacity: 0.75,
 						},
-						labels: { fontSize: 12, fill: '#6f6e98' },
+						labels: { fontSize: 10, fill: '#6f6e98' },
 					}}
 					colorScale={LINE_COLOR}
 					height={200}

@@ -14,12 +14,15 @@ class PieChart extends Component {
 						data: {
 							fillOpacity: 0.75,
 						},
-						labels: { display: 'none' },
+						labels: { fontSize: 12, fill: '#6f6e98' },
 					}}
 					colorScale={LINE_COLOR}
-					height={180}
+					height={200}
 					data={data}
-					padding={{ bottom: 10 }}
+					labelRadius={({ innerRadius }) => innerRadius + 5}
+					innerRadius={50}
+					padding={{ bottom: 10, top: 40 }}
+					labels={({ label }) => `${label}`}
 				/>
 				<div className="pieLegend">
 					{data.map((synth, i) => {

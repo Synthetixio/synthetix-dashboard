@@ -13,7 +13,7 @@ import {
 import { fetchSNX, fetchNUSD, fetchSnxPrice, fetchSethPrice } from '../../actions/markets';
 import { fetchOpenInterest, fetchTradingVolume, fetchUniswapData } from '../../actions/exchange';
 import { fetchNetworkData, fetchNetworkFees, fetchNetworkDepot } from '../../actions/network';
-import Chart from '../../components/Chart';
+import AreaChart from '../../components/AreaChart';
 import PieChart from '../../components/PieChart';
 import HorizontalBarChart from '../../components/HorizontalBarChart';
 import TopNavBar from '../../components/TopNavBar';
@@ -52,7 +52,7 @@ class App extends React.Component {
 	}
 
 	state = {
-		snxButtons: { Usd: true, Eth: true },
+		snxButton: 'usd',
 		snxChartName: SNX_CHART.SnxPrice,
 		sUSDChartName: sUSD_CHART.sUSDPrice,
 		synthsChartName: SYNTHS_CHART.synthsVolume,
@@ -114,14 +114,6 @@ class App extends React.Component {
 		});
 	}
 
-	onCurrencyClick = val => {
-		const snxButtons = { ...this.state.snxButtons };
-		snxButtons[val] = !snxButtons[val];
-		this.setState({
-			snxButtons,
-		});
-	};
-
 	setSnxChart = chartName => {
 		this.setState({ snxChartName: chartName });
 	};
@@ -156,13 +148,12 @@ class App extends React.Component {
 		const { charts, theme, exchange, network, setPeriod, binaryOptions, markets } = this.props;
 		const { snxPeriod, sUSDPeriod, synthsPeriod } = charts;
 		const {
-			snxButtons,
+			snxButton,
 			snxChartName,
 			sUSDChartName,
 			synthsChartName,
 			sethProxyAddress,
 		} = this.state;
-		const { lastUpdatedSnx, lastUpdatedSusd, lastUpdatedSynths } = charts;
 		const { SnxVolume24h, SnxPrice } = SNX_CHART;
 		const { sUSDVolume24h, sUSDPrice } = sUSD_CHART;
 		const { synthsVolume, synthsFees } = SYNTHS_CHART;
@@ -501,10 +492,10 @@ class App extends React.Component {
 				<div className="container chart-section" id="snx">
 					<div>
 						<div className="level is-mobile chart-section__heading">
-							<div className="level-left is-hidden-mobile">
+							<div className="level-left">
 								<div className="level-item title">
 									<h2>SNX</h2>
-									<span>(UNISWAP V1 DATA ONLY)</span>
+									<span>(UNISWAP V1)</span>
 								</div>
 							</div>
 							<div className="level-right">
@@ -569,15 +560,11 @@ class App extends React.Component {
 										) : null}
 									</div>
 									<div>
-										<Chart
+										<AreaChart
 											isLightMode={theme === 'light'}
 											period={snxPeriod}
 											info={charts[snxChartName]}
-											decimals={DECIMALS[snxChartName]}
-											fullSize={true}
-											colorGradient="green"
-											lastUpdated={lastUpdatedSnx}
-											currencySwitch={this.state.snxButtons}
+											activeButton={snxButton}
 										/>
 									</div>
 								</div>
@@ -619,9 +606,9 @@ class App extends React.Component {
 								<div className="level-item">
 									<button
 										className={cx('button is-link usd', {
-											'is-active': snxButtons.Usd,
+											'is-active': snxButton === 'usd',
 										})}
-										onClick={() => this.onCurrencyClick('Usd')}
+										onClick={() => this.setState({ snxButton: 'usd' })}
 									>
 										USD
 									</button>
@@ -629,9 +616,9 @@ class App extends React.Component {
 								<div className="level-item">
 									<button
 										className={cx('button is-link eth', {
-											'is-active': snxButtons.Eth,
+											'is-active': snxButton === 'eth',
 										})}
-										onClick={() => this.onCurrencyClick('Eth')}
+										onClick={() => this.setState({ snxButton: 'eth' })}
 									>
 										ETH
 									</button>
@@ -643,10 +630,10 @@ class App extends React.Component {
 				<div className="container chart-section" id="susd">
 					<div>
 						<div className="level is-mobile chart-section__heading">
-							<div className="level-left is-hidden-mobile">
+							<div className="level-left">
 								<div className="level-item title">
 									<h2>sUSD</h2>
-									<span>(UNISWAP V1 DATA ONLY)</span>
+									<span className>(UNISWAP V1)</span>
 								</div>
 							</div>
 							<div className="level-right">
@@ -712,14 +699,10 @@ class App extends React.Component {
 										) : null}
 									</div>
 									<div>
-										<Chart
+										<AreaChart
 											isLightMode={theme === 'light'}
 											period={sUSDPeriod}
 											info={charts[sUSDChartName]}
-											decimals={DECIMALS[sUSDChartName]}
-											fullSize={true}
-											colorGradient="green"
-											lastUpdated={lastUpdatedSusd}
 										/>
 									</div>
 								</div>
@@ -760,9 +743,10 @@ class App extends React.Component {
 				<div className="container chart-section" id="synths">
 					<div>
 						<div className="level is-mobile chart-section__heading">
-							<div className="level-left is-hidden-mobile">
+							<div className="level-left">
 								<div className="level-item title">
 									<h2>Synths</h2>
+									<span>(SYNTHETIX)</span>
 								</div>
 							</div>
 							<div className="level-right">
@@ -827,14 +811,10 @@ class App extends React.Component {
 										) : null}
 									</div>
 									<div>
-										<Chart
+										<AreaChart
 											isLightMode={theme === 'light'}
 											period={synthsPeriod}
 											info={charts[synthsChartName]}
-											decimals={DECIMALS[synthsChartName]}
-											fullSize={true}
-											colorGradient="green"
-											lastUpdated={lastUpdatedSynths}
 										/>
 									</div>
 								</div>
@@ -890,6 +870,8 @@ class App extends React.Component {
 													y: synth.shorts || 0,
 													z: (synth.longs || 0) + (synth.shorts || 0),
 													label: synth.name,
+													totalSupplyLong: synth.totalSupplyLong,
+													totalSupplyShort: synth.totalSupplyShort,
 												};
 											})}
 										/>
@@ -912,7 +894,7 @@ class App extends React.Component {
 												return {
 													x: v.name,
 													y: v.value,
-													label: `${v.name} (${((100 * v.value) / totalDistribution).toFixed(1)}%)`,
+													label: `${((100 * v.value) / totalDistribution).toFixed(1)}%`,
 												};
 											})}
 										/>

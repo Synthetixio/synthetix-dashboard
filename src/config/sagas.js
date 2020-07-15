@@ -244,10 +244,12 @@ function* fetchExchangeOpenInterest({ payload: { snxjs } }) {
 						? {
 								name,
 								shorts: curr.value,
+								totalSupplyShort: curr.totalSupply,
 						  }
 						: {
 								name,
 								longs: curr.value,
+								totalSupplyLong: curr.totalSupply,
 						  };
 				const existingIndex = acc.findIndex(item => item.name === name);
 				if (existingIndex !== -1) {

@@ -15,13 +15,13 @@ class HorizontalBarChart extends Component {
 				{data.map((synth, i) => {
 					return (
 						<div key={i} className="barRow">
-							<div className="synthLabel inverse">{`i${synth.label} (${numeral(
-								synth.z - synth.x
-							).format('$0,(0)')})`}</div>
+							<div className="synthLabel inverse">{`i${synth.label}: ${numeral(
+								synth.totalSupplyShort
+							).format('0,0.00')} (${numeral(synth.z - synth.x).format('$0,(0)')})`}</div>
 
-							<div className="synthLabel">{`s${synth.label} (${numeral(synth.x).format(
-								'$0,(0)'
-							)})`}</div>
+							<div className="synthLabel">{`s${synth.label}: ${numeral(
+								synth.totalSupplyLong
+							).format('0,0.00')} (${numeral(synth.x).format('$0,(0)')})`}</div>
 							<div className="barWrapper">
 								<div
 									style={{

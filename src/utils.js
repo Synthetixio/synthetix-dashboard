@@ -1,6 +1,5 @@
-import minBy from 'lodash/minBy';
-import maxBy from 'lodash/maxBy';
 import uniqBy from 'lodash/uniqBy';
+import { format } from 'date-fns';
 
 export const CHARTS = {
 	DAY: '1D',
@@ -52,17 +51,16 @@ const selectPeriod = (sourceData, period) => {
 
 export const parseChartData = (sourceData, key, period = CHARTS.DAY) => {
 	let formattedSourceData = sourceData;
-	if ((key === 'synthsVolume' || key === 'synthsFees') && period === CHARTS.MONTH) {
-		formattedSourceData = normalizeMonthlySynthData(sourceData);
+	const isSynthsChart = key === 'synthsVolume' || key === 'synthsFees'
+	if (isSynthsChart) {
+		formattedSourceData = formatSynthData(sourceData, period);
 	}
 	const dataSelected = selectPeriod(formattedSourceData, period);
 
 	let reverseTimeSeries = [];
 	let modulo = Math.floor(dataSelected.length / 100);
-	if (key === 'synthsVolume' || key === 'synthsFees') {
-		modulo /= 4;
-	}
-	if (modulo < 1) {
+
+	if (isSynthsChart || modulo < 1) {
 		modulo = 1;
 	}
 	// optimization to show about 100 data points for all charts
@@ -71,27 +69,20 @@ export const parseChartData = (sourceData, key, period = CHARTS.DAY) => {
 	});
 	const timeSeries = reverseTimeSeries.reverse();
 
-	const minValueUsd = minBy(timeSeries, o => o.usdValue).usdValue;
-	let minValueEth = minBy(timeSeries, o => o.ethValue);
-	minValueEth = (minValueEth && minValueEth.ethValue) || 0;
-
-	const maxValueUsd = maxBy(timeSeries, o => o.usdValue).usdValue;
-	let maxValueEth = maxBy(timeSeries, o => o.ethValue);
-	maxValueEth = (maxValueEth && maxValueEth.ethValue) || 0;
-
 	const data = {
-		timeSeriesUsd: timeSeries.map(o => ({ x: o.created, y: Number(o.usdValue) })),
-		timeSeriesEth: timeSeries.map(o => ({ x: o.created, y: o.ethValue })),
-		timeSeriesX: timeSeries.map(o => o.created),
-		minValueUsd: Number(minValueUsd),
-		minValueEth,
-		maxValueUsd: Number(maxValueUsd),
-		maxValueEth,
-		fromDate: timeSeries[0].created,
-		toDate: timeSeries[timeSeries.length - 1].created,
+		timeSeries: timeSeries.map(o => {
+			let created =
+				period === CHARTS.DAY
+					? format(new Date(o.created), 'HH:00')
+					: format(new Date(o.created), 'MM/DD');
+
+			return {
+				created,
+				usdValue: twoDigitNumber(Number(o.usdValue)),
+				ethValue: Number(o.ethValue),
+			};
+		}),
 		displayName: key,
-		currentUsd: Number(timeSeries[timeSeries.length - 1].usdValue),
-		currentEth: timeSeries[timeSeries.length - 1].ethValue,
 	};
 	return data;
 };
@@ -163,7 +154,20 @@ export const formatSusdChartsDataToMatchOld = sUSDExchangeData => {
 };
 
 export const formatSynthsChartsDataToMatchOld = synthsExchangeData => {
-	const synthsData = { synthsFees: { data: [] }, synthsVolume: { data: [] } };
+	const synthsData = { 
+		synthsFees: {
+			data: {
+		    fifteenMinuteData: [],
+		    monthlyData: []
+			},
+		},
+		synthsVolume: {
+			data: {
+		    fifteenMinuteData: [],
+		    monthlyData: []
+			},
+		}
+	}
 
 	const { monthlyData, fifteenMinuteData } = synthsExchangeData;
 
@@ -193,8 +197,8 @@ export const formatSynthsChartsDataToMatchOld = synthsExchangeData => {
 			(monthlyData != null && weekOldDate < created) ||
 			(monthlyData == null && dayOldDate < created)
 		) {
-			synthsData.synthsFees.data.push(exchangeFeeData);
-			synthsData.synthsVolume.data.push(exchangeTallyData);
+			synthsData.synthsFees.data.fifteenMinuteData.push(exchangeFeeData);
+			synthsData.synthsVolume.data.fifteenMinuteData.push(exchangeTallyData);
 		}
 	});
 	if (monthlyData != null) {
@@ -206,16 +210,14 @@ export const formatSynthsChartsDataToMatchOld = synthsExchangeData => {
 			const created = new Date(id * 86400 * 1000);
 			const formattedTime = created.toISOString();
 
-			if (weekOldDate > created) {
-				synthsData.synthsFees.data.push({
-					created: formattedTime,
-					usdValue: totalFeesGeneratedInUSD / 1e18,
-				});
-				synthsData.synthsVolume.data.push({
-					created: formattedTime,
-					usdValue: exchangeUSDTally / 1e18,
-				});
-			}
+			synthsData.synthsFees.data.monthlyData.push({
+				created: formattedTime,
+				usdValue: totalFeesGeneratedInUSD / 1e18,
+			});
+			synthsData.synthsVolume.data.monthlyData.push({
+				created: formattedTime,
+				usdValue: exchangeUSDTally / 1e18,
+			});
 		});
 	}
 
@@ -227,22 +229,37 @@ export const formatSynthsChartsDataToMatchOld = synthsExchangeData => {
  * we need to normalize the first 7 days for the monthly chart. The chart setup will be
  * more flexible in the next version of the codebase.
  */
-export const normalizeMonthlySynthData = sourceData => {
-	// slice off the good data
-	const tempSourceData = [...sourceData];
-	const dailyData = tempSourceData.splice(-23);
-	// put the 15 minute data into daily aggregates
-	return [
-		...tempSourceData.reduce((acc, { created, usdValue }, index) => {
-			if (index === 0) {
-				acc[0] = { created, usdValue };
-			} else if (created.slice(-14) == 'T00:00:00.000Z') {
-				acc[acc.length] = { created, usdValue };
-			} else {
-				acc[acc.length - 1].usdValue = acc[acc.length - 1].usdValue + usdValue;
-			}
-			return acc;
-		}, []),
-		...dailyData,
-	];
+export const formatSynthData = (sourceData, period) => {
+	if (period === CHARTS.DAY || period === CHARTS.WEEK) {
+		return sourceData.fifteenMinuteData;
+	}
+	return sourceData.monthlyData;
+};
+
+export const calculateInterval = (period, displayName) => {
+	if (!displayName) {
+		return 1;
+	}
+	let interval = period === CHARTS.DAY ? 2 : 6;
+	if (displayName.startsWith('synths') && period === CHARTS.MONTH) {
+		interval = 2;
+	} else if (displayName.startsWith('synths') && period === CHARTS.WEEK) {
+		interval = 50;
+	} else if (displayName.startsWith('synths') && period === CHARTS.DAY) {
+		interval = 12;
+	} else if (displayName.startsWith('Snx') && period === CHARTS.DAY) {
+		interval = 12;
+	}
+
+	if (window.innerWidth < 800) {
+		if (
+			!displayName.startsWith('synths') ||
+			(displayName.startsWith('synths') && period === CHARTS.WEEK)
+		) {
+			interval = interval * 2;
+		} else if (displayName.startsWith('synths') && period === CHARTS.MONTH) {
+			interval = interval * 3;
+		}
+	}
+	return interval;
 };

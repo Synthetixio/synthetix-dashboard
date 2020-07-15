@@ -894,7 +894,7 @@ class App extends React.Component {
 												return {
 													x: v.name,
 													y: v.value,
-													label: `${v.name} (${((100 * v.value) / totalDistribution).toFixed(1)}%)`,
+													label: `${((100 * v.value) / totalDistribution).toFixed(1)}%`,
 												};
 											})}
 										/>

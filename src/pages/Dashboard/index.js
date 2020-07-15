@@ -168,6 +168,7 @@ class App extends React.Component {
 
 		const formattedDistribution = [];
 		let totalDistribution = 0;
+		let sUSDTotalSupply = 0;
 
 		if (exchange.openInterest) {
 			totalDistribution = exchange.openInterest.reduce((acc, val) => acc + val.value, 0);
@@ -177,6 +178,9 @@ class App extends React.Component {
 			exchange.openInterest
 				.sort((a, b) => b.value - a.value)
 				.forEach(synth => {
+					if (synth.name === 'sUSD') {
+						sUSDTotalSupply = synth.totalSupply;
+					}
 					if (!hasReached && cumulativeDistributionValue / totalDistribution < 0.9) {
 						formattedDistribution.push(synth);
 						cumulativeDistributionValue += synth.value;
@@ -250,7 +254,11 @@ class App extends React.Component {
 						</div>
 
 						<SingleStatBox
-							value={susdMarketData ? susdMarketData.market_cap : null}
+							value={
+								sUSDTotalSupply > 0 && susdMarketData
+									? susdMarketData.price * sUSDTotalSupply
+									: null
+							}
 							trend={null}
 							label="sUSD MARKET CAP"
 							desc="The total value of all circulating sUSD."

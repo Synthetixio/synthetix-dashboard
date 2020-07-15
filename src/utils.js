@@ -51,7 +51,7 @@ const selectPeriod = (sourceData, period) => {
 
 export const parseChartData = (sourceData, key, period = CHARTS.DAY) => {
 	let formattedSourceData = sourceData;
-	const isSynthsChart = key === 'synthsVolume' || key === 'synthsFees'
+	const isSynthsChart = key === 'synthsVolume' || key === 'synthsFees';
 	if (isSynthsChart) {
 		formattedSourceData = formatSynthData(sourceData, period);
 	}
@@ -154,20 +154,20 @@ export const formatSusdChartsDataToMatchOld = sUSDExchangeData => {
 };
 
 export const formatSynthsChartsDataToMatchOld = synthsExchangeData => {
-	const synthsData = { 
+	const synthsData = {
 		synthsFees: {
 			data: {
-		    fifteenMinuteData: [],
-		    monthlyData: []
+				fifteenMinuteData: [],
+				monthlyData: [],
 			},
 		},
 		synthsVolume: {
 			data: {
-		    fifteenMinuteData: [],
-		    monthlyData: []
+				fifteenMinuteData: [],
+				monthlyData: [],
 			},
-		}
-	}
+		},
+	};
 
 	const { monthlyData, fifteenMinuteData } = synthsExchangeData;
 

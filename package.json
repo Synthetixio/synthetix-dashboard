@@ -1,6 +1,6 @@
 {
 	"name": "synthetix-dashboard",
-	"version": "2.24.1",
+	"version": "2.25.0-alpha",
 	"private": true,
 	"description": "Synthetix Dashboard",
 	"license": "MIT",

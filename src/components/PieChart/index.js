@@ -14,7 +14,7 @@ class PieChart extends Component {
 						data: {
 							fillOpacity: 0.75,
 						},
-						labels: { fontSize: 10, fill: '#6f6e98' },
+						labels: { display: 'none' },
 					}}
 					colorScale={LINE_COLOR}
 					height={200}
@@ -22,7 +22,6 @@ class PieChart extends Component {
 					labelRadius={({ innerRadius }) => innerRadius + 5}
 					innerRadius={50}
 					padding={{ bottom: 10, top: 40 }}
-					labels={({ label }) => `${label}`}
 				/>
 				<div className="pieLegend">
 					{data.map((synth, i) => {
@@ -32,7 +31,7 @@ class PieChart extends Component {
 									style={{ backgroundColor: LINE_COLOR[i] }}
 									className="pieLegendElementCircle"
 								/>
-								{synth.x}
+								{`${synth.x} (${synth.label})`}
 							</div>
 						);
 					})}

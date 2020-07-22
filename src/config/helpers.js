@@ -156,50 +156,29 @@ export function* getUniswapV2SethPrice(snxjs) {
 	);
 }
 
+export function* getCurveLatestSwapPrice(snxjs) {
+	const curveContract = new snxjs.ethers.Contract(
+		curveSusdSwapContract.address,
+		curveSusdSwapContract.abi,
+		snxjs.contractSettings.provider
+	);
+
+	const usdcContractNumber = 1;
+	const susdContractNumber = 3;
+	const susdAmount = 10000;
+	const susdAmountWei = snxjs.ethers.utils.parseUnits(susdAmount.toString(), 18);
+	const unformattedExchangeAmount = yield curveContract.get_dy_underlying(
+		susdContractNumber,
+		usdcContractNumber,
+		susdAmountWei
+	);
+	const exchangeAmount = Number(snxjs.ethers.utils.formatUnits(unformattedExchangeAmount, 6));
+	return exchangeAmount / susdAmount;
+}
+
 export const synthSummaryUtilContract = {
 	address: '0x0D69755e12107695E544842BF7F61D9193f09a54',
 	abi: [
-		{
-			constant: true,
-			inputs: [
-				{
-					name: 'account',
-					type: 'address',
-				},
-				{
-					name: 'currencyKey',
-					type: 'bytes32',
-				},
-			],
-			name: 'totalSynthsInKey',
-			outputs: [
-				{
-					name: 'total',
-					type: 'uint256',
-				},
-			],
-			payable: false,
-			stateMutability: 'view',
-			type: 'function',
-		},
-		{
-			constant: true,
-			inputs: [],
-			name: 'synthsRates',
-			outputs: [
-				{
-					name: '',
-					type: 'bytes32[]',
-				},
-				{
-					name: '',
-					type: 'uint256[]',
-				},
-			],
-			payable: false,
-			stateMutability: 'view',
-			type: 'function',
-		},
 		{
 			constant: true,
 			inputs: [],
@@ -222,89 +201,38 @@ export const synthSummaryUtilContract = {
 			stateMutability: 'view',
 			type: 'function',
 		},
+	],
+};
+
+export const curveSusdSwapContract = {
+	address: '0xA5407eAE9Ba41422680e2e00537571bcC53efBfD',
+	abi: [
 		{
-			constant: true,
-			inputs: [],
-			name: 'exchangeRates',
+			name: 'get_dy_underlying',
 			outputs: [
 				{
-					name: '',
-					type: 'address',
+					type: 'uint256',
+					name: 'out',
 				},
 			],
-			payable: false,
-			stateMutability: 'view',
-			type: 'function',
-		},
-		{
-			constant: true,
-			inputs: [],
-			name: 'synthetix',
-			outputs: [
-				{
-					name: '',
-					type: 'address',
-				},
-			],
-			payable: false,
-			stateMutability: 'view',
-			type: 'function',
-		},
-		{
-			constant: true,
 			inputs: [
 				{
-					name: 'account',
-					type: 'address',
+					type: 'int128',
+					name: 'i',
+				},
+				{
+					type: 'int128',
+					name: 'j',
+				},
+				{
+					type: 'uint256',
+					name: 'dx',
 				},
 			],
-			name: 'synthsBalances',
-			outputs: [
-				{
-					name: '',
-					type: 'bytes32[]',
-				},
-				{
-					name: '',
-					type: 'uint256[]',
-				},
-				{
-					name: '',
-					type: 'uint256[]',
-				},
-			],
-			payable: false,
-			stateMutability: 'view',
-			type: 'function',
-		},
-		{
 			constant: true,
-			inputs: [],
-			name: 'frozenSynths',
-			outputs: [
-				{
-					name: '',
-					type: 'bytes32[]',
-				},
-			],
 			payable: false,
-			stateMutability: 'view',
 			type: 'function',
-		},
-		{
-			inputs: [
-				{
-					name: '_synthetix',
-					type: 'address',
-				},
-				{
-					name: '_exchangeRates',
-					type: 'address',
-				},
-			],
-			payable: false,
-			stateMutability: 'nonpayable',
-			type: 'constructor',
+			gas: 3489467,
 		},
 	],
 };

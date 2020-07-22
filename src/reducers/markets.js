@@ -2,7 +2,7 @@ import {
 	FETCH_SNX_CURRENCY_SUCCESS,
 	FETCH_SNX_CURRENCY_PRICE_SUCCESS,
 	FETCH_SETH_CURRENCY_PRICE_SUCCESS,
-	FETCH_NUSD_CURRENCY_SUCCESS,
+	FETCH_SUSD_CURRENCY_PRICE_SUCCESS,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -30,6 +30,15 @@ export default (state = initialState, action) => {
 					snxTotalSupply,
 				},
 			};
+		case FETCH_SUSD_CURRENCY_PRICE_SUCCESS:
+			const { susdPrice } = action.payload.data;
+			return {
+				...state,
+				susd: {
+					...state.susd,
+					susdPrice,
+				},
+			};
 		case FETCH_SETH_CURRENCY_PRICE_SUCCESS:
 			const { sethPrice } = action.payload.data;
 			return {
@@ -38,12 +47,6 @@ export default (state = initialState, action) => {
 					...state.seth,
 					sethPrice,
 				},
-			};
-		/////////////////////////////////////////
-		case FETCH_NUSD_CURRENCY_SUCCESS:
-			return {
-				...state,
-				susd: action.data.body.data.SUSD,
 			};
 
 		default:

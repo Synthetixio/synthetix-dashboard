@@ -10,7 +10,7 @@ import {
 	fetchBinaryOptionsMarkets,
 	fetchBinaryOptionsTransactions,
 } from '../../actions/binaryOptions';
-import { fetchSNX, fetchNUSD, fetchSnxPrice, fetchSethPrice } from '../../actions/markets';
+import { fetchSnx, fetchSnxPrice, fetchSethPrice, fetchSusdPrice } from '../../actions/markets';
 import { fetchOpenInterest, fetchTradingVolume, fetchUniswapData } from '../../actions/exchange';
 import { fetchNetworkData, fetchNetworkFees, fetchNetworkDepot } from '../../actions/network';
 import AreaChart from '../../components/AreaChart';
@@ -63,8 +63,8 @@ class App extends React.Component {
 			snxjs,
 			fetchSnxPrice,
 			fetchSethPrice,
-			fetchSNX,
-			fetchNUSD,
+			fetchSusdPrice,
+			fetchSnx,
 			fetchSynthsCharts,
 			fetchSusdCharts,
 			fetchSnxCharts,
@@ -81,8 +81,8 @@ class App extends React.Component {
 
 		fetchSnxPrice(snxjs);
 		fetchSethPrice(snxjs);
-		fetchSNX();
-		fetchNUSD();
+		fetchSusdPrice(snxjs);
+		fetchSnx();
 		fetchOpenInterest(snxjs);
 		fetchTradingVolume();
 		fetchBinaryOptionsTransactions();
@@ -132,8 +132,8 @@ class App extends React.Component {
 
 	getMarketsData() {
 		const { markets } = this.props;
-		const data = { snxMarketData: {}, susdMarketData: {} };
-		['snx', 'susd'].forEach(currency => {
+		const data = { snxMarketData: {} };
+		['snx'].forEach(currency => {
 			if (markets[currency] && markets[currency].quote && markets[currency].quote.USD) {
 				data[`${currency}MarketData`] = {
 					...markets[currency].quote.USD,
@@ -158,7 +158,7 @@ class App extends React.Component {
 		const { sUSDVolume24h, sUSDPrice } = sUSD_CHART;
 		const { synthsVolume, synthsFees } = SYNTHS_CHART;
 
-		const { snxMarketData, susdMarketData } = this.getMarketsData();
+		const { snxMarketData } = this.getMarketsData();
 		const scrollToOptions = {
 			duration: 500,
 			delay: 100,
@@ -255,21 +255,19 @@ class App extends React.Component {
 
 						<SingleStatBox
 							value={
-								sUSDTotalSupply > 0 && susdMarketData
-									? susdMarketData.price * sUSDTotalSupply
+								sUSDTotalSupply > 0 && markets.susd.susdPrice
+									? markets.susd.susdPrice * sUSDTotalSupply
 									: null
 							}
-							trend={null}
 							label="sUSD MARKET CAP"
 							desc="The total value of all circulating sUSD."
 							decimals={0}
 							isClickable={true}
 						/>
 						<SingleStatBox
-							value={susdMarketData ? susdMarketData.price : null}
-							trend={susdMarketData ? susdMarketData.percent_change_24h : null}
+							value={markets.susd.susdPrice ? markets.susd.susdPrice : null}
 							label="sUSD PRICE"
-							desc="The average price of sUSD across exchanges."
+							desc="The exchange rate for USDC on Curve.fi"
 							decimals={3}
 							onClick={() => {
 								this.setsUSDChart(sUSDPrice);
@@ -962,8 +960,7 @@ const ConnectedApp = connect(
 		fetchOpenInterest,
 		fetchTradingVolume,
 		fetchUniswapData,
-		fetchNUSD,
-		fetchSNX,
+		fetchSnx,
 		setPeriod,
 		fetchNetworkData,
 		fetchNetworkFees,
@@ -972,6 +969,7 @@ const ConnectedApp = connect(
 		fetchBinaryOptionsTransactions,
 		fetchSnxPrice,
 		fetchSethPrice,
+		fetchSusdPrice,
 	}
 )(App);
 export default ConnectedApp;

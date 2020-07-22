@@ -10,7 +10,6 @@ import {
 	FETCH_SNX_CHARTS_SUCCESS,
 	FETCH_SUSD_CHARTS_SUCCESS,
 	FETCH_SYNTHS_CHARTS_SUCCESS,
-	FETCH_NUSD_CURRENCY,
 	FETCH_OPEN_INTEREST,
 	FETCH_OPEN_INTEREST_SUCCESS,
 	FETCH_TRADING_VOLUME,
@@ -30,6 +29,8 @@ import {
 	FETCH_SNX_CURRENCY,
 	FETCH_SETH_CURRENCY_PRICE,
 	FETCH_SETH_CURRENCY_PRICE_SUCCESS,
+	FETCH_SUSD_CURRENCY_PRICE,
+	FETCH_SUSD_CURRENCY_PRICE_SUCCESS,
 	FETCH_SNX_CURRENCY_PRICE,
 	FETCH_SNX_CURRENCY_PRICE_SUCCESS,
 } from '../actions/actionTypes';
@@ -41,6 +42,7 @@ import {
 	synthSummaryUtilContract,
 	getSynthsExchangeData,
 	getUniswapV2SethPrice,
+	getCurveLatestSwapPrice,
 } from './helpers';
 import { generateEndTimestamp } from '../utils';
 
@@ -423,12 +425,20 @@ function* fetchSethPriceCall({ payload: { snxjs } }) {
 	}
 }
 
-function* fetchSNXCurrencyCall() {
-	yield takeEvery(FETCH_SNX_CURRENCY, fetchCurrency);
+function* fetchSusdPriceCall({ payload: { snxjs } }) {
+	const susdPriceData = yield getCurveLatestSwapPrice(snxjs);
+	yield put({
+		type: FETCH_SUSD_CURRENCY_PRICE_SUCCESS,
+		payload: {
+			data: {
+				susdPrice: susdPriceData,
+			},
+		},
+	});
 }
 
-function* fetchNUSDCurrencyCall() {
-	yield takeEvery(FETCH_NUSD_CURRENCY, fetchCurrency);
+function* fetchSnxCurrencyCall() {
+	yield takeEvery(FETCH_SNX_CURRENCY, fetchCurrency);
 }
 
 function* fetchOpenInterest() {
@@ -471,13 +481,16 @@ function* fetchSethPrice() {
 	yield takeLatest(FETCH_SETH_CURRENCY_PRICE, fetchSethPriceCall);
 }
 
+function* fetchSusdPrice() {
+	yield takeLatest(FETCH_SUSD_CURRENCY_PRICE, fetchSusdPriceCall);
+}
+
 const rootSaga = function*() {
 	yield all([
 		fetchSnxChartsCall(),
 		fetchSusdChartsCall(),
 		fetchSynthsChartsCall(),
-		fetchNUSDCurrencyCall(),
-		fetchSNXCurrencyCall(),
+		fetchSnxCurrencyCall(),
 		fetchOpenInterest(),
 		fetchTradingVolume(),
 		fetchUniswapDataCall(),
@@ -488,6 +501,7 @@ const rootSaga = function*() {
 		fetchBinaryOptionsMarkets(),
 		fetchSnxPrice(),
 		fetchSethPrice(),
+		fetchSusdPrice(),
 	]);
 };
 

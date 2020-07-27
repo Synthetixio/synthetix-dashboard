@@ -25,19 +25,30 @@ class HorizontalBarChart extends Component {
 							<div className="barWrapper">
 								<div
 									style={{
-										left: `calc(100% - ${(100 * synth.y) / (synth.x + synth.y)}% + 1px)`,
+										left: `calc(100% - ${(100 * synth.totalSupplyShort) /
+											(synth.totalSupplyLong + synth.totalSupplyShort)}% + 1px)`,
 									}}
 									className="bar"
 								>
-									{synth.y !== 0 && (
+									{synth.totalSupplyShort !== 0 && (
 										<div
-											style={{ width: (100 * synth.y) / (synth.y + synth.x) + '%' }}
+											style={{
+												width:
+													(100 * synth.totalSupplyShort) /
+														(synth.totalSupplyShort + synth.totalSupplyLong) +
+													'%',
+											}}
 											className="inverseSynthBar"
 										/>
 									)}
-									{synth.x !== 0 && (
+									{synth.totalSupplyLong !== 0 && (
 										<div
-											style={{ width: (100 * synth.x) / (synth.x + synth.y) + '%' }}
+											style={{
+												width:
+													(100 * synth.totalSupplyLong) /
+														(synth.totalSupplyLong + synth.totalSupplyShort) +
+													'%',
+											}}
 											className="synthBar"
 										/>
 									)}

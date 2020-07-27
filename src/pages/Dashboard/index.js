@@ -870,16 +870,14 @@ class App extends React.Component {
 									{exchange.shortsAndLongs ? (
 										<HorizontalBarChart
 											isLightMode={theme === 'light'}
-											data={exchange.shortsAndLongs.map(synth => {
-												return {
-													x: synth.longs || 0,
-													y: synth.shorts || 0,
-													z: (synth.longs || 0) + (synth.shorts || 0),
-													label: synth.name,
-													totalSupplyLong: synth.totalSupplyLong,
-													totalSupplyShort: synth.totalSupplyShort,
-												};
-											})}
+											data={exchange.shortsAndLongs.map(synth => ({
+												x: synth.longs || 0,
+												y: synth.shorts || 0,
+												z: (synth.longs || 0) + (synth.shorts || 0),
+												label: synth.name,
+												totalSupplyLong: synth.totalSupplyLong || 0,
+												totalSupplyShort: synth.totalSupplyShort || 0,
+											}))}
 										/>
 									) : null}
 								</div>

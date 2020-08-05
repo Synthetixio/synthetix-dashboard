@@ -59,22 +59,52 @@ class App extends React.Component {
 	};
 
 	componentDidMount() {
+		const { snxjs, charts } = this.props;
+
+		this.fetchData();
+
+		if (!charts.chartsStartedLoading) {
+			this.fetchCharts(CHARTS.DAY);
+			this.fetchCharts(CHARTS.MONTH);
+		}
+
+		this.setState({
+			checkEmptyIntervalId: setInterval(() => this.checkEmptyResults(), 2000),
+			intervalId: setInterval(() => fetchCharts(CHARTS.MONTH), 10 * 60 * 1000),
+			sethProxyAddress: snxjs.sETH.contract.address,
+			checkEmptyCount: 1,
+		});
+	}
+
+	checkEmptyResults = () => {
+		const { markets } = this.props;
+		const { checkEmptyIntervalId, checkEmptyCount } = this.state;
+		if (
+			checkEmptyCount < 5 &&
+			((markets?.snx?.snxPrice ?? 0) === 0 || (markets?.snx?.snxTotalSupply ?? 0) === 0)
+		) {
+			this.fetchData();
+			this.setState({ checkEmptyCount: checkEmptyCount + 1 });
+		} else {
+			if (checkEmptyIntervalId) {
+				clearInterval(checkEmptyIntervalId);
+			}
+		}
+	};
+
+	fetchData = () => {
 		const {
 			snxjs,
 			fetchSnxPrice,
 			fetchSethPrice,
 			fetchSusdPrice,
 			fetchSnx,
-			fetchSynthsCharts,
-			fetchSusdCharts,
-			fetchSnxCharts,
 			fetchOpenInterest,
 			fetchTradingVolume,
 			fetchUniswapData,
 			fetchNetworkData,
 			fetchNetworkFees,
 			fetchNetworkDepot,
-			charts,
 			fetchBinaryOptionsTransactions,
 			fetchBinaryOptionsMarkets,
 		} = this.props;
@@ -92,27 +122,15 @@ class App extends React.Component {
 		fetchNetworkData(snxjs);
 		fetchNetworkFees(snxjs);
 		fetchNetworkDepot(snxjs);
+	};
 
-		const fetchDailyCharts = () => {
-			fetchSynthsCharts(CHARTS.DAY);
-			fetchSusdCharts(CHARTS.DAY);
-			fetchSnxCharts(CHARTS.DAY);
-		};
-		const fetchMonthlyCharts = () => {
-			fetchSynthsCharts(CHARTS.MONTH);
-			fetchSusdCharts(CHARTS.MONTH);
-			fetchSnxCharts(CHARTS.MONTH);
-		};
+	fetchCharts = timePeriod => {
+		const { fetchSynthsCharts, fetchSusdCharts, fetchSnxCharts } = this.props;
 
-		if (!charts.chartsStartedLoading) {
-			fetchDailyCharts();
-			fetchMonthlyCharts();
-		}
-		this.setState({
-			intervalId: setInterval(() => fetchMonthlyCharts(), 10 * 60 * 1000),
-			sethProxyAddress: snxjs.sETH.contract.address,
-		});
-	}
+		fetchSynthsCharts(timePeriod);
+		fetchSusdCharts(timePeriod);
+		fetchSnxCharts(timePeriod);
+	};
 
 	setSnxChart = chartName => {
 		this.setState({ snxChartName: chartName });
@@ -127,7 +145,12 @@ class App extends React.Component {
 	};
 
 	componentWillUnmount() {
-		clearInterval(this.state.intervalId);
+		if (checkEmptyIntervalId) {
+			clearInterval(checkEmptyIntervalId);
+		}
+		if (this.state.intervalId) {
+			clearInterval(this.state.intervalId);
+		}
 	}
 
 	getMarketsData() {

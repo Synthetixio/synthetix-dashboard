@@ -1,6 +1,6 @@
 {
 	"name": "synthetix-dashboard",
-	"version": "2.26.1",
+	"version": "2.26.2",
 	"private": true,
 	"description": "Synthetix Dashboard",
 	"license": "MIT",
@@ -10,6 +10,7 @@
 		"bulma": "^0.7.1",
 		"classnames": "latest",
 		"date-fns": "^1.30.1",
+		"ethers": "^4.0.44",
 		"lodash": "^4.17.11",
 		"mobx": "^5.0.3",
 		"mobx-react": "^5.2.3",
@@ -31,7 +32,7 @@
 		"resolve-url-loader": "^2.3.0",
 		"sass-loader": "^7.0.3",
 		"synthetix-data": "^2.1.21",
-		"synthetix-js": "2.26.1",
+		"synthetix-js": "2.26.2",
 		"victory": "^30.0.0"
 	},
 	"devDependencies": {

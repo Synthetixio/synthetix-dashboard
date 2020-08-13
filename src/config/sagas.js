@@ -44,7 +44,7 @@ import {
 	getUniswapV2SethPrice,
 	getCurveLatestSwapPrice,
 } from './helpers';
-import { generateEndTimestamp } from '../utils';
+import { generateEndTimestamp, CHARTS } from '../utils';
 
 export const uniswapGraph = 'https://api.thegraph.com/subgraphs/name/graphprotocol/uniswap';
 export const uniswapGraphV2 = 'https://api.thegraph.com/subgraphs/name/uniswap/uniswap-v2';
@@ -81,13 +81,26 @@ function* fetchUniswapSusdChartData({ payload: { period } }) {
 }
 
 function* fetchSynthetixSynthsChartData({ payload: { period } }) {
-	const synthsExchangeData = yield getSynthsExchangeData(period);
+	let monthlyData = null;
+	const dailyFifteenMinPeriods = 96; // 96 * 15 / 60 = 24
+	const maxFifteenMinutePeriods =
+		period === CHARTS.DAY ? dailyFifteenMinPeriods : dailyFifteenMinPeriods * 7;
+	const fifteenMinuteData = yield call(snxData.exchanges.aggregate, {
+		max: maxFifteenMinutePeriods,
+		timeSeries: '15m',
+	});
+	if (period === CHARTS.MONTH) {
+		monthlyData = yield call(snxData.exchanges.aggregate, { max: 30, timeSeries: '1d' });
+	}
 
 	yield put({
 		type: FETCH_SYNTHS_CHARTS_SUCCESS,
 		payload: {
 			data: {
-				synthsExchangeData,
+				synthsExchangeData: {
+					monthlyData,
+					fifteenMinuteData,
+				},
 				period,
 			},
 		},

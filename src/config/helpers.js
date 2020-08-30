@@ -92,7 +92,8 @@ export function* getUniswapSnxData(timestampGt) {
 }
 
 export function* getSynthsExchangeData(period) {
-	const tempGraphUrl = 'https://api.thegraph.com/subgraphs/name/dvd-schwrtz/david-synthetix';
+	const tempGraphUrl =
+		'https://api.thegraph.com/subgraphs/name/synthetixio-team/synthetix-exchanges';
 	const dailyFifteenMinPeriods = 96; // 96 * 15 / 60 = 24
 	const maxFifteenMinutePeriods =
 		period === CHARTS.DAY ? dailyFifteenMinPeriods : dailyFifteenMinPeriods * 7;

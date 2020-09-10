@@ -20,6 +20,7 @@ export default class Chart extends PureComponent {
 		const renderType =
 			activeButton && activeButton === 'eth' ? CHART_TYPES['ethValue'] : CHART_TYPES['usdValue'];
 		const interval = calculateInterval(period, info.displayName);
+
 		return (
 			<ResponsiveContainer width="100%" height={500}>
 				<AreaChart

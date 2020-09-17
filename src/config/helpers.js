@@ -3,6 +3,8 @@ import { pageResults } from 'synthetix-data';
 
 import { uniswapGraph, uniswapGraphV2 } from './sagas';
 
+const roundTimestampTenSeconds = timestamp => Math.round(timestamp / 10) * 10;
+
 export function* getExchangeDataHelper({
 	exchangeAddress,
 	timestampLt,
@@ -14,10 +16,10 @@ export function* getExchangeDataHelper({
 }) {
 	const where = { exchangeAddress: `\\"${exchangeAddress}\\"` };
 	if (timestampLt) {
-		where.timestamp_lt = timestampLt;
+		where.timestamp_lt = roundTimestampTenSeconds(timestampLt);
 	}
 	if (timestampGt) {
-		where.timestamp_gt = timestampGt;
+		where.timestamp_gt = roundTimestampTenSeconds(timestampGt);
 	}
 	const data = yield call(() =>
 		pageResults({

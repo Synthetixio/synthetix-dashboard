@@ -6,7 +6,7 @@
 	"license": "MIT",
 	"author": "Synthetix",
 	"dependencies": {
-		"axios": "^0.18.0",
+		"axios": "^0.21.1",
 		"bulma": "^0.7.1",
 		"classnames": "latest",
 		"date-fns": "^1.30.1",

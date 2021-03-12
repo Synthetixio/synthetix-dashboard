@@ -186,11 +186,11 @@ export const formatSynthsChartsDataToMatchOld = synthsExchangeData => {
 
 		const exchangeTallyData = {
 			created: formattedTime,
-			usdValue: exchangeUSDTally / 1e18,
+			usdValue: exchangeUSDTally,
 		};
 		const exchangeFeeData = {
 			created: formattedTime,
-			usdValue: totalFeesGeneratedInUSD / 1e18,
+			usdValue: totalFeesGeneratedInUSD,
 		};
 
 		if (
@@ -212,11 +212,11 @@ export const formatSynthsChartsDataToMatchOld = synthsExchangeData => {
 
 			synthsData.synthsFees.data.monthlyData.push({
 				created: formattedTime,
-				usdValue: totalFeesGeneratedInUSD / 1e18,
+				usdValue: totalFeesGeneratedInUSD,
 			});
 			synthsData.synthsVolume.data.monthlyData.push({
 				created: formattedTime,
-				usdValue: exchangeUSDTally / 1e18,
+				usdValue: exchangeUSDTally,
 			});
 		});
 	}

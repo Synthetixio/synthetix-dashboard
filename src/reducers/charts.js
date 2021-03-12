@@ -82,6 +82,7 @@ export default (state = initialState, action) => {
 				const chartHistoricalData = formatSynthsChartsDataToMatchOld(synthsExchangeData);
 				const chartData = mapChartTypes(chartTypesSynths, chartHistoricalData, period);
 				const newState = updateChartsReducerState(state, chartData, chartHistoricalData);
+
 				return {
 					...newState,
 					synthsPeriod: period,

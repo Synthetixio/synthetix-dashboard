@@ -1,6 +1,6 @@
 {
 	"name": "synthetix-dashboard",
-	"version": "2.27.2",
+	"version": "2.31.0-alpha",
 	"private": true,
 	"description": "Synthetix Dashboard",
 	"license": "MIT",
@@ -30,8 +30,8 @@
 		"redux-saga": "^0.16.0",
 		"resolve-url-loader": "^2.3.0",
 		"sass-loader": "^7.0.3",
-		"synthetix-data": "^2.1.24",
-		"synthetix-js": "2.27.2",
+		"synthetix-data": "2.1.27",
+		"synthetix-js": "2.31.0-alpha",
 		"victory": "^30.0.0"
 	},
 	"devDependencies": {

@@ -2,7 +2,8 @@ import { call } from 'redux-saga/effects';
 import { pageResults } from 'synthetix-data';
 
 import { uniswapGraph, uniswapGraphV2 } from './sagas';
-import { CHARTS } from '../utils';
+
+const roundTimestampTenSeconds = timestamp => Math.round(timestamp / 10) * 10;
 
 export function* getExchangeDataHelper({
 	exchangeAddress,
@@ -15,10 +16,10 @@ export function* getExchangeDataHelper({
 }) {
 	const where = { exchangeAddress: `\\"${exchangeAddress}\\"` };
 	if (timestampLt) {
-		where.timestamp_lt = timestampLt;
+		where.timestamp_lt = roundTimestampTenSeconds(timestampLt);
 	}
 	if (timestampGt) {
-		where.timestamp_gt = timestampGt;
+		where.timestamp_gt = roundTimestampTenSeconds(timestampGt);
 	}
 	const data = yield call(() =>
 		pageResults({
@@ -89,53 +90,6 @@ export function* getUniswapSnxData(timestampGt) {
 		maxTries: 10000,
 		timestampGt,
 	});
-}
-
-export function* getSynthsExchangeData(period) {
-	const tempGraphUrl =
-		'https://api.thegraph.com/subgraphs/name/synthetixio-team/synthetix-exchanges';
-	const dailyFifteenMinPeriods = 96; // 96 * 15 / 60 = 24
-	const maxFifteenMinutePeriods =
-		period === CHARTS.DAY ? dailyFifteenMinPeriods : dailyFifteenMinPeriods * 7;
-	// grabs data for a day or a week
-	const fifteenMinuteData = yield call(() =>
-		pageResults({
-			api: tempGraphUrl,
-			query: {
-				entity: 'fifteenMinuteTotals',
-				selection: {
-					orderBy: 'id',
-					orderDirection: 'desc',
-				},
-				properties: ['id', 'exchangers', 'exchangeUSDTally', 'totalFeesGeneratedInUSD'],
-			},
-			max: maxFifteenMinutePeriods,
-		})
-	);
-	let monthlyData = null;
-	if (period === CHARTS.MONTH) {
-		// grabs data for a month
-		// TODO grab data from the beginning of trading
-		monthlyData = yield call(() =>
-			pageResults({
-				api: tempGraphUrl,
-				query: {
-					entity: 'dailyTotals',
-					selection: {
-						orderBy: 'id',
-						orderDirection: 'desc',
-					},
-					properties: ['id', 'exchangers', 'exchangeUSDTally', 'totalFeesGeneratedInUSD'],
-				},
-				max: 30,
-			})
-		);
-	}
-
-	return {
-		monthlyData,
-		fifteenMinuteData,
-	};
 }
 
 export function* getUniswapV2SethPrice(snxjs) {
